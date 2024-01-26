@@ -79,22 +79,22 @@
                     <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
                         <i class="ri-account-circle-line"></i> <span>Master User</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarAuth">
+                    <div class="collapse menu-dropdown {{ (in_array($title, ['Users', 'Roles', 'Permissions', 'Activity Log'])) ? 'show' : '' }}" id="sidebarAuth">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#sidebarSignIn" class="nav-link"> Data User
+                                <a href="{{ url('users') }}" class="nav-link {{ ($title === 'Users') ? 'active' : '' }}"> Users
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#sidebarSignIn" class="nav-link"> Role User
+                                <a href="{{ url('roles') }}" class="nav-link {{ ($title === 'Roles') ? 'active' : '' }}"> Roles
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#sidebarSignIn" class="nav-link"> Role Permission
+                                <a href="{{ url('permissions') }}" class="nav-link {{ ($title === 'Permissions') ? 'active' : '' }}"> Permissions
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#sidebarSignIn" class="nav-link"> Activity Log
+                                <a href="{{ url('activity-log') }}" class="nav-link {{ ($title === 'Activity Log') ? 'active' : '' }}"> Activity Log
                                 </a>
                             </li>
                         </ul>
