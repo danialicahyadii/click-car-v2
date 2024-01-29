@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -12,7 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        $data['users'] = User::with('roles')->orderBy('id', 'ASC')->get();
+        activity()->log('Akses Menu Role');
+        return view('users.index', compact('data'));
     }
 
     /**

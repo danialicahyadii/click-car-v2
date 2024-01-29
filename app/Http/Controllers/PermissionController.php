@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -12,7 +13,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('permission.index');
+        $data['permission'] = Permission::get();
+        return view('permission.index', compact('data'));
     }
 
     /**
@@ -28,7 +30,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $permission = Permission::create(['name' => $request->name]);
+        activity()->log('Membuat Permission Baru : ' . $permission->name);
+        return back();
     }
 
     /**

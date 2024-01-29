@@ -24,14 +24,7 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Tabel Role</h4>
-                        <div class="flex-shrink-0">
-                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                <!-- Default Modals -->
-                                <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal">+ Tambah</button>
-                                @include('role.components.modal-add')
-                            </div>
-                        </div>
+                        <h4 class="card-title mb-0 flex-grow-1">Tabel Activity Log</h4>
                     </div><!-- end card header -->
 
                     <div class="card-body">
@@ -40,25 +33,19 @@
                                 <table class="table align-middle table-nowrap mb-0" id="myTable">
                                     <thead>
                                         <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Nama</th>
-                                            <th scope="col">Guard</th>
-                                            <th scope="col">Dibuat</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Deskripsi</th>
+                                            <th scope="col">Diakses</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($data['roles'] as $row)
+                                        @foreach ($activity_log as $row)
                                             <tr>
-                                                <th scope="row"><a href="#" class="fw-medium">#{{ $loop->iteration }}</a></th>
-                                                <td>{{ $row->name }}</td>
-                                                <td>{{ $row->guard_name }}</td>
+                                                <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
+                                                <td>{{ $row->user->name }}</td>
+                                                <td>{{ $row->description }}</td>
                                                 <td>{{ $row->created_at }}</td>
-                                                <td>
-                                                    <a href="#myModalEdit" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-bs-toggle="modal" class="btn btn-info btn-sm edit-btn"><i class="ri-pencil-fill fs-16"></i></a>
-                                                    <a href="#myModalDelete" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-bs-toggle="modal" class="btn btn-danger btn-sm edit-btn"><i class="ri-delete-bin-fill fs-16"></i></a>
-                                                    @include('role.components.modal-delete')
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

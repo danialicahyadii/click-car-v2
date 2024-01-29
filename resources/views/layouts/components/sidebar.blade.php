@@ -13,7 +13,7 @@
         <!-- Light Logo-->
         <a href="/" class="logo logo-light">
             <span class="logo-sm">
-                <img src="assets/img/logo.png" alt="" height="25">
+                <img src="assets/img/logo.png" alt="" height="10">
             </span>
             <span class="logo-lg">
                 <img src="assets/img/logo.png" alt="" height="50">
@@ -32,12 +32,12 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="/">
+                    <a class="nav-link menu-link {{ ($title === 'Dashboard') ? 'active' : '' }}" href="/">
                         <i class="ri-dashboard-2-line"></i> <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="widgets.html">
+                    <a class="nav-link menu-link {{ ($title === 'Reservasi Mobil') ? 'active' : '' }}" href="{{ url('reservasi-mobil') }}">
                         <i class="ri-roadster-fill"></i> <span>Reservasi Mobil</span>
                     </a>
                 </li>

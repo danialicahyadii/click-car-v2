@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -12,7 +14,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('role.index');
+        $data['roles'] = Role::get();
+        return view('role.index', compact('data'));
     }
 
     /**
@@ -28,7 +31,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = Role::create(['name' => $request->name]);
+
+        activity()->log('Membuat Role Baru : ' . $role->name);
+        return back();
     }
 
     /**
@@ -52,7 +58,13 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $role = Role::findByName($role->name);
+        $role->update([
+            'name' => $request->name
+        ]);
+
+        // Beri respon atau redirect sesuai kebutuhan
+        return response()->json(['message' => 'Data berhasil diperbarui'], 200);
     }
 
     /**
@@ -60,6 +72,9 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        activity()->log('Menghapus Role : ' . $role->name);
+
+        return back();
     }
 }
