@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\ActivityLog;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +18,10 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $activity_log = ActivityLog::whereDate('created_at', Carbon::now()->toDateString())->get();
         return view('profile.edit', [
             'user' => $request->user(),
+            'activity_log' => $activity_log
         ]);
     }
 

@@ -41,11 +41,11 @@
                         <i class="ri-roadster-fill"></i> <span>Reservasi Mobil</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link" href="widgets.html">
                         <i class=" ri-star-smile-fill"></i> <span>Rating</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="menu-title"><i class="ri-more-fill"></i> <span>Master</span></li>
 
