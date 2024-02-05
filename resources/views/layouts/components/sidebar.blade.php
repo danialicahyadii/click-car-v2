@@ -47,6 +47,7 @@
                     </a>
                 </li> --}}
 
+                @role('Admin Umum|Admin')
                 <li class="menu-title"><i class="ri-more-fill"></i> <span>Master</span></li>
 
                 <li class="nav-item">
@@ -100,8 +101,7 @@
                         </ul>
                     </div>
                 </li>
-
-
+                @endrole
             </ul>
         </div>
         <!-- Sidebar -->
