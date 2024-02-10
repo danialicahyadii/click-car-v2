@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MobilController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservasiMobilController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SupirController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\SetTitle;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->middleware(SetTitle::class . ':Users');
     Route::resource('roles', RoleController::class)->middleware(SetTitle::class . ':Roles');
     Route::resource('permissions', PermissionController::class)->middleware(SetTitle::class . ':Permissions');
+    Route::resource('mobil', MobilController::class)->middleware(SetTitle::class . ':Mobil');
+    Route::resource('supir', SupirController::class)->middleware(SetTitle::class . ':Supir');
     Route::get('activity-log', [ActivityLogController::class, 'index'])->middleware(SetTitle::class . ':Activity Log');
 
     Route::prefix('dashboard')->group(function () {

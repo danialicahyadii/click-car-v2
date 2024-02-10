@@ -50,7 +50,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($mobil->where('id_entitas', Auth::user()->id_entitas) as $row)
+                                        {{-- @foreach ($mobil->where('id_entitas', Auth::user()->id_entitas) as $row)
                                             <tr>
                                                 <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
                                                 <td>{{ $row->nama }}</td>
@@ -70,7 +70,7 @@
                                                     @include('mobil.components.modal-delete')
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>
