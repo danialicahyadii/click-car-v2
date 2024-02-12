@@ -74,15 +74,15 @@
 @push('js')
     <script>
         $('#myTable').DataTable( {
-            pageLength: 5,
+            pageLength: 10,
             // dom: 'Bfrtip',
         } );
         $('#myTable-1').DataTable( {
-            pageLength: 5,
+            pageLength: 10,
             // dom: 'Bfrtip',
         } );
         $('#myTable-2').DataTable( {
-            pageLength: 5,
+            pageLength: 10,
             // dom: 'Bfrtip',
         } );
     </script>

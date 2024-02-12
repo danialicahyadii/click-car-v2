@@ -4,19 +4,19 @@
         <!-- Dark Logo-->
         <a href="/" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="assets/img/logo.png" alt="" height="10">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="" height="10">
             </span>
             <span class="logo-lg">
-                <img src="assets/img/logo.png" alt="" height="50">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="" height="50">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="/" class="logo logo-light">
             <span class="logo-sm">
-                <img src="assets/img/logo.png" alt="" height="10">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="" height="10">
             </span>
             <span class="logo-lg">
-                <img src="assets/img/logo.png" alt="" height="50">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="" height="50">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link {{ ($title === 'Reservasi Mobil') ? 'active' : '' }}" href="{{ url('reservasi-mobil') }}">
+                    <a class="nav-link menu-link {{ ($title === 'Reservasi Mobil' || $title === 'Create' || $title === 'View') ? 'active' : '' }}" href="{{ url('reservasi-mobil') }}">
                         <i class="ri-roadster-fill"></i> <span>Reservasi Mobil</span>
                     </a>
                 </li>
