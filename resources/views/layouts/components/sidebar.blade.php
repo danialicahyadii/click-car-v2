@@ -54,14 +54,14 @@
                     <a class="nav-link menu-link" href="#masterData" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
                         <i class="ri-database-2-fill"></i> <span>Master Data</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="masterData">
+                    <div class="collapse menu-dropdown {{ (in_array($title, ['Mobil', 'Supir', 'Jenis Kendaraan', 'Item Inspeksi Kendaraan'])) ? 'show' : '' }}" id="masterData">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#sidebarSignIn" class="nav-link"> Mobil
+                                <a href="{{ route('mobil.index') }}" class="nav-link {{ ($title === 'Mobil') ? 'active' : '' }}"> Mobil
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#sidebarSignIn" class="nav-link"> Supir
+                                <a href="{{ route('supir.index') }}" class="nav-link {{ ($title === 'Supir') ? 'active' : '' }}"> Supir
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -77,10 +77,10 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
+                    <a class="nav-link menu-link" href="#masterUser" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
                         <i class="ri-account-circle-line"></i> <span>Master User</span>
                     </a>
-                    <div class="collapse menu-dropdown {{ (in_array($title, ['Users', 'Roles', 'Permissions', 'Activity Log'])) ? 'show' : '' }}" id="sidebarAuth">
+                    <div class="collapse menu-dropdown {{ (in_array($title, ['Users', 'Roles', 'Permissions', 'Activity Log'])) ? 'show' : '' }}" id="masterUser">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ url('users') }}" class="nav-link {{ ($title === 'Users') ? 'active' : '' }}"> Users
