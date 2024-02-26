@@ -19,7 +19,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $activity_log = ActivityLog::whereDate('created_at', Carbon::now()->toDateString())->get();
-        return view('profile.edit', [
+        return view('users.profile.edit2', [
             'user' => $request->user(),
             'activity_log' => $activity_log
         ]);
@@ -38,7 +38,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('users.profile.edit')->with('status', 'profile-updated');
     }
 
     /**

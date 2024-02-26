@@ -33,10 +33,10 @@
                         @endif
                     </div><!-- end card header -->
                     @role('Admin|Admin Umum|Admin Driver|Driver')
-                        @include('reservasi-mobil.components.admin-ui')
+                        @include('apps.reservasi-mobil.components.admin-ui')
                     @endrole
                     @role('Requester')
-                        @include('reservasi-mobil.components.requester-ui')
+                        @include('apps.reservasi-mobil.components.requester-ui')
                     @endrole
                 </div><!-- end card -->
             </div>
@@ -52,21 +52,6 @@
         $(document).ready(function() {
             $('#reservasi_hari_iniTable, #konfirmasi_reservasiTable, #riwayatTable, #lihat_semuaTable, #sedang_diprosesTable, #perlu_diprosesTable, #reservasi_selesaiTable, #reservasi_ditolakTable, #ratingTable').DataTable({
                 pageLength: 10
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Mendapatkan tab yang aktif saat ini
-            const activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                // Mengatur tab yang aktif sesuai dengan yang disimpan sebelumnya
-                $('#myTab a[href="' + activeTab + '"]').tab('show');
-            }
-        
-            // Menyimpan tab yang aktif saat ini saat tab berubah
-            $('#myTab a').on('click', function(e) {
-                localStorage.setItem('activeTab', $(this).attr('href'));
             });
         });
     </script>

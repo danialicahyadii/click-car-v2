@@ -15,7 +15,7 @@ class RoleController extends Controller
     public function index()
     {
         $data['roles'] = Role::get();
-        return view('role.index', compact('data'));
+        return view('users.role.index', compact('data'));
     }
 
     /**

@@ -13,7 +13,7 @@ class MobilController extends Controller
     public function index()
     {
         $mobil = Mobil::orderBy('created_at', 'desc')->get();
-        return view('mobil.index', compact('mobil'));
+        return view('apps.mobil.index', compact('mobil'));
     }
 
     /**

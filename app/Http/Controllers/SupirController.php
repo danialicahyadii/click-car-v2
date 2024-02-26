@@ -11,7 +11,7 @@ class SupirController extends Controller
      */
     public function index()
     {
-        return view('supir.index');
+        return view('apps.supir.index');
     }
 
     /**

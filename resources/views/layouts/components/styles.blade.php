@@ -1,3 +1,5 @@
+@yield('css')
+
 <!-- App favicon -->
 <link rel="shortcut icon" href="{{ asset('assets/img/logo.jpg') }}">
 

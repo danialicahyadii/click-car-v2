@@ -29,7 +29,7 @@
                             <div class="form-check form-switch form-switch-right form-switch-md">
                                 <!-- Default Modals -->
                                 <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal">+ Tambah</button>
-                                @include('mobil.components.modal-add')
+                                @include('apps.mobil.components.modal-add')
                             </div>
                         </div>
                     </div><!-- end card header -->
@@ -84,7 +84,7 @@
     </div>
     <!-- container-fluid -->
 </div>
-@include('mobil.components.modal-edit')
+@include('apps.mobil.components.modal-edit')
 @endsection
 @push('js')
     <script>

@@ -12,7 +12,7 @@ class DashboardController extends Controller
     {
         $title = 'Dashboard';
         $data['reservasi-mobil'] = ReservasiMobil::count();
-        return view('dashboard.dash', compact('title', 'data'));
+        return view('apps.dashboard.dash', compact('title', 'data'));
     }
 
     public function getFilterBulan()
