@@ -4,6 +4,7 @@ use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProcessingDataController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservasiMobilController;
 use App\Http\Controllers\RoleController;
@@ -55,7 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::get('print_surat_jalan/{id}', [ReservasiMobilController::class, 'printSuratJalan']);
         Route::get('/dibatalkan/{id}', [ReservasiMobilController::class, 'dibatalkan']);
 
-        // Route::get('get-available-car', [ProcessingDataController::class, 'getAvailableCar']);
+        Route::get('get-available-car', [ProcessingDataController::class, 'getAvailableCar']);
         // Route::get('get-cars', [ProcessingDataController::class, 'getCars']);
         // Route::get('get-available-drivers', [ProcessingDataController::class, 'getAvailableDrivers']);
 
