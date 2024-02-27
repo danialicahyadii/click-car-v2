@@ -36,4 +36,9 @@ class Mobil extends Model
     {
         return $this->belongsTo(MasterDriver::class, 'pic')->withDefault(['nama' => '-']);
     }
+
+    public function Plat()
+    {
+        return $this->belongsTo(Plat::class, 'id_plat')->withDefault('id', '-');
+    }
 }

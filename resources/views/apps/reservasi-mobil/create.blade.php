@@ -2,6 +2,7 @@
 @section('css')
     <script type='text/javascript' src='{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
     <script type='text/javascript' src='{{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}'></script>
+    <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-content')
 <div class="page-content">
@@ -161,7 +162,7 @@
                                 <div class="col-xxl-4 col-md-4">
                                     <div>
                                         <label for="iconInput" class="form-label">Pilih Jenis Kendaraan</label>
-                                        <select class="form-control" data-choices data-choices-search-false data-choices-sorting-false name="id_jenis_kendaraan" id="id_jenis_kendaraan">
+                                        <select class="form-control" name="id_jenis_kendaraan" id="id_jenis_kendaraan">
                                             <option selected disabled>Pilih Jenis Kendaraan</option>
                                             @foreach ($jenis_kendaraan as $row)
                                                 <option value="{{ $row->id }}">{{ $row->nama }}</option>
@@ -172,7 +173,7 @@
                                 <div class="col-xxl-4 col-md-4">
                                     <div>
                                         <label for="iconInput" class="form-label">Pilih Mobil</label>
-                                        <select class="form-control select2" data-choices data-choices-search-false data-choices-sorting-false name="id_mobil" id="mobil">
+                                        <select class="form-control" name="id_mobil" id="mobil">
                                             <option selected disabled>Pilih Mobil</option>
                                         </select>   
                                     </div>
@@ -180,7 +181,7 @@
                                 <div class="col-xxl-4 col-md-4">
                                     <div>
                                         <label for="iconInput" class="form-label">Pilih Driver</label>
-                                        <select class="form-control" data-choices data-choices-search-false data-choices-sorting-false name="id_supir" id="supir">
+                                        <select class="form-control" name="id_supir" id="supir">
                                             <option selected disabled>Pilih Driver</option>
                                             @foreach ($supir as $row)
                                                 <option value="{{ $row->id }}">{{ $row->nama }}</option>
@@ -197,7 +198,7 @@
             </div>
             <div class="form-group mb-4">
                 <a href="{{ url()->previous() }}" class="btn btn-warning"><i class="ri-arrow-go-back-fill"></i> Kembali</a>
-                <button type="submit" class="btn btn-primary ms-2"><i class="ri-send-plane-fill"></i> Reservasi</button>
+                <button type="submit" class="btn btn-primary"><i class="ri-send-plane-fill"></i> Reservasi</button>
             </div>
         </form>
     </div>
@@ -205,6 +206,7 @@
 </div>
 @endsection
 @push('js')
+    <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#reservasi_hari_iniTable, #konfirmasi_reservasiTable, #riwayatTable, #lihat_semuaTable, #sedang_diprosesTable, #perlu_diprosesTable, #reservasi_selesaiTable, #reservasi_ditolakTable, #ratingTable').DataTable({
@@ -221,7 +223,6 @@
             });
 
             $('#id_jenis_kendaraan').change(function() {
-                // Reset the "Pilih Mobil" dropdown options
                 $('#mobil').html('<option selected disabled value="">Silahkan Pilih Mobil</option>');
                 let carOption = this.value;
                 let tgl_pergi = $('#tgl_pergi').val();
@@ -243,10 +244,43 @@
                     },
                     success: function(response) {
                         if (response.status === "success") {
-                            $('#mobil').empty();
-                            $.each(response.availableCars, function(index, car) {
-                                $('#mobil').append('<option value="' + car.id + '">' + car.nama_mobil + '</option>');
+                            $.each(response.data, function(key, value) {
+                                $('#mobil').append('<option value="'+ value.id +'" data-status="' + value.status + '" data-plat="' + value.id_plat + '">' + value.nama + '</span></option>')
                             });
+                            $('#mobil').trigger('change');
+                            $('#mobil').on('change', function() {
+                            var selectedOption = $(this).find(':selected');
+                            var status = selectedOption.data('status');
+                            var id_plat = selectedOption.data('plat');
+                            var d = new Date();
+                            var day = d.getDate();
+                            if (status === 'Not Available') {
+                                $('#warning-message-car').show();
+                                // $(this).val(
+                                //     ''
+                                //     ); // Menghapus pemilihan mobil yang tidak tersedia
+                            } else {
+                                $('#warning-message-car').hide();
+                            }
+                            console.log(response.statusDate);
+
+                            //Notif Gage Sudirman
+                            if (response.statusDate == "Hari ini genap" && id_plat == 1) {
+                                Swal.fire({
+                                    title: 'Warning',
+                                    text: 'Tanggal Pergi genap dan mobil yang dipilih ganjil',
+                                    icon: 'warning',
+                                    confirmButtonText: 'Ok'
+                                });
+                            } else if (response.statusDate == 'Hari ini ganjil' && id_plat == 2) {
+                                Swal.fire({
+                                    title: 'Warning',
+                                    text: 'Tanggal Pergi ganjil dan mobil yang dipilih genap',
+                                    icon: 'warning',
+                                    confirmButtonText: 'Ok'
+                                });
+                            }
+                        });
                         } else {
                             console.error("Error: " + response.message);
                         }
@@ -256,7 +290,6 @@
                     }
                 });
             });
-
         });
     </script>
 @endpush

@@ -52,6 +52,8 @@ class CarHelper
             $displayCars->{$car->id} = new \stdClass;
             $displayCars->{$car->id}->id = $car->id;
             $displayCars->{$car->id}->nama = $car->nama;
+            $displayCars->{$car->id}->id_plat = $car->id_plat;
+            $displayCars->{$car->id}->nomor_plat = $car->Plat->nomor_plat;
             $displayCars->{$car->id}->status = $status;
             $displayCars->{$car->id}->jns_kendaraan = $car->id_jenis_kendaraan;
         }
