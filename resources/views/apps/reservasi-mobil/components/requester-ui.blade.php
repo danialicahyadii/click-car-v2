@@ -35,7 +35,6 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">ID Pemesanan</th>
                                 <th scope="col">Pemesan</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Mobil</th>
@@ -47,8 +46,7 @@
                             @foreach ($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [1,2,3]) as $row)
                             <tr>
                                 <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
-                                <th scope="row"><a href="#" class="fw-medium">{{ $row->id }}</a></th>
-                                <td>{{ $row->user->name }}</td>
+                                <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a></td>
                                 <td>
                                     @if ($row->id_status == 1)
                                     <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>
@@ -68,7 +66,7 @@
                                     <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>
                                     @endif
                                 </td>
-                                <td>{{ $row->mobil->nama }}</td>
+                                <td>@if (!empty($row->id_mobil)){{ $row->mobil->nama }}@else Transportasi Online @endif</td>
                                 <td>{{ $row->supir->nama }}</td>
                                 <td><a href="javascript:void(0);" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
                             </tr>
@@ -85,7 +83,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">ID Pemesanan</th>
+                                
                                 <th scope="col">Pemesan</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Mobil</th>
@@ -135,7 +133,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">ID Pemesanan</th>
+                                
                                 <th scope="col">Pemesan</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Mobil</th>
@@ -185,7 +183,6 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">ID Pemesanan</th>
                                 <th scope="col">Pemesan</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Mobil</th>
@@ -197,7 +194,6 @@
                             @foreach ($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [6,7,12]) as $row)
                                 <tr>
                                     <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
-                                    <th scope="row"><a href="#" class="fw-medium">#{{ $row->id }}</a></th>
                                     <td>{{ $row->user->name }}</td>
                                     <td>
                                         @if ($row->id_status == 1)

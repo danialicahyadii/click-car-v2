@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Status extends Model
 {
     protected $guarded = [];
-    protected $table = 'status';
+    protected $table = 'master_status';
 }

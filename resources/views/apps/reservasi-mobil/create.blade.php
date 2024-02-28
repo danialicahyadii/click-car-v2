@@ -36,15 +36,16 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="basiInput" class="form-label">Asal</label>
-                                        <input type="text" class="form-control" name="asal" placeholder="Masukkan Lokasi Penjemputan...">
+                                        <input type="text" class="form-control" name="asal" id="origin-input" placeholder="Masukkan Lokasi Penjemputan...">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="basiInput" class="form-label">Tujuan</label>
-                                        <input type="text" class="form-control" name="tujuan" placeholder="Masukkan Lokasi Tujuan...">
+                                        <input type="text" class="form-control" name="tujuan" id="destination-input" placeholder="Masukkan Lokasi Tujuan...">
                                     </div>
+                                    <div id="map"></div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
@@ -57,7 +58,8 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="placeholderInput" class="form-label">Pilih Nama Penumpang</label>
-                                        <select class="form-control" data-choices data-choices-removeItem name="jml_penumpang" value="1" maxlength="10" multiple>
+                                        <select class="form-control" data-choices data-choices-removeItem name="id_penumpang[]" value="1" maxlength="10" multiple>
+                                            <option value="">Pilih Penumpang</option>
                                             @foreach ($penumpang as $row)
                                                 <option value="{{ $row->id }}">{{ $row->name }}</option>
                                             @endforeach  
@@ -68,7 +70,7 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="valueInput" class="form-label">Tanggal Pergi</label>
-                                        <input type="text" class="form-control flatpickr-input" data-provider="flatpickr"  data-altFormat="F j, Y" name="tgl_pergi" id="tgl_pergi">
+                                        <input type="text" class="form-control flatpickr-input" data-provider="flatpickr" data-altFormat="F j, Y" name="tgl_pergi" id="tgl_pergi">
                                     </div>
                                 </div>
                                 <!--end col-->
@@ -206,13 +208,13 @@
 </div>
 @endsection
 @push('js')
+    @include('apps.reservasi-mobil.components.script-search-google-maps')
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#reservasi_hari_iniTable, #konfirmasi_reservasiTable, #riwayatTable, #lihat_semuaTable, #sedang_diprosesTable, #perlu_diprosesTable, #reservasi_selesaiTable, #reservasi_ditolakTable, #ratingTable').DataTable({
                 pageLength: 10
             });
-
             $("#id_pengantaran").on('change', function() {
                 var nilai_pengantaran = $('#id_pengantaran').val();
                 if (nilai_pengantaran != 3){
@@ -286,6 +288,58 @@
                         }
                     },
                     error: function(error) {
+                        console.error("AJAX Error:", error);
+                    }
+                });
+            });
+
+            $('#mobil').change(function() {
+                $('#supir').html('<option selected disabled value="">Silahkan Pilih Supir</option>');
+                let carOption = this.value;
+                let tgl_pergi = $('#tgl_pergi').val();
+                let tgl_pulang = $('#tgl_pulang').val();
+                let time_start = $('#wktu_pergi').val();
+                let time_end = $('#wktu_plng').val();
+                let token = $("meta[name='csrf-token']").attr("content");
+
+                $.ajax({
+                    url: "/reservasi-mobil/get-available-drivers",
+                    method: "GET",
+                    data: {
+                        "tgl_pergi": tgl_pergi,
+                        "tgl_pulang": tgl_pulang,
+                        "time_start": time_start,
+                        "time_end": time_end,
+                        "carOption": carOption,
+                        "_token": token
+                    },
+                    success: function(response) {
+                        if (response.status === "success") {
+                            $.each(response.data, function(key, value) {
+                                $('#supir').append('<option value="' + value.id +
+                                    '" data-status="' + value.status + '">' + value.nama + '</span></option>');
+                            });
+
+                            $('#supir').trigger('change');
+
+                            $('#supir').on('change', function() {
+                                var selectedOption = $(this).find(':selected');
+                                var status = selectedOption.data('status');
+
+                                if (status === 'Not Available') {
+                                    $('#warning-message-driver').show();
+                                    //  // Menghapus pemilihan mobil yang tidak tersedia
+                                } else {
+                                    $('#warning-message-driver').hide();
+                                }
+                            });
+                        } else {
+                            // Handle any error or unexpected response
+                            console.error("Error: " + response.message);
+                        }
+                    },
+                    error: function(error) {
+                        // Handle the AJAX error here
                         console.error("AJAX Error:", error);
                     }
                 });

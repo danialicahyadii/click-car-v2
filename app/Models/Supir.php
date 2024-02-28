@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Supir extends Model
 {
     protected $guarded = [];
-    protected $table = 'supir';
+    protected $table = 'master_driver';
 }

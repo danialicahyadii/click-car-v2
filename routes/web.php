@@ -57,8 +57,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/dibatalkan/{id}', [ReservasiMobilController::class, 'dibatalkan']);
 
         Route::get('get-available-car', [ProcessingDataController::class, 'getAvailableCar']);
+        Route::get('get-available-drivers', [ProcessingDataController::class, 'getAvailableDrivers']);
         // Route::get('get-cars', [ProcessingDataController::class, 'getCars']);
-        // Route::get('get-available-drivers', [ProcessingDataController::class, 'getAvailableDrivers']);
 
         //TAB TAB
         Route::get('/telah-disetujui', [ReservasiMobilController::class, 'telahDisetujui']);

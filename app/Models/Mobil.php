@@ -9,7 +9,7 @@ class Mobil extends Model
 {
     use HasFactory;
 
-    protected $table = 'mobil';
+    protected $table = 'master_mobil';
 
     protected $guarded = [];
 
@@ -18,7 +18,7 @@ class Mobil extends Model
      */
     public function entitas()
     {
-        return $this->belongsTo(MasterEntitas::class, 'id_entitas')->withDefault(['nama' => '-']);
+        return $this->belongsTo(Entitas::class, 'id_entitas')->withDefault(['nama' => '-']);
     }
 
     /**
@@ -26,7 +26,7 @@ class Mobil extends Model
      */
     public function status()
     {
-        return $this->belongsTo(MasterStatus::class, 'id_status')->withDefault(['status' => '-']);
+        return $this->belongsTo(Status::class, 'id_status')->withDefault(['status' => '-']);
     }
 
     /**
@@ -34,7 +34,7 @@ class Mobil extends Model
      */
     public function driver()
     {
-        return $this->belongsTo(MasterDriver::class, 'pic')->withDefault(['nama' => '-']);
+        return $this->belongsTo(Supir::class, 'pic')->withDefault(['nama' => '-']);
     }
 
     public function Plat()

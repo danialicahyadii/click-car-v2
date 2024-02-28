@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CarHelper;
+use App\Helpers\DriverHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,20 @@ class ProcessingDataController extends Controller
             'status' => 'success',
             'data' => $dataCar,
             'statusDate' => $statusDate,
+        ]);
+    }
+
+    public function getAvailableDrivers(Request $request)
+    {
+        $dataDrivers = [];
+        $supir = DriverHelper::requestAvailableDrivers($request->tgl_pergi, $request->tgl_pulang, $request->time_start, $request->time_end);
+
+        foreach ($supir as $key) {
+            $dataDrivers[] = $key;
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $dataDrivers,
         ]);
     }
 }
