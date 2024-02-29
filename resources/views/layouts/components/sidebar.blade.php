@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link {{ ($title === 'Reservasi Mobil' || $title === 'Create' || $title === 'View') ? 'active' : '' }}" href="{{ url('reservasi-mobil') }}">
+                    <a class="nav-link menu-link {{ ($title === 'Index' || $title === 'Create' || $title === 'View') ? 'active' : '' }}" href="{{ url('reservasi-mobil') }}">
                         <i class="ri-roadster-fill"></i> <span>Reservasi Mobil</span>
                     </a>
                 </li>

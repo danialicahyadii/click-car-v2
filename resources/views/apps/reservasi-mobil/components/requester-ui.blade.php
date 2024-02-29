@@ -7,22 +7,30 @@
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#perlu_diproses" role="tab" aria-selected="true">
-                Perlu Diproses <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_atasan', Auth::user()->id)) }}</span>
+                Perlu Diproses @if (count($reservasi_mobil->where('id_atasan', Auth::user()->id)) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_atasan', Auth::user()->id)) }}</span>
+                @endif
             </a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#reservasi_selesai" role="tab" aria-selected="true">
-                Reservasi Selesai <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)) }}</span>
+                Reservasi Selesai @if (count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)) }}</span>
+                @endif
             </a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#reservasi_ditolak" role="tab" aria-selected="true">
-                Reservasi Ditolak <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [6,7,12])) }}</span>
+                Reservasi Ditolak @if (count($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [6,7,12])) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [6,7,12])) }}</span>
+                @endif
             </a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#rating" role="tab" aria-selected="false" tabindex="-1">
-                Rating <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('flag_rating', 1)) }}</span>
+                Rating @if (count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('flag_rating', 1)) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('flag_rating', 1)) }}</span>
+                @endif
             </a>
         </li>
     </ul>
@@ -68,7 +76,7 @@
                                 </td>
                                 <td>@if (!empty($row->id_mobil)){{ $row->mobil->nama }}@else Transportasi Online @endif</td>
                                 <td>{{ $row->supir->nama }}</td>
-                                <td><a href="javascript:void(0);" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
+                                <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -83,7 +91,6 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                
                                 <th scope="col">Pemesan</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Mobil</th>
@@ -95,8 +102,7 @@
                             @foreach ($reservasi_mobil->where('id_atasan', Auth::user()->id) as $row)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <th scope="row"><a href="#" class="fw-medium">#{{ $row->id }}</a></th>
-                                    <td>{{ $row->user->name }}</td>
+                                    <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a></td>
                                     <td>
                                         @if ($row->id_status == 1)
                                         <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>

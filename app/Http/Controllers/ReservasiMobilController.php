@@ -25,6 +25,8 @@ class ReservasiMobilController extends Controller
         $data['jenis_kendaraan'] = JenisKendaraan::orderBy('nama', 'ASC')->get();
         $data['mobil'] = Mobil::where('id_entitas', Auth::user()->id_entitas)->orderBy('nama', 'ASC')->get();
         $data['supir'] = Supir::where('id_entitas', Auth::user()->id_entitas)->where('id_status', 1)->orderBy('nama', 'ASC')->get();
+        $data['reservasi_mobil'] = ReservasiMobil::get();
+        $data['penumpang_reservasi'] = Penumpang::get();
 
         return $data;
     }
@@ -33,9 +35,29 @@ class ReservasiMobilController extends Controller
     {
         $role = Auth::user()->roles->first()->name;
         $year = Carbon::now()->year;
-        $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)
+        if($role == 'Admin Umum'){
+            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)
             ->orderBy('id', 'desc')
             ->get();
+        }elseif($role == 'Requester'){
+            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->where(function ($query) {
+                $query->where('id_user', Auth::user()->id)
+                    ->orWhere('id_atasan', Auth::user()->id);
+                })
+            ->orderBy('id', 'desc')
+            ->get();
+        }elseif($role == 'Admin Driver'){
+            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)
+            ->orderBy('id', 'desc')
+            ->get();
+        }elseif($role == 'Driver'){
+            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->where('id_supir', Auth::user()->supir->id)
+            ->orderBy('id', 'desc')
+            ->get();
+        }else{
+
+        }
+        
         return view('apps.reservasi-mobil.index', compact('reservasi_mobil'));
     }
 
@@ -75,7 +97,7 @@ class ReservasiMobilController extends Controller
                 ]);
             }
         }
-
+        // ini WA
         // $atasan = User::where('id', $request->id_atasan)->first();
         // $this->wa->sendMessageAtasan($atasan, $reservasi_mobil);
 
@@ -85,8 +107,83 @@ class ReservasiMobilController extends Controller
         return redirect(url('reservasi-mobil'));
     }
 
-    public function show()
+    public function show($id)
     {
-        return view('apps.reservasi-mobil.show');
+        $data = $this->data();
+        $reservasi_mobil = $data['reservasi_mobil']->find($id);
+        $penumpang = $data['penumpang_reservasi']->where('id_reservasi', $id);
+        $jenis_kendaraan = $data['jenis_kendaraan'];
+        $mobil = $data['mobil'];
+        $supir = $data['supir'];
+
+        return view('apps.reservasi-mobil.show', compact('reservasi_mobil', 'penumpang', 'jenis_kendaraan', 'mobil', 'supir'));
+    }
+
+    public function setuju(Request $request)
+    {
+        $reservasi_mobil = ReservasiMobil::find($request->id_reservasi);
+
+        if($reservasi_mobil->id_status == 1){
+            $reservasi_mobil->update([
+
+                'id_status' => 2,
+                'komentar_atasan' => $request->komentar,
+    
+            ]);
+            $user = User::find($reservasi_mobil->id_user);
+            //ada notif wa ke umum dan requester
+            // $this->wa->sendMessageUmum($reservasi_mobil);
+            // $this->wa->sendMessageSetuju($reservasi_mobil, $user);
+            // try {
+            //     Mail::send('components.approval-atasan(for-admin)', ['reservasi_mobil' => $reservasi_mobil], function ($message) use ($user) {
+            //         $message->subject('Clickcar Kimia Farma');
+            //         $message->from('clickcar.kaef@gmail.com');
+            //         $message->to('andika.ags04@gmail.com');
+            //     });
+            // } catch (Exception $e) {
+            //     return response(['status' => false, 'errors' => $e->getMessage()]);
+            // }
+    
+            // log activity
+            activity()->log('Reservasi Disetujui oleh Atasan ' . $reservasi_mobil->tujuan);
+            toast('Permintaan Reservasi Telah disetujui atasan', 'success')->timerProgressBar();
+        }elseif($reservasi_mobil->id_status == 2){
+            $reservasi_mobil->update([
+                'id_status' => $request->id_status,
+                'komentar_umum' => $request->komentar
+            ]);
+
+            // $user = User::find($reservasi_mobil->id_user);
+            // $admin_supir = Supir::with('User')->where('id', 130)->first();
+            // $this->wa->sendMessageSetuju($reservasi_mobil, $user);
+            // $this->wa->sendMessageAdminDriver($reservasi_mobil, $user, $admin_supir);
+
+            // log activity
+            activity()->log('Melakukan Update Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
+            toast('Permintaan Reservasi dengan ID : '. $reservasi_mobil->id .' Telah disetujui Umum', 'success')->timerProgressBar();
+
+        }elseif($reservasi_mobil->id_status == 3){
+            $reservasi_mobil->update([
+                'id_status' => 14,
+                'id_jenis_kendaraan' => $request->id_jenis_kendaraan,
+                'id_mobil' => $request->id_mobil,
+                'id_supir' => $request->id_supir,
+                'komentar_supir' => $request->komentar
+            ]);
+            // $user = User::find($reservasi_mobil->id_user);
+            // if ($request->id_status == 4) {
+            //     $voucher = TransaksiVoucher::where('id_reservasi', $reservasi_mobil->id)->get();
+            //     $this->wa->sendMessageGrab($reservasi_mobil, $user, $voucher);
+            // } else {
+            //     $supir = Supir::with('User')->where('id', $reservasi_mobil->id_supir)->first();
+            //     $this->wa->sendMessage($reservasi_mobil, $user);
+            //     $this->wa->sendMessageDriver($reservasi_mobil, $user, $supir);
+            // }
+
+            // log activity
+            activity()->log('Melakukan Approve Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
+            toast('Permintaan Reservasi dengan ID : '. $reservasi_mobil->id .' Telah disetujui Kepala Pool', 'success')->timerProgressBar();
+        }
+        return redirect(url('reservasi-mobil'));
     }
 }

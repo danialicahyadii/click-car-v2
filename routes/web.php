@@ -44,13 +44,13 @@ Route::middleware('auth')->group(function () {
     })->middleware(SetTitle::class . ':Dashboard');
 
     Route::prefix('reservasi-mobil')->group(function () {
-        Route::get('/', [ReservasiMobilController::class, 'index'])->middleware(SetTitle::class . ':Reservasi Mobil');
+        Route::get('/', [ReservasiMobilController::class, 'index'])->middleware(SetTitle::class . ':Index');
         Route::get('/create', [ReservasiMobilController::class, 'create'])->middleware(SetTitle::class . ':Create');
         Route::get('edit/{id}', [ReservasiMobilController::class, 'edit']);
         Route::post('store', [ReservasiMobilController::class, 'store']);
         Route::post('update/{id}', [ReservasiMobilController::class, 'update']);
         Route::delete('{id}', [ReservasiMobilController::class, 'destroy']);
-        Route::get('show/{id}', [ReservasiMobilController::class, 'show']);
+        Route::get('show/{id}', [ReservasiMobilController::class, 'show'])->middleware(SetTitle::class . ':View');
         Route::get('delete/{id}', [ReservasiMobilController::class, 'destroy']);
         Route::get('/konfirmasi_reservasi', [ReservasiMobilController::class, 'konfirmasi_reservasi']);
         Route::get('print_surat_jalan/{id}', [ReservasiMobilController::class, 'printSuratJalan']);
@@ -60,6 +60,10 @@ Route::middleware('auth')->group(function () {
         Route::get('get-available-drivers', [ProcessingDataController::class, 'getAvailableDrivers']);
         // Route::get('get-cars', [ProcessingDataController::class, 'getCars']);
 
+        //Atasan approve
+        Route::post('/setuju', [ReservasiMobilController::class, 'setuju']);
+        Route::post('/tolak', [ReservasiMobilController::class, 'tolak']);
+        
         //TAB TAB
         Route::get('/telah-disetujui', [ReservasiMobilController::class, 'telahDisetujui']);
         Route::get('/reservasi-selesai', [ReservasiMobilController::class, 'reservasiSelesai']);
@@ -70,9 +74,6 @@ Route::middleware('auth')->group(function () {
         //Umum Approve
         Route::post('setuju-admin-umum/{id}', [ReservasiMobilController::class, 'setujuUmum']);
 
-        //Atasan approve
-        Route::post('/setuju', [ReservasiMobilController::class, 'setuju']);
-        Route::post('/tolak', [ReservasiMobilController::class, 'tolak']);
 
         //SUPIR
         Route::post('setuju-admin-driver/{id}', [ReservasiMobilController::class, 'setujuDriver']);

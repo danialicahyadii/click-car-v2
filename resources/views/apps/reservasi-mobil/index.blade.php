@@ -32,11 +32,14 @@
                             </div>
                         @endif
                     </div><!-- end card header -->
-                    @role('Admin|Admin Umum|Admin Driver|Driver')
+                    @role('Admin|Admin Umum')
                         @include('apps.reservasi-mobil.components.admin-ui')
                     @endrole
                     @role('Requester')
                         @include('apps.reservasi-mobil.components.requester-ui')
+                    @endrole
+                    @role('Admin Driver|Driver')
+                        @include('apps.reservasi-mobil.components.driver-ui')
                     @endrole
                 </div><!-- end card -->
             </div>

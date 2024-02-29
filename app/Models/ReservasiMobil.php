@@ -36,4 +36,14 @@ class ReservasiMobil extends Model
     {
         return $this->belongsTo(Supir::class, 'id_supir')->withDefault(['nama' => '-']);
     }
+
+    public function atasan()
+    {
+        return $this->belongsTo(User::class, 'id_atasan')->withDefault(['name' => '-']);
+    }
+
+    public function jenisKendaraan()
+    {
+        return $this->belongsTo(JenisKendaraan::class, 'id_jenis_kendaraan')->withDefault(['nama' => '']);
+    }
 }
