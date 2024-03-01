@@ -93,7 +93,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($reservasi_mobil->whereIn('id_status', [3, 14]) as $row)
+                            @foreach ($reservasi_mobil->whereIn('id_status', [3, 14, 4]) as $row)
                                 <tr>
                                     <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
                                     <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a></td>

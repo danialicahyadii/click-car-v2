@@ -21,45 +21,53 @@
                     </div>
                 @endrole
                 @role('Admin Driver')
-                    <div class="mb-3">
-                        <label class="form-label">Pilih Jenis Kendaraan</label>
-                        <select class="form-control" name="id_jenis_kendaraan" id="id_jenis_kendaraan">
-                            <option selected disabled>Pilih Jenis Kendaraan</option>
-                            @foreach ($jenis_kendaraan as $row)
-                                <option value="{{ $row->id }}" @if (!empty($reservasi_mobil->id_jenis_kendaraan))
-                                    @if ($reservasi_mobil->id_jenis_kendaraan == $row->id)
-                                        selected
-                                    @endif
-                                @endif>{{ $row->nama }}</option>
-                            @endforeach
-                        </select>   
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Pilih Mobil</label>
-                        <select class="form-control" name="id_mobil" id="mobil">
-                            <option selected disabled>Pilih Mobil</option>
-                            @foreach ($mobil as $row)
-                                <option value="{{ $row->id }}" @if (!empty($reservasi_mobil->id_mobil))
-                                    @if ($reservasi_mobil->id_mobil == $row->id)
-                                        selected
-                                    @endif
-                                @endif>{{ $row->nama }}</option>
-                            @endforeach
-                        </select>   
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Pilih Driver</label>
-                        <select class="form-control" name="id_supir" id="supir">
-                            <option selected disabled>Pilih Driver</option>
-                            @foreach ($supir as $row)
-                                <option value="{{ $row->id }}" @if (!empty($reservasi_mobil->id_supir))
-                                    @if ($reservasi_mobil->id_supir == $row->id)
-                                        selected
-                                    @endif
-                                @endif>{{ $row->nama }}</option>
-                            @endforeach
-                        </select>   
-                    </div>
+                    @if ($reservasi_mobil->id_status == 14)    
+                        <div class="mb-3">
+                            <label class="form-label">Pilih Jenis Kendaraan</label>
+                            <select class="form-control" name="id_jenis_kendaraan" id="id_jenis_kendaraan">
+                                <option selected disabled>Pilih Jenis Kendaraan</option>
+                                @foreach ($jenis_kendaraan as $row)
+                                    <option value="{{ $row->id }}" @if (!empty($reservasi_mobil->id_jenis_kendaraan))
+                                        @if ($reservasi_mobil->id_jenis_kendaraan == $row->id)
+                                            selected
+                                        @endif
+                                    @endif>{{ $row->nama }}</option>
+                                @endforeach
+                            </select>   
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pilih Mobil</label>
+                            <select class="form-control" name="id_mobil" id="mobil">
+                                <option selected disabled>Pilih Mobil</option>
+                                @foreach ($mobil as $row)
+                                    <option value="{{ $row->id }}" @if (!empty($reservasi_mobil->id_mobil))
+                                        @if ($reservasi_mobil->id_mobil == $row->id)
+                                            selected
+                                        @endif
+                                    @endif>{{ $row->nama }}</option>
+                                @endforeach
+                            </select>   
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pilih Driver</label>
+                            <select class="form-control" name="id_supir" id="supir">
+                                <option selected disabled>Pilih Driver</option>
+                                @foreach ($supir as $row)
+                                    <option value="{{ $row->id }}" @if (!empty($reservasi_mobil->id_supir))
+                                        @if ($reservasi_mobil->id_supir == $row->id)
+                                            selected
+                                        @endif
+                                    @endif>{{ $row->nama }}</option>
+                                @endforeach
+                            </select>   
+                        </div>
+                    @else
+                        <!-- Basic Input -->
+                        <div>
+                            <label for="basiInput" class="form-label">Voucher</label>
+                            <input type="text" class="form-control" name="voucher_grab">
+                        </div>
+                    @endif
                 @endrole
                 <div class="mb-3">
                     <input type="text" name="id_reservasi" value="{{ $reservasi_mobil->id }}" hidden>

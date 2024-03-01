@@ -28,6 +28,28 @@
                 <div class="card" id="demo">
                     <div class="row">
                         <div class="col-lg-12">
+                            <div class="card-header border-bottom-dashed p-4">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <img src="{{ asset('assets/images/logo-dark.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="17">
+                                        <img src="{{ asset('assets/images/logo-light.png') }}" class="card-logo card-logo-light" alt="logo light" height="17">
+                                        <div class="mt-sm-5 mt-4">
+                                            <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
+                                            <p class="text-muted mb-1" id="address-details">California, United States</p>
+                                            <p class="text-muted mb-0" id="zip-code"><span>Zip-code:</span> 90201</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0 mt-sm-0 mt-3">
+                                        <h6><span class="text-muted fw-normal">Legal Registration No:</span><span id="legal-register-no">987654</span></h6>
+                                        <h6><span class="text-muted fw-normal">Email:</span><span id="email">velzon@themesbrand.com</span></h6>
+                                        <h6><span class="text-muted fw-normal">Website:</span> <a href="https://themesbrand.com/" class="link-primary" target="_blank" id="website">www.themesbrand.com</a></h6>
+                                        <h6 class="mb-0"><span class="text-muted fw-normal">Contact No: </span><span id="contact-no"> +(01) 234 6789</span></h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end card-header-->
+                        </div>
+                        <div class="col-lg-12">
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <div class="col-lg-3 col-6">
@@ -191,7 +213,7 @@
                                             @endif
                                         @endrole
                                         @role('Admin Driver')
-                                            @if ($reservasi_mobil->id_status == 3)
+                                            @if ($reservasi_mobil->id_status == 3 || $reservasi_mobil->id_status == 4)
                                                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#proses"><i class="ri-check-double-fill align-bottom me-1"></i> Proses</button>
                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#batal"><i class="ri-close-fill align-bottom me-1"></i> Batal</button>
                                                 @include('apps.reservasi-mobil.components.modal-proses')

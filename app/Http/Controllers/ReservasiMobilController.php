@@ -36,26 +36,18 @@ class ReservasiMobilController extends Controller
         $role = Auth::user()->roles->first()->name;
         $year = Carbon::now()->year;
         if($role == 'Admin Umum'){
-            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)
-            ->orderBy('id', 'desc')
-            ->get();
+            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->orderBy('id', 'desc')->get();
         }elseif($role == 'Requester'){
             $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->where(function ($query) {
                 $query->where('id_user', Auth::user()->id)
                     ->orWhere('id_atasan', Auth::user()->id);
-                })
-            ->orderBy('id', 'desc')
-            ->get();
+                })->orderBy('id', 'desc')->get();
         }elseif($role == 'Admin Driver'){
-            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)
-            ->orderBy('id', 'desc')
-            ->get();
+            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->orderBy('id', 'desc')->get();
         }elseif($role == 'Driver'){
-            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->where('id_supir', Auth::user()->supir->id)
-            ->orderBy('id', 'desc')
-            ->get();
+            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->where('id_supir', Auth::user()->supir->id)->orderBy('id', 'desc')->get();
         }else{
-
+            $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->orderBy('id', 'desc')->get();
         }
         
         return view('apps.reservasi-mobil.index', compact('reservasi_mobil'));
@@ -148,10 +140,20 @@ class ReservasiMobilController extends Controller
             activity()->log('Reservasi Disetujui oleh Atasan ' . $reservasi_mobil->tujuan);
             toast('Permintaan Reservasi Telah disetujui atasan', 'success')->timerProgressBar();
         }elseif($reservasi_mobil->id_status == 2){
-            $reservasi_mobil->update([
-                'id_status' => $request->id_status,
-                'komentar_umum' => $request->komentar
-            ]);
+            if($request->id_status == 3){
+                $reservasi_mobil->update([
+                    'id_status' => $request->id_status,
+                    'komentar_umum' => $request->komentar
+                ]);
+            }elseif ($request->id_status == 4){
+                $reservasi_mobil->update([
+                    'id_status' => $request->id_status,
+                    'komentar_umum' => $request->komentar,
+                    'id_mobil' => null,
+                    'id_supir' => null,
+                    'id_jenis_kendaraan' => null
+                ]);
+            }
 
             // $user = User::find($reservasi_mobil->id_user);
             // $admin_supir = Supir::with('User')->where('id', 130)->first();
