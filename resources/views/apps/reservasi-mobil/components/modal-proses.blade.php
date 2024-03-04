@@ -21,7 +21,7 @@
                     </div>
                 @endrole
                 @role('Admin Driver')
-                    @if ($reservasi_mobil->id_status == 14)    
+                    @if ($reservasi_mobil->id_status == 3)    
                         <div class="mb-3">
                             <label class="form-label">Pilih Jenis Kendaraan</label>
                             <select class="form-control" name="id_jenis_kendaraan" id="id_jenis_kendaraan">
@@ -62,17 +62,16 @@
                             </select>   
                         </div>
                     @else
-                        <!-- Basic Input -->
                         <div>
                             <label for="basiInput" class="form-label">Voucher</label>
-                            <input type="text" class="form-control" name="voucher_grab">
+                            <input type="text" class="form-control" name="voucher_grab" placeholder="Masukkan Voucher">
                         </div>
                     @endif
                 @endrole
                 <div class="mb-3">
                     <input type="text" name="id_reservasi" value="{{ $reservasi_mobil->id }}" hidden>
                     <label for="message-text" class="col-form-label">Catatan:</label>
-                    <textarea class="form-control" name="komentar" rows="4"></textarea>
+                    <textarea class="form-control" name="komentar" rows="4" placeholder="Masukkan Catatan"></textarea>
                 </div>
                 </div>
                 <div class="modal-footer">

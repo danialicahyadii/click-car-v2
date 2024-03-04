@@ -185,6 +185,43 @@ class ReservasiMobilController extends Controller
             // log activity
             activity()->log('Melakukan Approve Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
             toast('Permintaan Reservasi dengan ID : '. $reservasi_mobil->id .' Telah disetujui Kepala Pool', 'success')->timerProgressBar();
+        }elseif($reservasi_mobil->id_status == 4){
+            $reservasi_mobil->update([
+                'voucher_grab' => $request->voucher_grab,
+                'komentar_supir' => $request->komentar
+            ]);
+            // $user = User::find($reservasi_mobil->id_user);
+            // if ($request->id_status == 4) {
+            //     $voucher = TransaksiVoucher::where('id_reservasi', $reservasi_mobil->id)->get();
+            //     $this->wa->sendMessageGrab($reservasi_mobil, $user, $voucher);
+            // } else {
+            //     $supir = Supir::with('User')->where('id', $reservasi_mobil->id_supir)->first();
+            //     $this->wa->sendMessage($reservasi_mobil, $user);
+            //     $this->wa->sendMessageDriver($reservasi_mobil, $user, $supir);
+            // }
+
+            // log activity
+            activity()->log('Melakukan Approve Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
+            toast('Permintaan Reservasi dengan ID : '. $reservasi_mobil->id .' Telah disetujui Kepala Pool', 'success')->timerProgressBar();
+        }
+        return redirect(url('reservasi-mobil'));
+    }
+
+    public function actionDriver(Request $request){
+        $reservasi_mobil = ReservasiMobil::find($request->id);
+        if($reservasi_mobil->id_status == 14){
+            $request->merge(['id_status' => 13]);
+            $reservasi_mobil->update($request->all());
+            // log activity
+            activity()->log('Melakukan Approve Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
+            toast('Perjalanan Reservasi dengan ID : '. $reservasi_mobil->id .' Telah dimulai oleh Driver', 'success')->timerProgressBar();
+        }else{
+            dd($request->all());
+            $request->merge(['id_status' => 5]);
+            $reservasi_mobil->update($request->all());
+            // log activity
+            activity()->log('Melakukan Approve Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
+            toast('Perjalanan Reservasi dengan ID : '. $reservasi_mobil->id .' Telah diakhiri oleh Driver', 'success')->timerProgressBar();
         }
         return redirect(url('reservasi-mobil'));
     }

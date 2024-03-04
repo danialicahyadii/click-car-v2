@@ -8,4 +8,6 @@ class Supir extends Model
 {
     protected $guarded = [];
     protected $table = 'master_driver';
+
+    
 }

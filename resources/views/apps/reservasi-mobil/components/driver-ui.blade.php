@@ -9,7 +9,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#konfirmasi_reservasi" role="tab" aria-selected="true">
-                Konfirmasi Reservasi @if (count($reservasi_mobil->whereIn('id_status', [3, 14])) > 0)
+                Konfirmasi Reservasi @if (count($reservasi_mobil->whereIn('id_status', [14, 13])) > 0)
                 <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->whereIn('id_status', [3, 14])) }}</span>
                 @endif
             </a>
@@ -93,7 +93,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($reservasi_mobil->whereIn('id_status', [3, 14, 4]) as $row)
+                            @foreach ($reservasi_mobil->whereIn('id_status', [13, 14]) as $row)
                                 <tr>
                                     <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
                                     <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a></td>

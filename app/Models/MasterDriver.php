@@ -11,4 +11,12 @@ class MasterDriver extends Model
     protected $table = 'master_driver';
 
     protected $guarded = [];
+
+    /**
+     * Get the entitas.
+     */
+    public function entitas()
+    {
+        return $this->belongsTo(Entitas::class, 'id_entitas')->withDefault(['nama' => '-']);
+    }
 }

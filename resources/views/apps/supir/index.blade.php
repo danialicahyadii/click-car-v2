@@ -42,7 +42,6 @@
                                         <tr>
                                             <th scope="col">ID</th>
                                             <th scope="col">Nama</th>
-                                            <th scope="col">PIC</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Entitas</th>
                                             <th scope="col">Dibuat</th>
@@ -50,16 +49,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($mobil->where('id_entitas', Auth::user()->id_entitas) as $row)
+                                        @foreach ($supir->where('id_entitas', Auth::user()->id_entitas) as $row)
                                             <tr>
                                                 <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
                                                 <td>{{ $row->nama }}</td>
-                                                <td>{{ $row->driver->nama }}</td>
                                                 <td>
-                                                    @if ($row->id_status == 9)
-                                                        <span class="badge rounded-pill text-bg-danger">{{ $row->status->status }}</span>
-                                                    @elseif ($row->id_status == 8)
-                                                        <span class="badge rounded-pill text-bg-success">{{ $row->status->status }}</span>
+                                                    @if ($row->id_status == 2)
+                                                        <span class="badge rounded-pill text-bg-danger">Tidak Aktif</span>
+                                                    @elseif ($row->id_status == 1)
+                                                        <span class="badge rounded-pill text-bg-success">Aktif</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $row->entitas->nama }}</td>
@@ -67,10 +65,10 @@
                                                 <td>
                                                     <a href="#myModalEdit" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-bs-toggle="modal" class="btn btn-info btn-sm edit-btn"><i class="ri-pencil-fill fs-16"></i></a>
                                                     <a href="#myModalDelete" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-bs-toggle="modal" class="btn btn-danger btn-sm edit-btn"><i class="ri-delete-bin-fill fs-16"></i></a>
-                                                    @include('mobil.components.modal-delete')
+                                                    @include('apps.supir.components.modal-delete')
                                                 </td>
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

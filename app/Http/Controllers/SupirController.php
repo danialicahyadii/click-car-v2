@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterDriver;
 use Illuminate\Http\Request;
 
 class SupirController extends Controller
@@ -11,7 +12,8 @@ class SupirController extends Controller
      */
     public function index()
     {
-        return view('apps.supir.index');
+        $supir = MasterDriver::get();
+        return view('apps.supir.index', compact('supir'));
     }
 
     /**

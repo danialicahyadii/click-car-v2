@@ -2,22 +2,23 @@
     <ul class="nav nav-tabs nav-border-top nav-border-top-info mb-3" role="tablist" id="myTab">
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#reservasi_hari_ini" role="tab" aria-selected="true">
-                Reservasi Hari Ini <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('tgl_pergi', Carbon::today())) }}</span>
+                Reservasi Hari Ini @if (count($reservasi_mobil->where('tgl_pergi', Carbon::today())) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('tgl_pergi', Carbon::today())) }}</span>
+                @endif
             </a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#konfirmasi_reservasi" role="tab" aria-selected="true">
-                Konfirmasi Reservasi <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->whereBetween('id_status', [1, 3])) }}</span>
+                Konfirmasi Reservasi @if (count($reservasi_mobil->whereBetween('id_status', [1, 3])) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->whereBetween('id_status', [1, 3])) }}</span>
+                @endif
             </a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#riwayat" role="tab" aria-selected="false" tabindex="-1">
-                Riwayat <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->whereBetween('id_status', [4, 14])) }}</span>
-            </a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="tab" href="#lihat_semua" role="tab" aria-selected="false" tabindex="-1">
-                Lihat Semua
+                Riwayat @if (count($reservasi_mobil->whereBetween('id_status', [4, 14])) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->whereBetween('id_status', [4, 14])) }}</span>
+                @endif
             </a>
         </li>
     </ul>

@@ -60,9 +60,12 @@ Route::middleware('auth')->group(function () {
         Route::get('get-available-drivers', [ProcessingDataController::class, 'getAvailableDrivers']);
         // Route::get('get-cars', [ProcessingDataController::class, 'getCars']);
 
-        //Atasan approve
+        //approve
         Route::post('/setuju', [ReservasiMobilController::class, 'setuju']);
         Route::post('/tolak', [ReservasiMobilController::class, 'tolak']);
+
+        //start driver
+        Route::post('/action-driver', [ReservasiMobilController::class, 'actionDriver']);
         
         //TAB TAB
         Route::get('/telah-disetujui', [ReservasiMobilController::class, 'telahDisetujui']);

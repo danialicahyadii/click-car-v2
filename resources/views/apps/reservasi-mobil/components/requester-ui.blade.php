@@ -2,7 +2,9 @@
     <ul class="nav nav-tabs nav-border-top nav-border-top-success mb-3" role="tablist" id="myTab">
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#sedang_diproses" role="tab" aria-selected="true">
-                Sedang Diproses <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [1,2,3])) }}</span>
+                Sedang Diproses @if (count($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [1,2,3])) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [1,2,3])) }}</span>
+                @endif
             </a>
         </li>
         <li class="nav-item" role="presentation">
