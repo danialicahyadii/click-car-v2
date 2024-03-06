@@ -113,6 +113,24 @@
                         <div class="col-lg-12">
                             <div class="card-body p-4 border-top border-top-dashed">
                                 <div class="row g-3 align-items-center justify-content-center">
+                                    <div class="text-center">
+                                        <h6 class="text-uppercase fw-semibold">Kasih rating ke driver?</h6>
+                                        <h6 class="text-uppercase fw-semibold">(1 mengecewakan, 5 mantap!)</h6>
+                                        <h4 class="text-muted mb-1"><span class="ri-star-fill text-grey"></span>
+                                            <span class="ri-star-fill text-grey"></span>
+                                            <span class="ri-star-fill text-grey"></span>
+                                            <span class="ri-star-fill text-grey"></span>
+                                            <span class="ri-star-fill text-grey"></span></h4>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                            </div>
+                            <!--end card-body-->
+                        </div><!--end col-->
+                        <div class="col-lg-12">
+                            <div class="card-body p-4 border-top border-top-dashed">
+                                <div class="row g-3 align-items-center justify-content-center">
                                     <div class="col-5 col-xl-3">
                                         <h6 class="text-uppercase fw-semibold">Asal</h6>
                                         <p class="text-muted mb-1" id="billing-address-line-1">{{ $reservasi_mobil->asal }}</p>
@@ -134,31 +152,6 @@
                         </div><!--end col-->
                         <div class="col-lg-12">
                             <div class="card-body p-4">
-                                <div class="table-responsive">
-                                    <table class="table table-borderless text-center table-nowrap align-middle mb-0">
-                                        <thead>
-                                            <tr class="table-active">
-                                                <th scope="col" style="width: 50px;">No</th>
-                                                <th scope="col">Nama Penumpang</th>
-                                                <th scope="col">NPP</th>
-                                                <th scope="col">No. HP</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="products-list">
-                                            @foreach ($penumpang as $row)
-                                                <tr>
-                                                    <th scope="row">{{ $loop->iteration }}</th>
-                                                    <td class="text-start">
-                                                        <span class="fw-medium">{{ $row->user->name }}</span>
-                                                        <p class="text-muted mb-0">{{ $row->user->nama_jabatan }}</p>
-                                                    </td>
-                                                    <td>{{ $row->user->npp }}</td>
-                                                    <td>+{{ $row->user->nomor_hp }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table><!--end table-->
-                                </div>
                                 <div class="border-top border-top-dashed mt-2">
                                     <div class="row ms-4 mt-4">
                                         <h6 class="text-muted text-uppercase fw-semibold mb-3">Detail Reservasi :</h6>
@@ -197,6 +190,31 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless text-center table-nowrap align-middle mb-0">
+                                        <thead>
+                                            <tr class="table-active">
+                                                <th scope="col" style="width: 50px;">No</th>
+                                                <th scope="col">Nama Penumpang</th>
+                                                <th scope="col">NPP</th>
+                                                <th scope="col">No. HP</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="products-list">
+                                            @foreach ($penumpang as $row)
+                                                <tr>
+                                                    <th scope="row">{{ $loop->iteration }}</th>
+                                                    <td class="text-start">
+                                                        <span class="fw-medium">{{ $row->user->name }}</span>
+                                                        <p class="text-muted mb-0">{{ $row->user->nama_jabatan }}</p>
+                                                    </td>
+                                                    <td>{{ $row->user->npp }}</td>
+                                                    <td>+{{ $row->user->nomor_hp }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table><!--end table-->
                                 </div>
                                 <div class="border-top border-top-dashed mt-2">
                                     <div class="row ms-4 mt-4">
@@ -279,7 +297,7 @@
         rateCallback:function rateCallback(rating, done) {
             this.setRating(rating);
             let nilaiRatingBaru = this.getRating();
-            let elemenInput = document.querySelector("input[name='rating']");
+            let elemenInput = document.querySelector("input[name='rating_penumpang']");
             elemenInput.value = nilaiRatingBaru; 
             done(); 
         }, 

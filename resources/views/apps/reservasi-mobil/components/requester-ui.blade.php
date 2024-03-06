@@ -30,8 +30,8 @@
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#rating" role="tab" aria-selected="false" tabindex="-1">
-                Rating @if (count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('flag_rating', 1)) > 0)
-                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('flag_rating', 1)) }}</span>
+                Rating @if (count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('rating_driver', null)) > 0)
+                <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('rating_driver', null)) }}</span>
                 @endif
             </a>
         </li>
@@ -153,30 +153,29 @@
                             @foreach ($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5) as $row)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <th scope="row"><a href="#" class="fw-medium">#{{ $row->id }}</a></th>
-                                    <td>{{ $row->user->name }}</td>
+                                    <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a></td>
                                     <td>
                                         @if ($row->id_status == 1)
-                                        <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>
+                                        <span class="badge bg-info">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 2)
-                                        <span class="badge rounded-pill text-bg-primary">{{ $row->status->status }}</span>
+                                        <span class="badge bg-primary">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 3)
-                                        <span class="badge rounded-pill text-bg-warning">{{ $row->status->status }}</span>
+                                        <span class="badge bg-warning">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 4)
-                                        <span class="badge rounded-pill text-bg-success">{{ $row->status->status }}</span>
+                                        <span class="badge bg-success">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 5)
-                                        <span class="badge rounded-pill text-bg-sucess">{{ $row->status->status }}</span>
+                                        <span class="badge bg-success">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 6)
-                                        <span class="badge rounded-pill text-bg-danger">{{ $row->status->status }}</span>
+                                        <span class="badge bg-danger">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 13)
-                                        <span class="badge rounded-pill text-bg-warning">{{ $row->status->status }}</span>
+                                        <span class="badge bg-warning">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 14)
-                                        <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>
+                                        <span class="badge bg-info">{{ $row->status->status }}</span>
                                         @endif
                                     </td>
                                     <td>{{ $row->mobil->nama }}</td>
                                     <td>{{ $row->supir->nama }}</td>
-                                    <td><a href="javascript:void(0);" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
+                                    <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -201,30 +200,24 @@
                         <tbody>
                             @foreach ($reservasi_mobil->where('id_user', Auth::user()->id)->whereIn('id_status', [6,7,12]) as $row)
                                 <tr>
-                                    <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
-                                    <td>{{ $row->user->name }}</td>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a></td>
                                     <td>
-                                        @if ($row->id_status == 1)
-                                        <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>
+                                        @if ($row->id_status == 1 || $row->id_status == 14)
+                                        <span class="badge bg-info">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 2)
-                                        <span class="badge rounded-pill text-bg-primary">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 3)
-                                        <span class="badge rounded-pill text-bg-warning">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 4)
-                                        <span class="badge rounded-pill text-bg-success">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 5)
-                                        <span class="badge rounded-pill text-bg-sucess">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 6)
-                                        <span class="badge rounded-pill text-bg-danger">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 13)
-                                        <span class="badge rounded-pill text-bg-warning">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 14)
-                                        <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>
+                                        <span class="badge bg-primary">{{ $row->status->status }}</span>
+                                        @elseif ($row->id_status == 3 || $row->id_status == 13)
+                                        <span class="badge bg-warning">{{ $row->status->status }}</span>
+                                        @elseif ($row->id_status == 4 || $row->id_status == 5)
+                                        <span class="badge bg-success">{{ $row->status->status }}</span>
+                                        @elseif ($row->id_status == 6 || $row->id_status == 7 || $row->id_status == 12)
+                                        <span class="badge bg-danger">{{ $row->status->status }}</span>
                                         @endif
                                     </td>
                                     <td>{{ $row->mobil->nama }}</td>
                                     <td>{{ $row->supir->nama }}</td>
-                                    <td><a href="javascript:void(0);" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
+                                    <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -249,35 +242,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('flag_rating', 1) as $row)
+                            @foreach ($reservasi_mobil->where('id_user', Auth::user()->id)->where('id_status', 5)->where('rating_driver', null) as $row)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <th scope="row"><a href="#" class="fw-medium">#{{ $row->id }}</a></th>
-                                    <td>{{ $row->user->name }}</td>
+                                    <td><a href="{{ url('reservasi-mobil/show', $row->id) }}">{{ $row->user->name }}</a></td>
                                     <td>
-                                        @if ($row->id_status == 1)
-                                        <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>
+                                        @if ($row->id_status == 1 || $row->id_status == 14)
+                                        <span class="badge bg-info">{{ $row->status->status }}</span>
                                         @elseif ($row->id_status == 2)
-                                        <span class="badge rounded-pill text-bg-primary">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 3)
-                                        <span class="badge rounded-pill text-bg-warning">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 4)
-                                        <span class="badge rounded-pill text-bg-success">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 5)
-                                        <span class="badge rounded-pill text-bg-sucess">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 6)
-                                        <span class="badge rounded-pill text-bg-danger">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 13)
-                                        <span class="badge rounded-pill text-bg-warning">{{ $row->status->status }}</span>
-                                        @elseif ($row->id_status == 14)
-                                        <span class="badge rounded-pill text-bg-info">{{ $row->status->status }}</span>
+                                        <span class="badge bg-primary">{{ $row->status->status }}</span>
+                                        @elseif ($row->id_status == 3 || $row->id_status == 13)
+                                        <span class="badge bg-warning">{{ $row->status->status }}</span>
+                                        @elseif ($row->id_status == 4 || $row->id_status == 5)
+                                        <span class="badge bg-success">{{ $row->status->status }}</span>
+                                        @elseif ($row->id_status == 6 || $row->id_status == 7 || $row->id_status == 12)
+                                        <span class="badge bg-danger">{{ $row->status->status }}</span>
                                         @endif
                                     </td>
                                     <td>{{ $row->mobil->nama }}</td>
                                     <td>{{ $row->supir->nama }}</td>
                                     <td><i class="ri-star-s-fill text-warning"></i><i class="ri-star-s-fill text-warning"></i><i class="ri-star-s-fill text-warning"></i><i class="ri-star-s-fill text-warning"></i><i class="ri-star-s-fill text-warning"></i></td>
                                     <td>Driver Asik</td>
-                                    <td><a href="javascript:void(0);" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
+                                    <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="link-success">Beri Rating <i class="ri-arrow-right-line align-middle"></i></a></td>
                                 </tr>
                             @endforeach
                         </tbody>

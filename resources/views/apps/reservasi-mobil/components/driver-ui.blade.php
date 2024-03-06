@@ -132,6 +132,7 @@
                                 <th scope="col">Status</th>
                                 <th scope="col">Mobil</th>
                                 <th scope="col">Supir</th>
+                                <th scope="col">Rating</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -165,6 +166,15 @@
                                     </td>
                                     <td>{{ $row->mobil->nama }}</td>
                                     <td>{{ $row->supir->nama }}</td>
+                                    <td>
+                                        @if ($row->rating_penumpang)
+                                            <span class="ri-star-fill text-warning"></span>
+                                            <span class="ri-star-fill text-warning"></span>
+                                            <span class="ri-star-fill text-warning"></span>
+                                            <span class="ri-star-fill text-warning"></span>
+                                            <span class="ri-star-fill text-warning"></span>
+                                        @endif
+                                    </td>
                                     <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
                                 </tr>
                             @endforeach

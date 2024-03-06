@@ -216,7 +216,6 @@ class ReservasiMobilController extends Controller
             activity()->log('Melakukan Approve Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
             toast('Perjalanan Reservasi dengan ID : '. $reservasi_mobil->id .' Telah dimulai oleh Driver', 'success')->timerProgressBar();
         }else{
-            dd($request->all());
             $request->merge(['id_status' => 5]);
             $reservasi_mobil->update($request->all());
             // log activity
