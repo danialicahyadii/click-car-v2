@@ -274,7 +274,7 @@
 <script>
     var starRatinghover = raterJs( {
         starSize:22,
-        rating: 1, 
+        rating: 0, 
         element:document.querySelector("#rater-onhover"), 
         rateCallback:function rateCallback(rating, done) {
             this.setRating(rating);
