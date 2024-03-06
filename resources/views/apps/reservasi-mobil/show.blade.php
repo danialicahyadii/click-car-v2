@@ -273,19 +273,22 @@
 <script src="{{ asset('assets/libs/rater-js/index.js') }}"></script>
 <script>
     var starRatinghover = raterJs( {
-    starSize:22,
-    rating: 1, 
-    element:document.querySelector("#rater-onhover"), 
-    rateCallback:function rateCallback(rating, done) {
-        this.setRating(rating); 
-        done(); 
-    }, 
-    onHover:function(currentIndex, currentRating) {
-        document.querySelector('.ratingnum').textContent = currentIndex; 
-    }, 
-    onLeave:function(currentIndex, currentRating) {
-        document.querySelector('.ratingnum').textContent = currentRating; 
-    }
-}); 
+        starSize:22,
+        rating: 1, 
+        element:document.querySelector("#rater-onhover"), 
+        rateCallback:function rateCallback(rating, done) {
+            this.setRating(rating);
+            let nilaiRatingBaru = this.getRating();
+            let elemenInput = document.querySelector("input[name='rating']");
+            elemenInput.value = nilaiRatingBaru; 
+            done(); 
+        }, 
+        onHover:function(currentIndex, currentRating) {
+            document.querySelector('.ratingnum').textContent = currentIndex; 
+        }, 
+        onLeave:function(currentIndex, currentRating) {
+            document.querySelector('.ratingnum').textContent = currentRating; 
+        }
+    });
 </script>
 @endpush

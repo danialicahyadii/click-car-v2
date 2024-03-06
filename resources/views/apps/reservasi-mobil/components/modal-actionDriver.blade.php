@@ -38,13 +38,14 @@
                             </div>
                             <div class="mb-3">
                                 <label for="basicInput" class="form-label">Waktu Penyelesaian</label>
-                                <input type="text" name="waktu_penyelesaian" class="form-control" data-provider="flatpickr" data-date-format="d.m.y" data-enable-time  >
+                                <input type="text" name="waktu_penyelesaian" class="form-control" data-provider="flatpickr" data-date-format="d-m-y" data-enable-time  >
                             </div>
                             <div class="mb-3">
                                 <label>Rating</label>
                                 <div dir="ltr">
-                                    <div id="rater-onhover" name="rating" class="align-middle"></div>
+                                    <div id="rater-onhover" class="align-middle"></div>
                                     <span class="ratingnum badge bg-info align-middle ms-2"></span>
+                                    <input type="text" name="rating" hidden>
                                 </div>
                             </div>
                             <div class="mb-3">
