@@ -18,7 +18,7 @@
                 <div class="col">
                     <div class="p-2">
                         <h3 class="text-white mb-1">{{ $user->name }}</h3>
-                        <p class="text-white-75">{{ $user->nama_jabatan }}</p>
+                        <p class="text-white">{{ $user->nama_jabatan }}</p>
                         <div class="hstack text-white-50 gap-1">
                             <div class="me-2"><i class="ri-map-pin-user-line me-1 text-white-75 fs-16 align-middle"></i>{{ strtoupper($user->roles->first()->name) }}</div>
                             <div>

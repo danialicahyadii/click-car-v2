@@ -184,8 +184,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Carbon' => Carbon\Carbon::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'Carbon' => Carbon\Carbon::class,
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

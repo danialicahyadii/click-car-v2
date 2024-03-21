@@ -10,8 +10,8 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Reservasi Mobil</a></li>
-                            <li class="breadcrumb-item active">{{ $title ? $title : '' }}</li>
+                            <li class="breadcrumb-item"><a href="{{ url('reservasi-mobil') }}">{{ $title ? $title : '' }}</a></li>
+                            <li class="breadcrumb-item active">Index</li>
                         </ol>
                     </div>
 
@@ -24,13 +24,26 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Tabel Reservasi</h4>
-                        @if (in_array(Auth::user()->level_jabatan,[4,5,6]))
+                        @role('Full Admin|Admin Umum')
                             <div class="flex-shrink-0">
                                 <div class="form-check form-switch form-switch-right form-switch-md">
                                     <a href="{{ url('reservasi-mobil/create') }}" class="btn btn-info">+ Buat Reservasi</a>
                                 </div>
                             </div>
-                        @endif
+                        @elserole('Requester')
+                            @if (in_array(Auth::user()->level_jabatan,[4,5,6]))
+                                <div class="flex-shrink-0">
+                                    <div class="form-check form-switch form-switch-right form-switch-md">
+                                        @if ($belumRating >= 2)
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalBelumRating" class="btn btn-info">+ Buat Reservasi</a>
+                                            @include('apps.reservasi-mobil.components.modal-belumRating')
+                                        @else
+                                            <a href="{{ url('reservasi-mobil/create') }}" class="btn btn-info">+ Buat Reservasi</a>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                        @endrole
                     </div><!-- end card header -->
                     @role('Admin|Admin Umum')
                         @include('apps.reservasi-mobil.components.admin-ui')
@@ -38,7 +51,10 @@
                     @role('Requester')
                         @include('apps.reservasi-mobil.components.requester-ui')
                     @endrole
-                    @role('Admin Driver|Driver')
+                    @role('Admin Driver')
+                        @include('apps.reservasi-mobil.components.admin-driver-ui')
+                    @endrole
+                    @role('Driver')
                         @include('apps.reservasi-mobil.components.driver-ui')
                     @endrole
                 </div><!-- end card -->

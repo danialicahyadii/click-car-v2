@@ -42,7 +42,6 @@ class CarHelper
                 })
                 ->where('id_status', 13)
                 ->count();
-
             // Jika ada reservasi yang tumpang tindih, atur status menjadi "Not Available"
             if ($overlappingReservations > 0) {
                 $status = 'Not Available';

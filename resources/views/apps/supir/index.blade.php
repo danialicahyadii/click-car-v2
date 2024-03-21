@@ -27,9 +27,7 @@
                         <h4 class="card-title mb-0 flex-grow-1">Tabel {{ $title ? $title : '' }}</h4>
                         <div class="flex-shrink-0">
                             <div class="form-check form-switch form-switch-right form-switch-md">
-                                <!-- Default Modals -->
-                                <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal">+ Tambah</button>
-                                @include('apps.mobil.components.modal-add')
+                                <a href="{{ url('supir/create') }}" class="btn btn-info">Tambah Data</a>
                             </div>
                         </div>
                     </div><!-- end card header -->
@@ -63,8 +61,8 @@
                                                 <td>{{ $row->entitas->nama }}</td>
                                                 <td>{{ $row->created_at }}</td>
                                                 <td>
-                                                    <a href="#myModalEdit" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-bs-toggle="modal" class="btn btn-info btn-sm edit-btn"><i class="ri-pencil-fill fs-16"></i></a>
-                                                    <a href="#myModalDelete" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-bs-toggle="modal" class="btn btn-danger btn-sm edit-btn"><i class="ri-delete-bin-fill fs-16"></i></a>
+                                                    <a href="{{ route('supir.edit', $row->id) }}" class="btn btn-info btn-sm edit-btn"><i class="ri-pencil-fill fs-16"></i></a>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#myModalDelete{{ $row->id }}" class="btn btn-danger btn-sm edit-btn"><i class="ri-delete-bin-fill fs-16"></i></a>
                                                     @include('apps.supir.components.modal-delete')
                                                 </td>
                                             </tr>
@@ -82,14 +80,12 @@
     </div>
     <!-- container-fluid -->
 </div>
-@include('apps.mobil.components.modal-edit')
 @endsection
 @push('js')
     <script>
         $('#myTable').DataTable( {
             responsive: true,
             pageLength: 10,
-            dom: 'Bfrtip',
         } );
     </script>
 @endpush

@@ -13,7 +13,7 @@ class ProcessingDataController extends Controller
     {
         $dataCar = [];
         $mobil = CarHelper::getAvailableCars($request->tgl_pergi, $request->tgl_pulang, $request->time_start, $request->time_end);
-
+        
         foreach ($mobil as $key) {
             if ($key->jns_kendaraan == $request->carOption) {
                 $dataCar[] = $key;

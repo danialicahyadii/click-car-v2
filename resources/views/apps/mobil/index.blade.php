@@ -1,4 +1,9 @@
 @extends('layouts.app')
+@section('css')
+{{-- <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" /> --}}
+<!-- gridjs css -->
+<link rel="stylesheet" href="{{ asset('assets/libs/gridjs/theme/mermaid.min.css') }}">
+@endsection
 @section('page-content')
 <div class="page-content">
     <div class="container-fluid">
@@ -27,9 +32,7 @@
                         <h4 class="card-title mb-0 flex-grow-1">Tabel {{ $title ? $title : '' }}</h4>
                         <div class="flex-shrink-0">
                             <div class="form-check form-switch form-switch-right form-switch-md">
-                                <!-- Default Modals -->
-                                <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal">+ Tambah</button>
-                                @include('apps.mobil.components.modal-add')
+                                <a href="{{ url('mobil/create') }}" class="btn btn-info">Tambah Data</a>
                             </div>
                         </div>
                     </div><!-- end card header -->
@@ -40,11 +43,11 @@
                                 <table class="table align-middle table-nowrap mb-0" id="myTable">
                                     <thead>
                                         <tr>
-                                            <th scope="col">ID</th>
+                                            <th scope="col">No</th>
                                             <th scope="col">Nama</th>
                                             <th scope="col">PIC</th>
                                             <th scope="col">Status</th>
-                                            {{-- <th scope="col">Entitas</th> --}}
+                                            <th scope="col">Entitas</th>
                                             <th scope="col">Dibuat</th>
                                             <th scope="col">Action</th>
                                         </tr>
@@ -62,11 +65,11 @@
                                                         <span class="badge rounded-pill text-bg-success">{{ $row->status->status }}</span>
                                                     @endif
                                                 </td>
-                                                {{-- <td>{{ $row->entitas->nama }}</td> --}}
+                                                <td>{{ $row->entitas->nama }}</td>
                                                 <td>{{ $row->created_at }}</td>
                                                 <td>
-                                                    <a href="#myModalEdit" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-bs-toggle="modal" class="btn btn-info btn-sm edit-btn"><i class="ri-pencil-fill fs-16"></i></a>
-                                                    <a href="#myModalDelete" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-bs-toggle="modal" class="btn btn-danger btn-sm edit-btn"><i class="ri-delete-bin-fill fs-16"></i></a>
+                                                    <a href="{{ route('mobil.edit', $row->id) }}" class="btn btn-info btn-sm edit-btn"><i class="ri-pencil-fill fs-16"></i></a>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#myModalDelete{{ $row->id }}" class="btn btn-danger btn-sm edit-btn"><i class="ri-delete-bin-fill fs-16"></i></a>
                                                     @include('apps.mobil.components.modal-delete')
                                                 </td>
                                             </tr>
@@ -74,7 +77,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div> 
+                        </div>
+                        <div id="wrapper"></div>
+                        <div id="table-gridjs"></div>
                     </div><!-- end card-body -->
                 </div><!-- end card -->
             </div>
@@ -91,7 +96,6 @@
         $('#myTable').DataTable( {
             responsive: true,
             pageLength: 10,
-            dom: 'Bfrtip',
         } );
     </script>
 @endpush

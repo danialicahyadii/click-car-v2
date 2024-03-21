@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\ChecklistKendaraanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ItemInspeksiController;
+use App\Http\Controllers\JenisKendaraanController;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProcessingDataController;
@@ -24,37 +27,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Route::get('/loginsso-v3', [SSOController::class, 'loginSSO']);
-Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware(SetTitle::class . ':Profile');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-
-    Route::resource('users', UserController::class)->middleware(SetTitle::class . ':Users');
-    Route::resource('roles', RoleController::class)->middleware(SetTitle::class . ':Roles');
-    Route::resource('permissions', PermissionController::class)->middleware(SetTitle::class . ':Permissions');
-    Route::resource('mobil', MobilController::class)->middleware(SetTitle::class . ':Mobil');
-    Route::resource('supir', SupirController::class)->middleware(SetTitle::class . ':Supir');
-    Route::get('activity-log', [ActivityLogController::class, 'index'])->middleware(SetTitle::class . ':Activity Log');
-
-    Route::prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified', SetTitle::class . ':Dashboard'])->name('dashboard');
+    Route::prefix('dashboard')->middleware(SetTitle::class . ':Dashboard')->group(function () {
         Route::post('/home/filter-bulan', [DashboardController::class, 'getFilterBulan']);
-    })->middleware(SetTitle::class . ':Dashboard');
+    });
 
-    Route::prefix('reservasi-mobil')->group(function () {
-        Route::get('/', [ReservasiMobilController::class, 'index'])->middleware(SetTitle::class . ':Index');
-        Route::get('/create', [ReservasiMobilController::class, 'create'])->middleware(SetTitle::class . ':Create');
+    Route::prefix('reservasi-mobil')->middleware(SetTitle::class . ':Reservasi Mobil')->group(function () {
+        Route::get('/', [ReservasiMobilController::class, 'index']);
+        Route::get('/create', [ReservasiMobilController::class, 'create']);
         Route::get('edit/{id}', [ReservasiMobilController::class, 'edit']);
         Route::post('store', [ReservasiMobilController::class, 'store']);
         Route::post('update/{id}', [ReservasiMobilController::class, 'update']);
         Route::delete('{id}', [ReservasiMobilController::class, 'destroy']);
-        Route::get('show/{id}', [ReservasiMobilController::class, 'show'])->middleware(SetTitle::class . ':View');
+        Route::get('show/{kode_pemesanan}', [ReservasiMobilController::class, 'show']);
+        Route::post('/batal/{id}', [ReservasiMobilController::class, 'batal']);
+        Route::post('/rating/{id}', [ReservasiMobilController::class, 'rating']);
         Route::get('delete/{id}', [ReservasiMobilController::class, 'destroy']);
         Route::get('/konfirmasi_reservasi', [ReservasiMobilController::class, 'konfirmasi_reservasi']);
         Route::get('print_surat_jalan/{id}', [ReservasiMobilController::class, 'printSuratJalan']);
-        Route::get('/dibatalkan/{id}', [ReservasiMobilController::class, 'dibatalkan']);
 
         Route::get('get-available-car', [ProcessingDataController::class, 'getAvailableCar']);
         Route::get('get-available-drivers', [ProcessingDataController::class, 'getAvailableDrivers']);
@@ -85,6 +77,26 @@ Route::middleware('auth')->group(function () {
         Route::post('/dibatalkan-driver/{id}', [ReservasiMobilController::class, 'dibatalkanDriver']);
         // Route::post('/draft-supir', [ReservasiMobilController::class, 'draftSupir']);
     });
+
+    Route::prefix('checklist-kendaraan')->middleware(SetTitle::class . ':Checklist Kendaraan')->group(function () {
+        Route::get('/', [ChecklistKendaraanController::class, 'index']);
+        Route::get('create/{id}', [ChecklistKendaraanController::class, 'create']);
+        Route::get('show/{id}/{month}/{year}', [ChecklistKendaraanController::class, 'show']);
+        Route::post('store', [ChecklistKendaraanController::class, 'store']);
+    });
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware(SetTitle::class . ':Profile');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('activity-log', [ActivityLogController::class, 'index'])->middleware(SetTitle::class . ':Activity Log');
+
+    Route::resource('users', UserController::class)->middleware(SetTitle::class . ':Users');
+    Route::resource('roles', RoleController::class)->middleware(SetTitle::class . ':Roles');
+    Route::resource('permissions', PermissionController::class)->middleware(SetTitle::class . ':Permissions');
+    Route::resource('mobil', MobilController::class)->middleware(SetTitle::class . ':Mobil');
+    Route::resource('supir', SupirController::class)->middleware(SetTitle::class . ':Supir');
+    Route::resource('jenis-kendaraan', JenisKendaraanController::class)->middleware(SetTitle::class . ':Jenis Kendaraan');
+    Route::resource('item-inspeksi', ItemInspeksiController::class)->middleware(SetTitle::class . ':Item Inspeksi');
 });
 
 require __DIR__ . '/auth.php';

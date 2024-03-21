@@ -13,7 +13,7 @@
                         <div class="mb-3">
                             <input type="text" hidden name="id" value="{{ $reservasi_mobil->id }}">
                             <label for="basicInput" class="form-label">KM Awal</label>
-                            <input type="text" class="form-control" name="km_awal" placeholder="Masukkan Km awal">
+                            <input type="number" class="form-control" name="km_awal" placeholder="Masukkan Km awal">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -38,7 +38,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="basicInput" class="form-label">Waktu Penyelesaian</label>
-                                <input type="text" name="waktu_penyelesaian" class="form-control" data-provider="flatpickr" data-date-format="d-m-y" data-enable-time  >
+                                <input type="text" name="waktu_penyelesaian" class="form-control waktu-penyelesaian">
                             </div>
                             <div class="mb-3 text-center">
                                 <label>Rating</label>

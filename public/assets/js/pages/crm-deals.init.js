@@ -2,7 +2,7 @@ var contactNo=new Cleave("#contactNumber",{delimiters:["(",")","-"],blocks:[0,3,
                             <div class="card-body">
                                 <a class="d-flex align-items-center" data-bs-toggle="collapse" href="#`+t+`" role="button" aria-expanded="false" aria-controls="leadDiscovered1">
                                     <div class="flex-shrink-0">
-                                        `+('<div class="flex-shrink-0 avatar-xs me-2"><div class="avatar-title bg-soft-success text-success rounded-circle fs-13">'+(2<=o.length?o[0].slice(0,1)+o[1].slice(0,1):o[0].slice(0,1))+"</div></div>")+`
+                                        `+('<div class="flex-shrink-0 avatar-xs me-2"><div class="avatar-title bg-success-subtle text-success rounded-circle fs-13">'+(2<=o.length?o[0].slice(0,1)+o[1].slice(0,1):o[0].slice(0,1))+"</div></div>")+`
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h6 class="fs-14 mb-1">`+t+`</h6>
@@ -12,7 +12,7 @@ var contactNo=new Cleave("#contactNumber",{delimiters:["(",")","-"],blocks:[0,3,
                             </div>
                             <div class="collapse border-top border-top-dashed" id="`+t+`">
                                 <div class="card-body">
-                                    <h6 class="fs-14 mb-1">`+l+` <small class="badge badge-soft-danger">4 Days</small></h6>
+                                    <h6 class="fs-14 mb-1">`+l+` <small class="badge bg-danger-subtle text-danger">4 Days</small></h6>
                                     <p class="text-muted">`+c+`</p>
                                     <ul class="list-unstyled vstack gap-2 mb-0">
                                         <li>

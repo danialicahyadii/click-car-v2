@@ -12,19 +12,39 @@
                 @role('Admin Umum')
                     <div class="mb-3">
                         <label class="form-label">Persetujuan</label>
-                        <select class="form-control" name="id_status" id="id_status">
+                        <select class="form-control id-status" name="id_status" id="id_status">
                             <option selected disabled>Pilih Persetujuan</option>
-                            <option value="3">Disetujui Umum (Mobil)</option>
-                            <option value="4">Disetujui Umum (Kode Transportasi Online)</option>
-                            <option value="12">Ditolak Umum</option>
+                            <option value="3" @if ($reservasi_mobil->id_pengantaran != 3)
+                                selected
+                            @endif>Disetujui Umum (Mobil)</option>
+                            <option @if ($reservasi_mobil->id_pengantaran == 3)
+                                selected
+                            @endif value="4">Disetujui Umum (Kode Transportasi Online)</option>
+                        </select>   
+                    </div>
+                    <div class="mb-3 d-none" id="id_pengantaran">
+                        <label class="form-label">Pilih Pengantaran</label>
+                        <select class="form-control id-pengantaran" name="id_pengantaran">
+                            <option selected disabled>Pilih Persetujuan</option>
+                            <option value="2" @if ($reservasi_mobil->id_pengantaran == 2)
+                                selected
+                            @endif>Ditunggu</option>
+                            <option value="1" @if ($reservasi_mobil->id_pengantaran == 1)
+                                selected
+                            @endif>Di Drop</option>
                         </select>   
                     </div>
                 @endrole
                 @role('Admin Driver')
                     @if ($reservasi_mobil->id_status == 3)    
                         <div class="mb-3">
+                            <!-- Warning Alert -->
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                Mohon pilih ulang Jenis kendaraan jika ingin mengganti <b>Mobil</b> atau <b>Driver !</b>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                             <label class="form-label">Pilih Jenis Kendaraan</label>
-                            <select class="form-control" name="id_jenis_kendaraan" id="id_jenis_kendaraan">
+                            <select class="form-control jenis-kendaraan" name="id_jenis_kendaraan" id="id_jenis_kendaraan">
                                 <option selected disabled>Pilih Jenis Kendaraan</option>
                                 @foreach ($jenis_kendaraan as $row)
                                     <option value="{{ $row->id }}" @if (!empty($reservasi_mobil->id_jenis_kendaraan))
@@ -62,10 +82,17 @@
                             </select>   
                         </div>
                     @else
-                        <div>
-                            <label for="basiInput" class="form-label">Voucher</label>
-                            <input type="text" class="form-control" name="voucher_grab" placeholder="Masukkan Voucher">
+                        <div class="row align-items-center mb-2">
+                            <div class="col-8">
+                                <label for="basiInput" class="form-label">Voucher</label>
+                                <input type="text" class="form-control" name="nama_voucher[]" placeholder="Masukkan Voucher">
+                            </div>
+                            <div class="col-2">
+                                <a href="javascript:void(0);" class="btn btn-primary btn-icon waves-effect waves-light add-voucher" style="margin-top: 30px;"><i class="ri-add-line"></i></a>
+                            </div>
                         </div>
+                        <div class="daftar-voucher">
+                        </div>                   
                     @endif
                 @endrole
                 <div class="mb-3">

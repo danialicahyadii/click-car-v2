@@ -1,18 +1,19 @@
 @yield('css')
-
+<!-- Starter -->
 <!-- App favicon -->
-<link rel="shortcut icon" href="{{ asset('assets/img/logo.jpg') }}">
+<link rel="shortcut icon" href="{{ URL::asset('assets/img/logo.jpg') }}">
 
 <!-- Layout config Js -->
-<script src="{{ asset('assets/js/layout.js') }}"></script>
+<script src="{{ URL::asset('assets/js/layout.js') }}"></script>
 <!-- Bootstrap Css -->
-<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- Icons Css -->
-<link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- App Css-->
-<link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- custom Css-->
-<link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+<!-- Penutup Styles Starter -->
 
 <!--datatable css-->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />

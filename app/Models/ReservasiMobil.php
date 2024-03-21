@@ -34,7 +34,7 @@ class ReservasiMobil extends Model
 
     public function supir()
     {
-        return $this->belongsTo(Supir::class, 'id_supir')->withDefault(['nama' => '-']);
+        return $this->belongsTo(Supir::class, 'id_supir')->withDefault(['nama' => '-', 'nomor_hp' => '-']);
     }
 
     public function atasan()
@@ -44,6 +44,6 @@ class ReservasiMobil extends Model
 
     public function jenisKendaraan()
     {
-        return $this->belongsTo(JenisKendaraan::class, 'id_jenis_kendaraan')->withDefault(['nama' => '']);
+        return $this->belongsTo(JenisKendaraan::class, 'id_jenis_kendaraan')->withDefault(['nama' => '-']);
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('css')
-    <script type='text/javascript' src='{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
-    <script type='text/javascript' src='{{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}'></script>
+    <script type='text/javascript' src='{{ URL::asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
     <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-content')
@@ -57,9 +57,8 @@
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
-                                        <label for="placeholderInput" class="form-label">Pilih Nama Penumpang</label>
-                                        <select class="form-control" data-choices data-choices-removeItem name="id_penumpang[]" value="1" maxlength="10" multiple>
-                                            <option value="">Pilih Penumpang</option>
+                                        <label for="placeholderInput" class="form-label">Penumpang</label>
+                                        <select class="form-control penumpang" name="id_penumpang[]" value="1" maxlength="10" multiple="multiple">
                                             @foreach ($penumpang as $row)
                                                 <option value="{{ $row->id }}">{{ $row->name }}</option>
                                             @endforeach  
@@ -69,36 +68,36 @@
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
-                                        <label for="valueInput" class="form-label">Tanggal Pergi</label>
-                                        <input type="text" class="form-control flatpickr-input" data-provider="flatpickr" data-altFormat="F j, Y" name="tgl_pergi" id="tgl_pergi">
+                                        <label class="form-label">Tanggal Pergi</label>
+                                        <input type="date" class="form-control flatpickr-input" name="tgl_pergi" id="tgl_pergi">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
-                                        <label for="readonlyPlaintext" class="form-label">Tanggal Pulang</label>
-                                        <input type="text" class="form-control flatpickr-input" data-provider="flatpickr"  data-altFormat="F j, Y" name="tgl_pulang" id="tgl_pulang">
+                                        <label class="form-label">Tanggal Pulang</label>
+                                        <input type="date" class="form-control flatpickr-input" name="tgl_pulang" id="tgl_pulang">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="readonlyInput" class="form-label">Waktu Pergi</label>
-                                        <input type="text" class="form-control" data-provider="timepickr" data-default-time="00:00" name="wktu_pergi" id="wktu_pergi">
+                                        <input type="time" class="form-control" data-provider="timepickr" data-default-time="00:00" name="wktu_pergi" id="wktu_pergi">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="disabledInput" class="form-label">Waktu Pulang</label>
-                                        <input type="text" class="form-control" data-provider="timepickr" data-default-time="00:00" name="wktu_plng" id="wktu_plng">
+                                        <input type="time" class="form-control" data-provider="timepickr" data-default-time="00:00" name="wktu_plng" id="wktu_plng">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="iconInput" class="form-label">Pemeriksa Atasan</label>
-                                        <select class="form-control" name="id_atasan" data-choices data-choices-search-false data-choices-sorting-false>
+                                        <select class="form-control atasan" name="id_atasan">
                                             {{-- <option selected disabled>Pilih Pemeriksa</option> --}}
                                             @foreach ($atasan as $row)
                                                 <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -110,11 +109,11 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="iconrightInput" class="form-label">Pengantaran</label>
-                                        <select class="form-control" id="id_pengantaran" name="id_pengantaran" data-choices data-choices-search-false data-choices-sorting-false>
-                                            <option value="" disabled selected>Pilih Pengantaran</option>
+                                        <select class="form-control pengantaran" name="id_pengantaran" id="id_pengantaran">
+                                            <option disabled selected>Pilih Pengantaran</option>
                                             <option value="1">Didrop</option>
                                             <option value="2">Ditunggu</option>
-                                            <option value="3">Transportasi Online</option>
+                                            <option value="3">Transportasi Online(Voucher)</option>
                                         </select>
                                     </div>
                                 </div>
@@ -164,12 +163,12 @@
                                 <div class="col-xxl-4 col-md-4">
                                     <div>
                                         <label for="iconInput" class="form-label">Pilih Jenis Kendaraan</label>
-                                        <select class="form-control" name="id_jenis_kendaraan" id="id_jenis_kendaraan">
+                                        <select class="form-control jenis-kendaraan" name="id_jenis_kendaraan" id="id_jenis_kendaraan">
                                             <option selected disabled>Pilih Jenis Kendaraan</option>
                                             @foreach ($jenis_kendaraan as $row)
                                                 <option value="{{ $row->id }}">{{ $row->nama }}</option>
                                             @endforeach
-                                        </select>   
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-xxl-4 col-md-4">
@@ -177,7 +176,8 @@
                                         <label for="iconInput" class="form-label">Pilih Mobil</label>
                                         <select class="form-control" name="id_mobil" id="mobil">
                                             <option selected disabled>Pilih Mobil</option>
-                                        </select>   
+                                        </select>
+                                        <div id="warning-message-car" style="display: none; color: red;">Mobil ini tidak tersedia.</div>   
                                     </div>
                                 </div>
                                 <div class="col-xxl-4 col-md-4">
@@ -188,7 +188,8 @@
                                             @foreach ($supir as $row)
                                                 <option value="{{ $row->id }}">{{ $row->nama }}</option>
                                             @endforeach
-                                        </select>   
+                                        </select>
+                                        <div id="warning-message-driver" style="display: none; color: red;">Supir ini tidak tersedia.</div>
                                     </div>
                                 </div>
                                 
@@ -208,22 +209,37 @@
 </div>
 @endsection
 @push('js')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ URL::asset('assets/js/pages/select2.init.js') }}"></script>
     @include('apps.reservasi-mobil.components.script-search-google-maps')
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#reservasi_hari_iniTable, #konfirmasi_reservasiTable, #riwayatTable, #lihat_semuaTable, #sedang_diprosesTable, #perlu_diprosesTable, #reservasi_selesaiTable, #reservasi_ditolakTable, #ratingTable').DataTable({
-                pageLength: 10
+            flatpickr("#tgl_pergi, #tgl_pulang", {
+                minDate: "today",
+                maxDate: new Date().fp_incr(14),
+                altInput: true,
+                altFormat: "F j, Y",
             });
+            flatpickr("#wktu_pergi, #wktu_plng", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true
+            });
+            $('.penumpang').select2({
+                placeholder : "Pilih Penumpang",
+            });
+            $('.atasan, .pengantaran, .jenis-kendaraan').select2();
             $("#id_pengantaran").on('change', function() {
-                var nilai_pengantaran = $('#id_pengantaran').val();
+                let nilai_pengantaran = $('#id_pengantaran').val();
                 if (nilai_pengantaran != 3){
                     $("#request_kendaraan").removeClass("d-none");
                 }else {
                     $("#request_kendaraan").addClass("d-none");
                 }
             });
-
             $('#id_jenis_kendaraan').change(function() {
                 $('#mobil').html('<option selected disabled value="">Silahkan Pilih Mobil</option>');
                 let carOption = this.value;
@@ -246,6 +262,25 @@
                     },
                     success: function(response) {
                         if (response.status === "success") {
+                            function formatState (data) {
+                                if (!data.element) {
+                                    return data.text;
+                                }
+                                var $element = $(data.element);
+                                var $status = $element.data('status');
+                                if ($status === 'Silahkan Pilih Mobil') {
+                                    return data.text; // Tampilkan teks tanpa badge
+                                }
+                                var badgeClass = $status === 'Available' ? 'bg-success' : 'bg-danger';
+                                var $badge = $('<span class="badge ' + badgeClass + ' ms-2"></span>').text($status);
+
+                                var $newOption = $('<div></div>').append(data.text).append($badge);
+                                return $newOption;
+                            };
+
+                            $("#mobil").select2({
+                            templateResult: formatState
+                            });
                             $.each(response.data, function(key, value) {
                                 $('#mobil').append('<option value="'+ value.id +'" data-status="' + value.status + '" data-plat="' + value.id_plat + '">' + value.nama + '</span></option>')
                             });
@@ -292,7 +327,6 @@
                     }
                 });
             });
-
             $('#mobil').change(function() {
                 $('#supir').html('<option selected disabled value="">Silahkan Pilih Supir</option>');
                 let carOption = this.value;
@@ -315,9 +349,27 @@
                     },
                     success: function(response) {
                         if (response.status === "success") {
+                            function formatState (data) {
+                                if (!data.element) {
+                                    return data.text;
+                                }
+                                var $element = $(data.element);
+                                var $status = $element.data('status');
+                                if ($status === 'Silahkan Pilih Supir') {
+                                    return data.text; // Tampilkan teks tanpa badge
+                                }
+                                var badgeClass = $status === 'Available' ? 'bg-success' : 'bg-danger';
+                                var $badge = $('<span class="badge ' + badgeClass + ' ms-2"></span>').text($status);
+
+                                var $newOption = $('<div></div>').append(data.text).append($badge);
+                                return $newOption;
+                            };
+
+                            $("#supir").select2({
+                            templateResult: formatState
+                            });
                             $.each(response.data, function(key, value) {
-                                $('#supir').append('<option value="' + value.id +
-                                    '" data-status="' + value.status + '">' + value.nama + '</span></option>');
+                                $('#supir').append('<option value="' + value.id +'" data-status="' + value.status + '">' + value.nama + '</span></option>');
                             });
 
                             $('#supir').trigger('change');

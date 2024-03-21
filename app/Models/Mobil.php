@@ -34,11 +34,17 @@ class Mobil extends Model
      */
     public function driver()
     {
-        return $this->belongsTo(Supir::class, 'pic')->withDefault(['nama' => '-']);
+        return $this->belongsTo(Supir::class, 'id_supir')->withDefault(['nama' => 'Belum memiliki PIC']);
     }
 
     public function Plat()
     {
-        return $this->belongsTo(Plat::class, 'id_plat')->withDefault('id', '-');
+        return $this->belongsTo(Plat::class, 'id_plat')->withDefault(['nomor_plat' => '-']);
     }
+
+    public function jenis_kendaraan()
+    {
+        return $this->belongsTo(JenisKendaraan::class, 'id_jenis_kendaraan')->withDefault(['nama' => '-']);
+    }
+
 }
