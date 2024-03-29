@@ -7,7 +7,7 @@
         border-radius: 10px;
     }
     .red-background {
-        background-color: rgb(255, 187, 0);
+        background-color: rgb(255, 58, 58);
         border-radius: 10px;
     }
 </style>
@@ -65,6 +65,7 @@
                         $currentDate->addWeek();
                     }
                 @endphp
+                {{-- {{ dd($weeksInMonth) }} --}}
                 <div class="col-xxl-3 col-lg-4 col-sm-6 project-card">
                     <div class="card card-animate" style="cursor: pointer;" data-id="{{ Crypt::encrypt($row->id) }}" data-row="{{ $row }}" data-month="{{ $month }}" data-year="{{ $year }}">
                         <div class="card-body mt-2">
@@ -83,14 +84,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-auto">
+                            <div class="row mt-auto justify-content-center">
                                 @foreach ($weeksInMonth as $week)
-                                    <div class="col-3">
-                                        <p class="@if ($week['inspections'])
-                                        green-background
+                                    <div class="col-2 text-center">
+                                        @if ($week['inspections'])
+                                            @if ($week['inspections']->first()->id_status == 2)
+                                                <span class="badge bg-success">W{{$week['week_number'] }}</span>
+                                            @else
+                                                <span class="badge bg-warning">W{{$week['week_number'] }}</span>
+                                            @endif
                                         @else
-                                        red-background
-                                        @endif text-center">W{{ $week['week_number'] }}</p>
+                                            <span class="badge bg-danger">W{{$week['week_number'] }}</span>
+                                        @endif
                                     </div>  
                                 @endforeach
                             </div>  

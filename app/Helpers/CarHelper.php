@@ -132,25 +132,20 @@ class CarHelper
             $startDate = Carbon::now()->startOfMonth()->month($month);
             $endDate = Carbon::now()->endOfMonth()->month($month);
         }
-        $topCars = DB::table('mobils')
-            ->join('reservasi_mobils', 'mobils.id', '=', 'reservasi_mobils.id_mobil')
-            ->join('entitas', 'reservasi_mobils.id_entitas', '=', 'entitas.id')
-            ->select('mobils.*', 'entitas.nama as nama_entitas', DB::raw('COUNT(reservasi_mobils.id) as reservation_count'))
-            ->whereBetween('reservasi_mobils.created_at', [$startDate, $endDate]);
-
-        if (Auth::user()->roles->first()->name == 'Requester') {
+        $topCars = DB::table('master_mobil')
+        ->join('reservasi_mobils', 'master_mobil.id', '=', 'reservasi_mobils.id_mobil')
+        ->join('master_entitas', 'reservasi_mobils.id_entitas', '=', 'master_entitas.id')
+        ->select('master_mobil.*', 'master_entitas.nama as nama_entitas', DB::raw('COUNT(reservasi_mobils.id) as reservation_count'))
+        ->whereBetween('reservasi_mobils.created_at', [$startDate, $endDate])
+        ->groupBy('master_mobil.id', 'master_entitas.nama');
+        if(Auth::user()->roles->first()->name == 'Requester') {
             $topCars->where('reservasi_mobils.id_user', Auth::user()->id);
         }
-
-        if (Auth::user()->roles->first()->name == 'Approval') {
-            $topCars->where('reservasi_mobils.id_user', Auth::user()->id);
-        }
-
-        $topCars->groupBy('mobils.id')
-            ->orderByDesc('reservation_count')
-            ->limit($limit);
-
+        $topCars->orderByDesc('reservation_count')
+        ->limit($limit);
+        
         $topCars = $topCars->get();
+        
         return $topCars;
     }
     public static function getCars()

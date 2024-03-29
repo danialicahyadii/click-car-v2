@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\KodePemesananHelper;
+use App\Models\ChecklistKendaraan;
 use App\Models\JenisKendaraan;
 use App\Models\Mobil;
 use App\Models\Penumpang;
@@ -41,6 +42,7 @@ class ReservasiMobilController extends Controller
         $year = Carbon::now()->year;
         $vouchers = $data['voucher'];
         $belumRating = '';
+        $checklistExists = false;
         if($role == 'Admin Umum'){
             $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->orderBy('id', 'desc')->get();
         }elseif($role == 'Requester'){
@@ -51,13 +53,49 @@ class ReservasiMobilController extends Controller
             $belumRating = $reservasi_mobil->where('flag_rating', null)->where('id_pengantaran', '!=', 3)->count();
         }elseif($role == 'Admin Driver'){
             $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->orderBy('id', 'desc')->get();
+            $startDate = Carbon::now()->startOfWeek();
+            $endDate = Carbon::now()->endOfWeek();
+            $vehicles = Mobil::where('id_supir', Auth::user()->supir->id)->get();
+            if ($vehicles->isEmpty()) {
+                $checklistExists = true;
+            } else {
+                // Jika $vehicles tidak kosong, lakukan pengecekan untuk setiap kendaraan
+                foreach ($vehicles as $vehicle) {
+                    // Mengecek apakah ada data checklist kendaraan untuk setiap kendaraan pada minggu ini
+                    if (ChecklistKendaraan::where('id_mobil', $vehicle->id)
+                        ->whereBetween('tanggal', [$startDate, $endDate])
+                        ->exists()) {
+                        // Jika ditemukan data checklist pada salah satu kendaraan, ubah $checklistExists ke true dan keluar dari loop
+                        $checklistExists = true;
+                        break;
+                    }
+                }
+            }
         }elseif($role == 'Driver'){
             $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->where('id_supir', Auth::user()->supir->id)->orderBy('id', 'desc')->get();
+            $startDate = Carbon::now()->startOfWeek();
+            $endDate = Carbon::now()->endOfWeek();
+            $vehicles = Mobil::where('id_supir', Auth::user()->supir->id)->get();
+            if ($vehicles->isEmpty()) {
+                $checklistExists = true;
+            } else {
+                // Jika $vehicles tidak kosong, lakukan pengecekan untuk setiap kendaraan
+                foreach ($vehicles as $vehicle) {
+                    // Mengecek apakah ada data checklist kendaraan untuk setiap kendaraan pada minggu ini
+                    if (ChecklistKendaraan::where('id_mobil', $vehicle->id)
+                        ->whereBetween('tgl_inspeksi', [$startDate, $endDate])
+                        ->exists()) {
+                        // Jika ditemukan data checklist pada salah satu kendaraan, ubah $checklistExists ke true dan keluar dari loop
+                        $checklistExists = true;
+                        break;
+                    }
+                }
+            }
         }else{
             $reservasi_mobil = ReservasiMobil::whereYear('created_at', $year)->orderBy('id', 'desc')->get();
         }
         
-        return view('apps.reservasi-mobil.index', compact('reservasi_mobil', 'vouchers', 'belumRating'));
+        return view('apps.reservasi-mobil.index', compact('reservasi_mobil', 'vouchers', 'belumRating', 'checklistExists'));
     }
 
     public function create()

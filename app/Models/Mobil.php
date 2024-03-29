@@ -13,6 +13,10 @@ class Mobil extends Model
 
     protected $guarded = [];
 
+    public function reservasi()
+    {
+        return $this->hasOne(ReservasiMobil::class, 'id_mobil');
+    }
     /**
      * Get the entitas.
      */

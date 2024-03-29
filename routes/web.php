@@ -11,6 +11,7 @@ use App\Http\Controllers\ProcessingDataController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservasiMobilController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SSOController;
 use App\Http\Controllers\SupirController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\SetTitle;
@@ -26,12 +27,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// Route::get('/loginsso-v3', [SSOController::class, 'loginSSO']);
+Route::get('/loginsso-v3', [SSOController::class, 'loginSSO']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified', SetTitle::class . ':Dashboard'])->name('dashboard');
     Route::prefix('dashboard')->middleware(SetTitle::class . ':Dashboard')->group(function () {
-        Route::post('/home/filter-bulan', [DashboardController::class, 'getFilterBulan']);
+        Route::post('/filter-bulan', [DashboardController::class, 'getFilterBulan']);
     });
 
     Route::prefix('reservasi-mobil')->middleware(SetTitle::class . ':Reservasi Mobil')->group(function () {
@@ -81,8 +82,15 @@ Route::middleware('auth')->group(function () {
     Route::prefix('checklist-kendaraan')->middleware(SetTitle::class . ':Checklist Kendaraan')->group(function () {
         Route::get('/', [ChecklistKendaraanController::class, 'index']);
         Route::get('create/{id}', [ChecklistKendaraanController::class, 'create']);
-        Route::get('show/{id}/{month}/{year}', [ChecklistKendaraanController::class, 'show']);
         Route::post('store', [ChecklistKendaraanController::class, 'store']);
+        Route::get('show/{id}/{month}/{year}', [ChecklistKendaraanController::class, 'show']);
+        Route::get('show-inspeksi/{id}', [ChecklistKendaraanController::class, 'showInspeksi']);
+        Route::post('approve/{id}', [ChecklistKendaraanController::class, 'approve']);
+        Route::post('return/{id}', [ChecklistKendaraanController::class, 'return']);
+        Route::get('edit/{id}', [ChecklistKendaraanController::class, 'edit']);
+        Route::post('update/{id}', [ChecklistKendaraanController::class, 'update']);
+        Route::get('print/{id}', [ChecklistKendaraanController::class, 'print']);
+        Route::get('download/{id}', [ChecklistKendaraanController::class, 'download']);
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware(SetTitle::class . ':Profile');

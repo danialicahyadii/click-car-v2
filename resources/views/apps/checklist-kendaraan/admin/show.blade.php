@@ -166,9 +166,9 @@
                                     <tr class="text-center">
                                         <th scope="col" style="width :10%">Week</th>
                                         <th scope="col" style="width :20%">Periode</th>
-                                        <th scope="col" style="width :20%">Tanggal Inspeksi</th>
                                         <th scope="col" style="width :30%">Status</th>
-                                        <th scope="col" style="width :40%">Status</th>
+                                        <th scope="col" style="width :20%">Tanggal Inspeksi</th>
+                                        <th scope="col" style="width :40%">Action</th>
                                     </tr>
                                 </thead>
 
@@ -178,21 +178,30 @@
                                             <td>Minggu ke-{{ $week['week_number'] }}</td>
                                             <td>{{ Carbon::parse($week['start_date'])->translatedFormat('d F Y') }} s/d {{ Carbon::parse($week['end_date'])->translatedFormat('d F Y') }}
                                             </td>
-                                            <td>@if ($week['inspections'])
-                                                {{ Carbon::parse($week['inspections']->first()->tgl_inspeksi)->translatedFormat('l, d F Y') }}@else - @endif</td>
-                                            <td>@if ($week['inspections'])
-                                                <span class="badge bg-success me-1">Sudah Inspeksi</span>
-                                                @if ($week['inspections']->first()->id_status == 1)
-                                                    <span class="badge bg-warning">Menunggu Approval SPV Umum</span>
+                                            <td>
+                                                @if ($week['inspections'])
+                                                    <span class="badge bg-success me-1">Sudah Inspeksi</span>
+                                                    @if ($week['inspections']->first()->id_status == 1)
+                                                        <span class="badge bg-warning">Menunggu Approval SPV Umum</span>
+                                                    @elseif ($week['inspections']->first()->id_status == 2)
+                                                        <span class="badge bg-success">Disetujui Umum</span>
+                                                    @else
+                                                        <span class="badge bg-warning">Dikembalikan ke Driver</span>
+                                                    @endif
                                                 @else
-                                                    <span class="badge bg-success">Disetujui Umum</span>
+                                                    <span class="badge bg-danger">Belum Inspeksi</span>
                                                 @endif
-                                            @else
-                                                <span class="badge bg-warning">Belum Inspeksi</span>
-                                            @endif</td>
+                                            </td>
+                                            <td>
+                                                @if ($week['inspections'])
+                                                    {{ Carbon::parse($week['inspections']->first()->tgl_inspeksi)->translatedFormat('l, d F Y') }}
+                                                @else
+                                                 - 
+                                                 @endif
+                                            </td>
                                             <td>
                                                 @if($week['inspections'])
-                                                <a href="{{ url('checklist-kendaraan/show', $week['inspections'][0]->id) }}" class="ms-1">View More...</a>
+                                                    <a href="{{ url('checklist-kendaraan/show-inspeksi', Crypt::encrypt($week['inspections'][0]->id)) }}" class="ms-1">View More...</a>
                                                 @endif
                                             </td>
                                         </tr>

@@ -12,4 +12,9 @@ class ChecklistKendaraan extends Model
     protected $guarded = [];
 
     protected $table = 'checklist_kendaraan';
+
+    public function mobil()
+    {
+        return $this->belongsTo(Mobil::class, 'id_mobil')->withDefault(['nama' => '-', 'nomor_polisi' => '-']);
+    }
 }

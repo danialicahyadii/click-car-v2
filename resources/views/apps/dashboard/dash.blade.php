@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('css')
+
 @endsection
 @section('page-content')
 <div class="page-content">
@@ -320,7 +321,7 @@
                         </div><!-- end card -->
                     </div><!-- end col -->
                 </div><!-- end row -->
-
+                
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -342,6 +343,164 @@
                         </div><!-- end card -->
                     </div><!-- end col -->
                 </div><!-- end row -->
+                
+                <div class="row">
+                    <div class="col-xl-3">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Top 10 Driver Favorit</h4>
+                            </div><!-- end card-header -->
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush border-dashed mb-0">
+                                    @foreach ($topDrivers->where('id', '!=', 22) as $row)
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ asset('assets/img/icon-user.png') }}" class="avatar-xs" alt="">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6 class="fs-14 mb-1">{{ $row->nama }}</h6>
+                                                <p class="text-muted mb-0">{{ $row->reservation_count }} Kali Dirating</p>
+                                            </div>
+                                            {{-- <div class="flex-shrink-0 text-end">
+                                                <h6 class="fs-14 mb-1">$12,863.08</h6>
+                                                <p class="text-success fs-12 mb-0">+$67.21 (+4.33%)</p>
+                                            </div> --}}
+                                        </li><!-- end -->
+                                    @endforeach
+                                </ul><!-- end ul -->
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Top 10 Kendaraan Favorit</h4>
+                            </div><!-- end card-header -->
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush border-dashed mb-0">
+                                    @foreach ($topVehicles as $row)
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ asset('assets/img/icon-car.png') }}" class="avatar-xs" alt="">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6 class="fs-14 mb-1">{{ $row->nama }}</h6>
+                                                <p class="text-muted mb-0">{{ $row->reservation_count }} Kali Dipesan</p>
+                                            </div>
+                                            {{-- <div class="flex-shrink-0 text-end">
+                                                <h6 class="fs-14 mb-1">$12,863.08</h6>
+                                                <p class="text-success fs-12 mb-0">+$67.21 (+4.33%)</p>
+                                            </div> --}}
+                                        </li><!-- end -->
+                                    @endforeach
+                                </ul><!-- end ul -->
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Top 10 Penumpang Aktif</h4>
+                            </div><!-- end card-header -->
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush border-dashed mb-0">
+                                    @foreach ($topUsers as $row)
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ asset('assets/img/icon-user.png') }}" class="avatar-xs" alt="">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6 class="fs-14 mb-1">{{ $row->name }}</h6>
+                                                <p class="text-muted mb-0">{{ $row->reservation_count }} Kali Perjalanan</p>
+                                            </div>
+                                            {{-- <div class="flex-shrink-0 text-end">
+                                                <h6 class="fs-14 mb-1">$12,863.08</h6>
+                                                <p class="text-success fs-12 mb-0">+$67.21 (+4.33%)</p>
+                                            </div> --}}
+                                        </li><!-- end -->
+                                    @endforeach
+                                </ul><!-- end ul -->
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Top 10 Lokasi Favorit</h4>
+                            </div><!-- end card-header -->
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush border-dashed mb-0">
+                                    @foreach ($topLocation as $row)
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ asset('assets/img/map.png') }}" class="avatar-xs" alt="">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6 class="fs-14 mb-1" title="{{ $row->tujuan }}">{{ strlen($row->tujuan) > 25 ? substr($row->tujuan, 0, 25) . '...' : $row->tujuan }}</h6>
+                                                <p class="text-muted mb-0">{{ $row->location_count }} Kali Dikunjungi</p>
+                                            </div>
+                                            {{-- <div class="flex-shrink-0 text-end">
+                                                <h6 class="fs-14 mb-1">$12,863.08</h6>
+                                                <p class="text-success fs-12 mb-0">+$67.21 (+4.33%)</p>
+                                            </div> --}}
+                                        </li><!-- end -->
+                                    @endforeach
+                                </ul><!-- end ul -->
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="card pb-3">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Jadwal Hari Ini</h4>
+                            </div><!-- end card header -->
+                            <div class="card-body">
+                                <div class="table-responsive table-card">
+                                    <table class="table table-hover table-borderless table-centered align-middle table-nowrap mb-0">
+                                        <thead class="text-muted bg-light-subtle">
+                                            <tr>
+                                                <th>Kode</th>
+                                                <th>Pemesan</th>
+                                                <th>Mobil</th>
+                                                <th>Supir</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead><!-- end thead -->
+                                        <tbody>
+                                            @foreach ($booking_show as $row)
+                                                <tr>
+                                                    <td>
+                                                        <h6 class="fs-14 mb-0">#{{ $row->kode_pemesanan }}</h6>
+                                                    </td>
+                                                    <td>{{ $row->user->name }}</td>
+                                                    <td>
+                                                        <h6 class="text-success fs-13 mb-0">{{ $row->mobil->nama }}</h6>
+                                                    </td>
+                                                    <td>{{ $row->supir->nama }}</td>
+                                                    <td>{{ $row->status->status }}</td>
+                                                </tr><!-- end -->
+                                            @endforeach
+                                        </tbody><!-- end tbody -->
+                                    </table><!-- end table -->
+                                </div><!-- end tbody -->
+                            </div><!-- end cardbody -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+
+                    <div class="col-xl-4">
+                        <div class="card card-height-100">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Rating</h4>
+                            </div><!-- end cardheader -->
+                            <div class="card-body">
+                                <canvas id="myChart"></canvas>
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+                </div>
             </div><!-- end col -->
         </div><!-- end row -->
 
@@ -353,59 +512,41 @@
 <!-- prismjs plugin -->
 <script src="{{ URL::asset('assets/libs/prismjs/prism.js') }}"></script>
 <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+<!-- Chart JS -->
+{{-- <script src="{{ URL::asset('assets/libs/chart.js/chart.min.js') }}"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ URL::asset('assets/js/pages/dashboard-projects.init.js') }}"></script>
+@include('apps.dashboard.components.bar-chart')
 <script>
-     var options = {
-          series: [{
-          name: 'Net Profit',
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-          name: 'Revenue',
-          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-          name: 'Free Cash Flow',
-          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+    const ctx = document.getElementById('myChart');
+    const data = {
+        datasets: [{
+            data: [{{ $rating[1] }}, {{ $rating[3] }}, {{ $rating[5] }}],
+            backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 10
         }],
-          chart: {
-          type: 'bar',
-          height: 350
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            endingShape: 'rounded'
-          },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-        },
-        yaxis: {
-          title: {
-            text: '$ (thousands)'
-          }
-        },
-        fill: {
-          opacity: 1
-        },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return "$ " + val + " thousands"
-            }
-          }
-        }
+        labels: ['Tidak Puas', 'Cukup', 'Sangat Puas'],
         };
-
-        var chart = new ApexCharts(document.querySelector("#column_chart"), options);
-        chart.render();
+    new Chart(ctx, {
+      type: 'pie',
+      data: data,
+      options: {
+            layout: {
+                padding: {
+                    bottom: 20 // Menambahkan ruang di bagian bawah untuk label
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom', // Menampilkan legenda di bagian bawah
+                }
+            },
+        },
+    });
 </script>
 @endpush

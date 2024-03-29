@@ -19,6 +19,18 @@
             </div>
         </div>
         <!-- end page title -->
+
+        <!-- Warning Alert -->
+        @role('Admin Driver|Driver')
+        @if ($checklistExists == false)
+            <div class="alert alert-warning alert-dismissible alert-label-icon label-arrow fade show" role="alert">
+                <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Kamu belum melakukan Inspeksi Kendaraanmu
+                <button type="button" class="btn-close" data-bs-dismiss=" alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @endrole
+
+
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">

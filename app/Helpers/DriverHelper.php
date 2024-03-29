@@ -175,21 +175,18 @@ class DriverHelper
         }
 
         // Lakukan pencarian driver dengan rating tertinggi di RatingLog.
-        $topDrivers = DB::table('supirs')
-            ->join('rating_driver', 'supirs.id', '=', 'rating_driver.id_supir')
-            ->join('entitas', 'supirs.id_entitas', '=', 'entitas.id')
-            ->select('supirs.*', 'rating_driver.*', 'entitas.nama as nama_entitas', DB::raw('MAX(rating_driver.rating) as highest_rating'), DB::raw('COUNT(rating_driver.id) as reservation_count'))
-            ->whereBetween('rating_driver.created_at', [$startDate, $endDate]);
+        $topDrivers = DB::table('master_driver')
+            ->join('reservasi_mobils', 'master_driver.id', '=', 'reservasi_mobils.id_supir')
+            ->join('master_entitas', 'master_driver.id_entitas', '=', 'master_entitas.id')
+            ->select('master_driver.*', 'master_entitas.nama as nama_entitas', DB::raw('MAX(reservasi_mobils.rating_driver) as highest_rating'), DB::raw('COUNT(reservasi_mobils.id) as reservation_count'))
+            ->whereBetween('reservasi_mobils.created_at', [$startDate, $endDate]);
+            
         if (Auth::user()->roles->first()->name == 'Requester') {
-            $topDrivers->where('rating_driver.created_by', Auth::user()->id);
+            $topDrivers->where('reservasi_mobils.id_user', Auth::user()->id);
         }
-        if (Auth::user()->roles->first()->name == 'Approval') {
-            $topDrivers->where('rating_driver.created_by', Auth::user()->id);
-        }
-
-        $topDrivers->groupBy('supirs.id')
-            ->orderByDesc('highest_rating')
-            ->limit($limit);
+        $topDrivers->groupBy('master_driver.id')
+        ->orderByDesc('highest_rating')
+        ->limit($limit);
         $topDrivers = $topDrivers->get();
         return $topDrivers;
     }
@@ -218,7 +215,7 @@ class DriverHelper
             $endDate = Carbon::now()->endOfMonth()->month($month);
         }
 
-        $topDrivers = Supir::leftJoin('reservasi_mobils', 'supirs.id', '=', 'reservasi_mobils.id_supir')
+        $topDrivers = Supir::leftJoin('reservasi_mobils', 'master_driver.id', '=', 'reservasi_mobils.id_supir')
             ->select('supirs.*', DB::raw('MAX(reservasi_mobils.id_rating) as highest_rating'))
             ->selectRaw('COUNT(reservasi_mobils.id) as reservation_count')
             ->whereBetween('reservasi_mobils.created_at', [$startDate, $endDate])
@@ -226,6 +223,7 @@ class DriverHelper
             ->orderByDesc('reservation_count')
             ->limit($limit)
             ->get();
+        
 
         return $topDrivers;
     }

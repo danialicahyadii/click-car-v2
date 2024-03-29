@@ -8,6 +8,8 @@ use App\Models\JenisKendaraan;
 use App\Models\MasterDriver;
 use App\Models\Mobil;
 use App\Models\Supir;
+use App\Models\TransaksiDetailInspeksi;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +27,8 @@ class ChecklistKendaraanController extends Controller
             ->where('id_status', 8)
             ->where('id_supir', $supir->id)
             ->get();
-            return view('apps.checklist-kendaraan.driver.index', compact('mobil', 'month', 'year'));
+            $checklist_kendaraan = ChecklistKendaraan::where('id_supir', $supir->id)->get();
+            return view('apps.checklist-kendaraan.driver.index', compact('checklist_kendaraan', 'mobil', 'month', 'year'));
         }else{
             $mobil = Mobil::where('id_entitas', 1)->where('id_status', 8)->get();
         }
@@ -57,32 +60,8 @@ class ChecklistKendaraanController extends Controller
             'warning_stnk' => Carbon::parse($request->habis_stnk)->subMonths(1),
             'warning_service' => Carbon::parse($request->terakhir_service)->addMonths(6),
         ]);
-        $detail = [
-            'steering' => ['value' => $request->steering, 'ket' => $request->keterangan_steering ?? ''],
-            'ban_cadangan' => ['value' => $request->ban_cadangan, 'ket' => $request->keterangan_ban_cadangan ?? ''],
-            'lampu_depan' => ['value' => $request->lampu_depan, 'ket' => $request->keterangan_lampu_depan ?? ''],
-            'lampu_belakang' => ['value' => $request->lampu_belakang, 'ket' => $request->keterangan_lampu_belakang ?? ''],
-            'alarm_mundur' => ['value' => $request->alarm_mundur, 'ket' => $request->keterangan_alarm_mundur ?? ''],
-            'level_oli' => ['value' => $request->level_oli, 'ket' => $request->keterangan_level_oli ?? ''],
-            'minyak_rem' => ['value' => $request->minyak_rem, 'ket' => $request->keterangan_minyak_rem ?? ''],
-            'air_radiator' => ['value' => $request->air_radiator, 'ket' => $request->keterangan_air_radiator ?? ''],
-            'persneling' => ['value' => $request->persneling, 'ket' => $request->keterangan_persneling ?? ''],
-            'main_brake' => ['value' => $request->main_brake, 'ket' => $request->keterangan_main_brake ?? ''],
-            'parking_brake' => ['value' => $request->parking_brake, 'ket' => $request->keterangan_parking_brake ?? ''],
-            'air_wiper' => ['value' => $request->air_wiper, 'ket' => $request->keterangan_air_wiper ?? ''],
-            'klakson' => ['value' => $request->klakson, 'ket' => $request->keterangan_klakson ?? ''],
-            'seatbelt' => ['value' => $request->seatbelt, 'ket' => $request->keterangan_seatbelt ?? ''],
-            'segitiga' => ['value' => $request->segitiga, 'ket' => $request->keterangan_segitiga ?? ''],
-            'apar' => ['value' => $request->apar, 'ket' => $request->keterangan_apar ?? ''],
-            'kunci_roda' => ['value' => $request->kunci_roda, 'ket' => $request->keterangan_kunci_roda ?? ''],
-            'jack' => ['value' => $request->jack, 'ket' => $request->keterangan_jack ?? ''],
-            'general_lainnya' => $request->general_lainnya ?? '',
-            'safety_lainnya' => $request->safety_lainnya ?? '',
-            'kesimpulan' => $request->kesimpulan
-        ];
-        $detail = ['detail' => $detail];
+        
         $checklist_kendaraan = ChecklistKendaraan::create([
-            'detail_inspeksi' => json_encode($detail),
             'kode_form' => $request->kode_form,
             'tgl_inspeksi' => $request->tgl_inspeksi,
             'tgl_berlaku' => $request->tgl_berlaku,
@@ -90,15 +69,25 @@ class ChecklistKendaraanController extends Controller
             'km_saat_inspeksi' => $request->km_saat_inspeksi,
             'id_supir' => $request->id_supir,
             'id_mobil' => $request->id_mobil,
-            'id_status' => $request->id_status
+            'id_status' => $request->id_status,
+            'alasan_telat' => $request->alasan_telat,
+            'kesimpulan' => $request->kesimpulan
         ]);
-        $data['mobil'] = Mobil::find($request->id_mobil);
-        $data['mobil']->update([
+        foreach($request->detail as $id => $value){
+            TransaksiDetailInspeksi::create([
+                'id_checklist_kendaraan' => $checklist_kendaraan->id,
+                'id_item_inspeksi' => $id,
+                'value' => $value['kondisi'],
+                'ket' => $value['ket'],
+            ]);
+        }
+        $mobil = Mobil::find($request->id_mobil);
+        $mobil->update([
             'km_kendaraan' => $request->km_saat_inspeksi,
             'tgl_inspeksi_selanjutnya' => Carbon::parse($request->tgl_inspeksi)->next(Carbon::MONDAY),
         ]);
-        $data['supir'] = Supir::find($request->id_supir);
-        $data['supir']->update([
+        $supir = Supir::find($request->id_supir);
+        $supir->update([
             'nomor_hp_darurat' => $request->no_hp_darurat
         ]);
         return redirect('checklist-kendaraan')->withSuccess('Berhasil melakukan Inspeksi');
@@ -136,5 +125,130 @@ class ChecklistKendaraanController extends Controller
         }
 
         return view('apps.checklist-kendaraan.admin.show', compact('mobil', 'supir', 'weeksInMonth', 'month', 'year'));
+    }
+
+    public function showInspeksi($id){
+        $checklist_kendaraan = ChecklistKendaraan::find(Crypt::decrypt($id));
+        $detailInspeksi['General'] = TransaksiDetailInspeksi::with(['ItemInspeksi' => function ($query) {
+            $query->where('tipe_inspeksi', 'General');
+        }])->where('id_checklist_kendaraan', $checklist_kendaraan->id)
+        ->whereHas('ItemInspeksi', function ($query) {
+            $query->where('tipe_inspeksi', 'General');
+        })->get();
+        $detailInspeksi['Perlengkapan Safety'] = TransaksiDetailInspeksi::with(['ItemInspeksi' => function ($query) {
+            $query->where('tipe_inspeksi', 'Perlengkapan Safety');
+        }])->where('id_checklist_kendaraan', $checklist_kendaraan->id)
+        ->whereHas('ItemInspeksi', function ($query) {
+            $query->where('tipe_inspeksi', 'Perlengkapan Safety');
+        })->get();
+        $jenis_kendaraan = JenisKendaraan::get();
+        $supir = Supir::find($checklist_kendaraan->id_supir);
+        $mobil = Mobil::find($checklist_kendaraan->id_mobil);
+
+        return view('apps.checklist-kendaraan.admin.show-inspeksi', compact('checklist_kendaraan', 'detailInspeksi', 'jenis_kendaraan', 'supir', 'mobil'));
+    }
+
+    public function approve($id){
+        $checklistKendaraan = ChecklistKendaraan::find($id);
+        $checklistKendaraan->update([
+            'id_status' => 2,
+        ]);
+        return response()->json(['checklist-kendaraan' => $checklistKendaraan, 'status' => 200]);
+    }
+
+    public function return($id){
+        $checklistKendaraan = ChecklistKendaraan::find($id);
+        $checklistKendaraan->update([
+            'id_status' => 3,
+        ]);
+        return response()->json(['checklist-kendaraan' => $checklistKendaraan, 'status' => 200]);
+    }
+
+    public function edit($id){
+        $checklist_kendaraan = ChecklistKendaraan::find($id);
+        $detailInspeksi['General'] = TransaksiDetailInspeksi::with(['ItemInspeksi' => function ($query) {
+            $query->where('tipe_inspeksi', 'General');
+        }])->where('id_checklist_kendaraan', $checklist_kendaraan->id)
+        ->whereHas('ItemInspeksi', function ($query) {
+            $query->where('tipe_inspeksi', 'General');
+        })->get();
+        $detailInspeksi['Perlengkapan Safety'] = TransaksiDetailInspeksi::with(['ItemInspeksi' => function ($query) {
+            $query->where('tipe_inspeksi', 'Perlengkapan Safety');
+        }])->where('id_checklist_kendaraan', $checklist_kendaraan->id)
+        ->whereHas('ItemInspeksi', function ($query) {
+            $query->where('tipe_inspeksi', 'Perlengkapan Safety');
+        })->get();
+        $jenis_kendaraan = JenisKendaraan::get();
+        $supir = Supir::find($checklist_kendaraan->id_supir);
+        $mobil = Mobil::find($checklist_kendaraan->id_mobil);
+
+        return view('apps.checklist-kendaraan.driver.edit', compact('checklist_kendaraan', 'detailInspeksi', 'jenis_kendaraan', 'supir', 'mobil'));
+    }
+
+    public function update(Request $request, $id){
+        TransaksiDetailInspeksi::where('id_checklist_kendaraan', $id)->delete();
+        foreach($request->detail as $index => $value){
+            TransaksiDetailInspeksi::create([
+                'id_checklist_kendaraan' => $id,
+                'id_item_inspeksi' => $index,
+                'value' => $value['kondisi'],
+                'ket' => $value['ket'],
+            ]);
+        }
+        $checklistKendaraan = ChecklistKendaraan::find($id);
+        $checklistKendaraan->update([
+            'id_status' => 1
+        ]);
+        return redirect('checklist-kendaraan');
+    }
+
+    public function print($id){
+        $checklist_kendaraan = ChecklistKendaraan::find(Crypt::decrypt($id));
+        $detailInspeksi['General'] = TransaksiDetailInspeksi::with(['ItemInspeksi' => function ($query) {
+            $query->where('tipe_inspeksi', 'General');
+        }])->where('id_checklist_kendaraan', $checklist_kendaraan->id)
+        ->whereHas('ItemInspeksi', function ($query) {
+            $query->where('tipe_inspeksi', 'General');
+        })->get();
+        $detailInspeksi['Perlengkapan Safety'] = TransaksiDetailInspeksi::with(['ItemInspeksi' => function ($query) {
+            $query->where('tipe_inspeksi', 'Perlengkapan Safety');
+        }])->where('id_checklist_kendaraan', $checklist_kendaraan->id)
+        ->whereHas('ItemInspeksi', function ($query) {
+            $query->where('tipe_inspeksi', 'Perlengkapan Safety');
+        })->get();
+        $supir = Supir::find($checklist_kendaraan->id_supir);
+        $mobil = Mobil::find($checklist_kendaraan->id_mobil);
+        $pdf = Pdf::loadView('apps.checklist-kendaraan.components.print', ([
+            'checklistKendaraan' =>  $checklist_kendaraan,
+            'i' => $detailInspeksi,
+            'supir' => $supir,
+            'mobil' => $mobil,
+        ]))->setPaper('a4', 'potrait');
+        return $pdf->stream();
+    }
+
+    public function download($id){
+        $checklist_kendaraan = ChecklistKendaraan::find(Crypt::decrypt($id));
+        $detailInspeksi['General'] = TransaksiDetailInspeksi::with(['ItemInspeksi' => function ($query) {
+            $query->where('tipe_inspeksi', 'General');
+        }])->where('id_checklist_kendaraan', $checklist_kendaraan->id)
+        ->whereHas('ItemInspeksi', function ($query) {
+            $query->where('tipe_inspeksi', 'General');
+        })->get();
+        $detailInspeksi['Perlengkapan Safety'] = TransaksiDetailInspeksi::with(['ItemInspeksi' => function ($query) {
+            $query->where('tipe_inspeksi', 'Perlengkapan Safety');
+        }])->where('id_checklist_kendaraan', $checklist_kendaraan->id)
+        ->whereHas('ItemInspeksi', function ($query) {
+            $query->where('tipe_inspeksi', 'Perlengkapan Safety');
+        })->get();
+        $supir = Supir::find($checklist_kendaraan->id_supir);
+        $mobil = Mobil::find($checklist_kendaraan->id_mobil);
+        $pdf = Pdf::loadView('apps.checklist-kendaraan.components.print', ([
+            'checklistKendaraan' =>  $checklist_kendaraan,
+            'i' => $detailInspeksi,
+            'supir' => $supir,
+            'mobil' => $mobil,
+        ]))->setPaper('a4', 'potrait');
+        return $pdf->download(''.$checklist_kendaraan->kode_form.'.pdf');
     }
 }

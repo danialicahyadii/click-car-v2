@@ -9,7 +9,7 @@ class ReservasiMobil extends Model
 {
     use HasFactory;
 
-    protected $table = 'reservasi_mobil';
+    protected $table = 'reservasi_mobils';
 
     protected $guarded = [];
     protected $primaryKey = 'id'; // Pastikan sesuai dengan nama kolom primary key
@@ -45,5 +45,12 @@ class ReservasiMobil extends Model
     public function jenisKendaraan()
     {
         return $this->belongsTo(JenisKendaraan::class, 'id_jenis_kendaraan')->withDefault(['nama' => '-']);
+    }
+    /**
+     * Get the entitas.
+     */
+    public function reservasiMobil()
+    {
+        return $this->hasMany(Mobil::class, 'id_mobil');
     }
 }
