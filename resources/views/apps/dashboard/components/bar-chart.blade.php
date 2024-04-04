@@ -283,7 +283,7 @@
         // Lakukan permintaan AJAX
         $.ajax({
             type: "POST",
-            url: "/home/filter-bulan", // Ganti dengan URL tujuan Anda
+            url: "/dashboard/filter-bulan", // Ganti dengan URL tujuan Anda
             data: {
                 filter_type: filterType,
                 month: month

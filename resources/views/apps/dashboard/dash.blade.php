@@ -328,9 +328,10 @@
                             <div class="card-header border-0 align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">RANKING BAR CHART TOP 5</h4>
                                 <div>
-                                    <button type="button" class="btn btn-secondary btn-sm">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#filterModal">
                                         <i class="bx bx-filter mb-0 me-1"></i> Filter Bulan
                                     </button>
+                                    @include('apps.dashboard.components.modal-filter-bulan')
                                 </div>
                             </div><!-- end card header -->
                             <div class="card-body p-2 pb-2">
