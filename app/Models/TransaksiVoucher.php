@@ -9,7 +9,7 @@ class TransaksiVoucher extends Model
 {
     use HasFactory;
 
-    protected $table = 'transaksi_vouchers';
+    protected $table = 'transaksi_voucher';
 
     protected $guarded = [];
 }
