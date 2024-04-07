@@ -112,14 +112,47 @@ class ReservasiMobilController extends Controller
 
     public function store(Request $request)
     {
-        $dateDeparture = Carbon::create($request->tgl_pergi . $request->wktu_pergi);
-        $dateExpired = $dateDeparture->addMinute(30);
-        $waktuKeberangkatan = $dateDeparture->subMinute(10);
+        $message = [
+            'asal.required' => 'asal harus diisi',
+            'tujuan' => 'tujuan harus diisi',
+            'keperluan' => 'keperluan harus diisi',
+            'id_penumpang' => 'penumpang harus diisi',
+            'tgl_pergi' => 'tgl pergi harus diisi',
+            'tgl_pulang' => 'tgl pulang harus diisi',
+            'wktu_pergi' => 'waktu pergi harus diisi',
+            'wktu_plng' => 'waktu pulang harus diisi',
+            'id_atasan' => 'atasan harus diisi',
+            'id_pengantaran' => 'tipe pengantaran harus diisi',
+            'pic' => 'pic harus diisi',
+            'nama' => 'nama harus diisi',
+            'no_tlpn' => 'no telpon harus diisi',
+            'komentar' => 'catatan harus diisi',
+            
+        ];
+        $validatedData = $request->validate([
+            'asal' => 'required',
+            'tujuan' => 'required',
+            'keperluan' => 'required',
+            'id_penumpang' => 'required|array|min:1',
+            'tgl_pergi' => 'required|date',
+            'tgl_pulang' => 'required|date',
+            'wktu_pergi' => 'required|date_format:H:i',
+            'wktu_plng' => 'required|date_format:H:i',
+            'id_atasan' => 'required',
+            'id_pengantaran' => 'required',
+            'pic' => 'required',
+            'nama' => 'required',
+            'no_tlpn' => 'required',
+            'komentar' => 'required',
+        ], $message);
 
+        $dateDeparture = Carbon::create($validatedData['tgl_pergi'] . $validatedData['wktu_pergi']);
+        $dateExpired = $dateDeparture->copy()->addMinute(30);
+        $waktuKeberangkatan = $dateDeparture->copy()->subMinute(10);
         $request->merge([
             'id_user' => Auth::user()->id,
             'id_entitas' => Auth::user()->id_entitas,
-            'jml_penumpang' => count($request->id_penumpang),
+            'jml_penumpang' => count($validatedData['id_penumpang']),
             'id_status' => 1,
             'date_expired' => $dateExpired,
             'waktu_keberangkatan' => $waktuKeberangkatan,
@@ -135,14 +168,15 @@ class ReservasiMobilController extends Controller
                 ]);
             }
         }
-        // ini WA
-        // $atasan = User::where('id', $request->id_atasan)->first();
-        // $this->wa->sendMessageAtasan($atasan, $reservasi_mobil);
+        // Notifikasi WA dan Email
+        $atasan = User::find($reservasi_mobil->id_atasan);
+        $wa = new WhatsappNotifikasiController();
+        $wa->sendMessageApprove($reservasi_mobil, $atasan);
 
         activity()->log('Melakukan Pembuatan Reservasi Mobil dengan ID Pemesanan: ' . $reservasi_mobil->id);
         toast('Permintaan Reservasi ke ' . $reservasi_mobil->tujuan . ' Berhasil!', 'success')->timerProgressBar();
 
-        return redirect(url('reservasi-mobil'));
+        return redirect(url('reservasi-mobil'))->withInput();
     }
 
     public function show($kode_pemesanan)
@@ -169,23 +203,15 @@ class ReservasiMobilController extends Controller
                 'komentar_atasan' => $request->komentar,
     
             ]);
-            $user = User::find($reservasi_mobil->id_user);
-            //ada notif wa ke umum dan requester
-            // $this->wa->sendMessageUmum($reservasi_mobil);
-            // $this->wa->sendMessageSetuju($reservasi_mobil, $user);
-            // try {
-            //     Mail::send('components.approval-atasan(for-admin)', ['reservasi_mobil' => $reservasi_mobil], function ($message) use ($user) {
-            //         $message->subject('Clickcar Kimia Farma');
-            //         $message->from('clickcar.kaef@gmail.com');
-            //         $message->to('andika.ags04@gmail.com');
-            //     });
-            // } catch (Exception $e) {
-            //     return response(['status' => false, 'errors' => $e->getMessage()]);
-            // }
+            $umum = User::whereHas('roles', function($query) {
+                $query->where('name', 'Admin Umum');
+            })->where('id_entitas', $reservasi_mobil->id_entitas)->first();
+            $wa = new WhatsappNotifikasiController();
+            $wa->sendMessageApprove($reservasi_mobil, $umum);
     
             // log activity
-            activity()->log('Reservasi Disetujui oleh Atasan ' . $reservasi_mobil->tujuan);
-            toast('Permintaan Reservasi Telah disetujui atasan', 'success')->timerProgressBar();
+            activity()->log('Reservasi Disetujui oleh Atasan ' . $reservasi_mobil->id);
+            toast('Permintaan Reservasi berhasil diproses', 'success')->timerProgressBar();
         }elseif($reservasi_mobil->id_status == 2){
             if($request->id_status == 3){
                 $reservasi_mobil->update([
@@ -204,10 +230,11 @@ class ReservasiMobilController extends Controller
                 ]);
             }
 
-            // $user = User::find($reservasi_mobil->id_user);
-            // $admin_supir = Supir::with('User')->where('id', 130)->first();
-            // $this->wa->sendMessageSetuju($reservasi_mobil, $user);
-            // $this->wa->sendMessageAdminDriver($reservasi_mobil, $user, $admin_supir);
+            $kaPool = User::whereHas('roles', function($query) {
+                $query->where('name', 'Admin Driver');
+            })->where('id_entitas', $reservasi_mobil->id_entitas)->first();
+            $wa = new WhatsappNotifikasiController();
+            $wa->sendMessageApprove($reservasi_mobil, $kaPool);
 
             // log activity
             activity()->log('Melakukan Update Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
@@ -221,15 +248,12 @@ class ReservasiMobilController extends Controller
                 'id_supir' => $request->id_supir,
                 'komentar_supir' => $request->komentar
             ]);
-            // $user = User::find($reservasi_mobil->id_user);
-            // if ($request->id_status == 4) {
-            //     $voucher = TransaksiVoucher::where('id_reservasi', $reservasi_mobil->id)->get();
-            //     $this->wa->sendMessageGrab($reservasi_mobil, $user, $voucher);
-            // } else {
-            //     $supir = Supir::with('User')->where('id', $reservasi_mobil->id_supir)->first();
-            //     $this->wa->sendMessage($reservasi_mobil, $user);
-            //     $this->wa->sendMessageDriver($reservasi_mobil, $user, $supir);
-            // }
+            
+            $user = User::find($reservasi_mobil->id_user);
+            $driver = Supir::find($reservasi_mobil->id_supir);
+            $wa = new WhatsappNotifikasiController();
+            $wa->sendMessage($reservasi_mobil, $user);
+            $wa->sendMessageDriver($reservasi_mobil, $driver);
 
             // log activity
             activity()->log('Melakukan Approve Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
@@ -250,16 +274,9 @@ class ReservasiMobilController extends Controller
                 'id_status' => 5,
                 'komentar_supir' => $request->komentar
             ]);
-            
-            // $user = User::find($reservasi_mobil->id_user);
-            // if ($request->id_status == 4) {
-            //     $voucher = TransaksiVoucher::where('id_reservasi', $reservasi_mobil->id)->get();
-            //     $this->wa->sendMessageGrab($reservasi_mobil, $user, $voucher);
-            // } else {
-            //     $supir = Supir::with('User')->where('id', $reservasi_mobil->id_supir)->first();
-            //     $this->wa->sendMessage($reservasi_mobil, $user);
-            //     $this->wa->sendMessageDriver($reservasi_mobil, $user, $supir);
-            // }
+            $user = User::find($reservasi_mobil->id_user);
+            $wa = new WhatsappNotifikasiController();
+            $wa->sendMessage($reservasi_mobil, $user);
 
             // log activity
             activity()->log('Melakukan Approve Reservasi Mobil pada ID: ' . $reservasi_mobil->id);
