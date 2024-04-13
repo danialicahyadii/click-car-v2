@@ -1,8 +1,9 @@
 @extends('layouts.app')
 @section('css')
+    <script type='text/javascript' src='{{ URL::asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}'></script>
     <script type='text/javascript' src='{{ URL::asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
-    <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-content')
 <div class="page-content">
@@ -23,7 +24,22 @@
                 </div>
             </div>
         </div>
-        <form action="{{ url('reservasi-mobil/store') }}" method="POST">
+        @if ($errors->any())
+            <!-- Warning Alert -->
+            <div class="alert alert-warning alert-dismissible bg-warning text-white alert-label-icon fade show" role="alert">
+                <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Harap diisi semua !
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            {{-- <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div> --}}
+        @endif
+        <form action="{{ url('reservasi-mobil/store') }}" method="POST" id="form-reservasi">
             @csrf
             <div class="row">
                 <div class="col-xl-12">
@@ -36,14 +52,14 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="basiInput" class="form-label">Asal</label>
-                                        <input type="text" class="form-control" name="asal" id="origin-input" placeholder="Masukkan Lokasi Penjemputan...">
+                                        <input type="text" class="form-control" name="asal" value="{{ old('asal') }}" placeholder="Masukkan Lokasi Penjemputan...">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="basiInput" class="form-label">Tujuan</label>
-                                        <input type="text" class="form-control" name="tujuan" id="destination-input" placeholder="Masukkan Lokasi Tujuan...">
+                                        <input type="text" class="form-control" name="tujuan" value="{{ old('tujuan') }}" placeholder="Masukkan Lokasi Tujuan...">
                                     </div>
                                     <div id="map"></div>
                                 </div>
@@ -51,17 +67,18 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="labelInput" class="form-label">Keperluan</label>
-                                        <input type="text" class="form-control" name="keperluan" placeholder="Masukkan Keperluan...">
+                                        <input type="text" class="form-control" name="keperluan" value="{{ old('keperluan') }}" placeholder="Masukkan Keperluan...">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="placeholderInput" class="form-label">Penumpang</label>
-                                        <select class="form-control penumpang" name="id_penumpang[]" value="1" maxlength="10" multiple="multiple">
+                                        <select class="form-control" data-choices data-choices-removeItem name="id_penumpang[]" multiple>
+                                            <option value="">Pilih Penumpangnya</option>
                                             @foreach ($penumpang as $row)
-                                                <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                            @endforeach  
+                                                <option value="{{ $row->id }}" @if(old('id_penumpang') && in_array($row->id, old('id_penumpang'))) selected @endif>{{ $row->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -69,38 +86,37 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label class="form-label">Tanggal Pergi</label>
-                                        <input type="date" class="form-control flatpickr-input" name="tgl_pergi" id="tgl_pergi">
+                                        <input type="date" class="form-control flatpickr-input" name="tgl_pergi" value="{{ old('tgl_pergi') }}" id="tgl_pergi">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label class="form-label">Tanggal Pulang</label>
-                                        <input type="date" class="form-control flatpickr-input" name="tgl_pulang" id="tgl_pulang">
+                                        <input type="date" class="form-control flatpickr-input" name="tgl_pulang" value="{{ old('tgl_pulang') }}" id="tgl_pulang">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="readonlyInput" class="form-label">Waktu Pergi</label>
-                                        <input type="time" class="form-control" data-provider="timepickr" data-default-time="00:00" name="wktu_pergi" id="wktu_pergi">
+                                        <input type="time" class="form-control" data-provider="timepickr" data-default-time="{{ old('wktu_pergi') }}" name="wktu_pergi" id="wktu_pergi">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="disabledInput" class="form-label">Waktu Pulang</label>
-                                        <input type="time" class="form-control" data-provider="timepickr" data-default-time="00:00" name="wktu_plng" id="wktu_plng">
+                                        <input type="time" class="form-control" data-provider="timepickr" data-default-time="{{ old('wktu_plng') }}" name="wktu_plng" id="wktu_plng">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="iconInput" class="form-label">Pemeriksa Atasan</label>
-                                        <select class="form-control atasan" name="id_atasan">
-                                            {{-- <option selected disabled>Pilih Pemeriksa</option> --}}
+                                        <select class="form-control" name="id_atasan" data-choices data-choices-search-false data-choices-sorting-false>
                                             @foreach ($atasan as $row)
-                                                <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                                <option value="{{ $row->id }}" {{ old('id_atasan') == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -109,11 +125,11 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="iconrightInput" class="form-label">Pengantaran</label>
-                                        <select class="form-control pengantaran" name="id_pengantaran" id="id_pengantaran">
-                                            <option disabled selected>Pilih Pengantaran</option>
-                                            <option value="1">Didrop</option>
-                                            <option value="2">Ditunggu</option>
-                                            <option value="3">Transportasi Online(Voucher)</option>
+                                        <select class="form-control" name="id_pengantaran" id="id_pengantaran" data-choices data-choices-search-false data-choices-sorting-false>
+                                            <option value="" disabled selected>Pilih Pengantaran</option>
+                                            <option value="1" {{ old('id_pengantaran') == 1 ? 'selected' : '' }}>Didrop</option>
+                                            <option value="2" {{ old('id_pengantaran') == 2 ? 'selected' : '' }}>Ditunggu</option>
+                                            <option value="3" {{ old('id_pengantaran') == 3 ? 'selected' : '' }}>Transportasi Online(Voucher)</option>
                                         </select>
                                     </div>
                                 </div>
@@ -121,28 +137,28 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="exampleInputdate" class="form-label">NPP Kifest</label>
-                                        <input type="text" class="form-control" name="pic">
+                                        <input type="text" class="form-control" name="pic" value="{{ old('pic') }}">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="exampleInputtime" class="form-label">Nama Lengkap PIC</label>
-                                        <input type="text" class="form-control" name="nama">
+                                        <input type="text" class="form-control" name="nama" value="{{ old('nama') }}">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="exampleInputpassword" class="form-label">No HP PIC/Penumpang (WA Only)</label>
-                                        <input type="text" class="form-control" name="no_tlpn">
+                                        <input type="text" class="form-control" name="no_tlpn" value="{{ old('no_tlpn') }}">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="exampleFormControlTextarea5" class="form-label">Catatan</label>
-                                        <textarea class="form-control" name="komentar" rows="3"></textarea>
+                                        <textarea class="form-control" name="komentar" value="{{ old('komentar') }}" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <!--end col-->
@@ -200,8 +216,8 @@
                 <!-- end col -->
             </div>
             <div class="form-group mb-4">
-                <a href="{{ url()->previous() }}" class="btn btn-warning"><i class="ri-arrow-go-back-fill"></i> Kembali</a>
-                <button type="submit" class="btn btn-primary"><i class="ri-send-plane-fill"></i> Reservasi</button>
+                <a href="{{ url('reservasi-mobil') }}" class="btn btn-warning"><i class="ri-arrow-go-back-fill"></i> Kembali</a>
+                <button class="btn btn-primary btn-load" id="btnSubmit"><i class="ri-send-plane-fill"></i> Reservasi</button>
             </div>
         </form>
     </div>
@@ -212,8 +228,28 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ URL::asset('assets/js/pages/select2.init.js') }}"></script>
-    @include('apps.reservasi-mobil.components.script-search-google-maps')
+    {{-- @include('apps.reservasi-mobil.components.script-search-google-maps') --}}
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            let form_reservasi = document.getElementById("form-reservasi");
+            let submitButton = document.getElementById("btnSubmit");
+
+                form_reservasi.addEventListener("submit", function(event) {
+                    event.preventDefault(); // Prevent the form from submitting immediately
+
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = `Loading... <span class="spinner-border flex-shrink-0">
+                        <span class="visually-hidden">Loading...</span></span>`;
+
+                    // Set a timeout for 2 seconds (2000 milliseconds)
+                    setTimeout(function() {
+                    // Your code to execute after the timeout (1 seconds) goes here
+                    form_reservasi.submit();
+                    }, 1000);
+                });
+            });
+    </script>
     <script>
         $(document).ready(function() {
             flatpickr("#tgl_pergi, #tgl_pulang", {
@@ -221,6 +257,7 @@
                 maxDate: new Date().fp_incr(14),
                 altInput: true,
                 altFormat: "F j, Y",
+                // defaultDate: "today"
             });
             flatpickr("#wktu_pergi, #wktu_plng", {
                 enableTime: true,
@@ -228,10 +265,13 @@
                 dateFormat: "H:i",
                 time_24hr: true
             });
-            $('.penumpang').select2({
-                placeholder : "Pilih Penumpang",
-            });
-            $('.atasan, .pengantaran, .jenis-kendaraan').select2();
+            $('.jenis-kendaraan').select2();
+            let nilai_pengantaran = $('#id_pengantaran').val();
+            if (nilai_pengantaran && nilai_pengantaran != 3) {
+                $("#request_kendaraan").removeClass("d-none");
+            } else {
+                $("#request_kendaraan").addClass("d-none");
+            }
             $("#id_pengantaran").on('change', function() {
                 let nilai_pengantaran = $('#id_pengantaran').val();
                 if (nilai_pengantaran != 3){
@@ -398,4 +438,14 @@
             });
         });
     </script>
+     @if ($errors->any())
+     <script>
+         Swal.fire({
+             icon: 'warning',
+            //  title: 'Validation Error',
+             html: 'Masih ada yang kosong',
+             confirmButtonText: 'Kembali'
+         });
+     </script>
+     @endif
 @endpush

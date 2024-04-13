@@ -18,4 +18,9 @@ class Supir extends Model
     {
         return $this->belongsTo(Entitas::class, 'id_entitas')->withDefault(['nama' => '-']);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user')->withDefault(['nama' => '-']);
+    }
 }

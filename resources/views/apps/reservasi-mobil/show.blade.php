@@ -183,7 +183,8 @@
                                             <div class="col-lg-6 col-12">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-shrink-0">
-                                                        <img src="{{ asset('assets/img/icon-user.png') }}" alt="" class="avatar-sm rounded-circle">
+                                                        <img src="@if (!empty($reservasi_mobil->supir->user->photo_profile)) {{ URL::asset('profile-images/' . $reservasi_mobil->supir->user->photo_profile) }} @else {{ URL::asset('assets/img/icon-user.png') }}
+                                                        @endif" alt="" class="avatar-sm rounded-circle">
                                                     </div>
                                                     <div class="flex-grow-1 ms-2">
                                                         <h6 class="mb-1"><a href="pages-profile.html">{{ $reservasi_mobil->supir->nama }}</a></h6>

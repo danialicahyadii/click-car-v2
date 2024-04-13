@@ -16,10 +16,21 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    public function index(Request $request): View
+    {
+        $activity_log = ActivityLog::whereDate('created_at', Carbon::now()->toDateString())->get();
+        return view('users.profile.profile', [
+            'user' => $request->user(),
+            'activity_log' => $activity_log
+        ]);
+    }
+    /**
+     * Display the user's profile form.
+     */
     public function edit(Request $request): View
     {
         $activity_log = ActivityLog::whereDate('created_at', Carbon::now()->toDateString())->get();
-        return view('users.profile.edit2', [
+        return view('users.profile.edit', [
             'user' => $request->user(),
             'activity_log' => $activity_log
         ]);

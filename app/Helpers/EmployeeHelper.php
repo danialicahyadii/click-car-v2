@@ -34,12 +34,12 @@ class EmployeeHelper
         }
 
         $topPenumpangs = User::join('penumpang', 'penumpang.id_user', '=', 'users.id')
-        ->join('reservasi_mobils','penumpang.id_reservasi','=','reservasi_mobils.id')
+        ->join('reservasi_mobil','penumpang.id_reservasi','=','reservasi_mobil.id')
         ->select('users.*', DB::raw('COUNT(users.id) as reservation_count'))
-        ->whereBetween('reservasi_mobils.created_at', [$startDate, $endDate])
+        ->whereBetween('reservasi_mobil.created_at', [$startDate, $endDate])
         ->groupBy('users.id');
         if (Auth::user()->roles->first()->name == 'Requester') {
-            $topPenumpangs->where('reservasi_mobils.id_user', Auth::user()->id);
+            $topPenumpangs->where('reservasi_mobil.id_user', Auth::user()->id);
         }
             $topPenumpangs->orderByDesc('reservation_count')
             ->limit($limit)

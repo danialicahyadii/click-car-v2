@@ -14,7 +14,7 @@ class PermissionController extends Controller
     public function index()
     {
         $data['permission'] = Permission::get();
-        return view('users.permission.index', compact('data'));
+        return view('users.comingsoon', compact('data'));
     }
 
     /**

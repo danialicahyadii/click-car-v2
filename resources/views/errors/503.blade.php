@@ -1,6 +1,7 @@
 @extends('errors.layouts.app')
 @section('title', 'Maintenance')
 @section('content')
+<div class="auth-page-wrapper pt-1">
     <!-- auth page bg -->
     <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
         <div class="bg-overlay"></div>
@@ -22,13 +23,13 @@
                             <h1 class="display-5 coming-soon-text">Site is Under Maintenance</h1>
                             <p class="fs-14">Please check back in sometime</p>
                             <div class="mt-4 pt-2">
-                                <a href="https://kifest.kimiafarma.co.id/" class="btn btn-success"><i class="mdi mdi-home me-1"></i> Back to Home</a>
+                                <a href="https://kifest.kimiafarma.co.id/" class="btn btn-success"><i class="mdi mdi-home me-1"></i> Back to Kifest</a>
                             </div>
                         </div>
                         <div class="row justify-content-center mb-5">
                             <div class="col-xl-4 col-lg-8">
                                 <div>
-                                    <img src="assets/images/maintenance.png" alt="" class="img-fluid">
+                                    <img src="{{ asset('assets/images/maintenance.png') }}" alt="" class="img-fluid">
                                 </div>
                             </div>
                         </div>
@@ -41,4 +42,9 @@
         <!-- end container -->
     </div>
     <!-- end auth page content -->
+
+    @include('errors.components.footer')
+
+</div>
+<!-- end auth-page-wrapper -->
 @endsection

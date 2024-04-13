@@ -93,10 +93,12 @@ Route::middleware('auth')->group(function () {
         Route::get('download/{id}', [ChecklistKendaraanController::class, 'download']);
     });
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware(SetTitle::class . ':Profile');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index')->middleware(SetTitle::class . ':Profile');
+    Route::get('/profile/edit/{param}', [ProfileController::class, 'edit'])->name('profile.edit')->middleware(SetTitle::class . ':Profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('activity-log', [ActivityLogController::class, 'index'])->middleware(SetTitle::class . ':Activity Log');
+    Route::post('/upload-profile-image/{id}', [UserController::class, 'uploadProfileImage']);
 
     Route::resource('users', UserController::class)->middleware(SetTitle::class . ':Users');
     Route::resource('roles', RoleController::class)->middleware(SetTitle::class . ':Roles');

@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use Error;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Throwable;
 
@@ -33,6 +37,12 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof ServiceUnavailableHttpException) {
             return response()->view('errors.503', [], 503);
+        }elseif($exception instanceof NotFoundHttpException){
+            return response()->view('errors.404', [], 404);
+        }elseif($exception instanceof Error){
+            return response()->view('errors.500', [], 500);
+        }elseif ($exception instanceof TokenMismatchException) {
+            return redirect('/'); // atau arahkan ke halaman login jika lebih tepat
         }
 
         return parent::render($request, $exception);

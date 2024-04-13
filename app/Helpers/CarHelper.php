@@ -133,13 +133,13 @@ class CarHelper
             $endDate = Carbon::now()->endOfMonth()->month($month);
         }
         $topCars = DB::table('master_mobil')
-        ->join('reservasi_mobils', 'master_mobil.id', '=', 'reservasi_mobils.id_mobil')
-        ->join('master_entitas', 'reservasi_mobils.id_entitas', '=', 'master_entitas.id')
-        ->select('master_mobil.*', 'master_entitas.nama as nama_entitas', DB::raw('COUNT(reservasi_mobils.id) as reservation_count'))
-        ->whereBetween('reservasi_mobils.created_at', [$startDate, $endDate])
+        ->join('reservasi_mobil', 'master_mobil.id', '=', 'reservasi_mobil.id_mobil')
+        ->join('master_entitas', 'reservasi_mobil.id_entitas', '=', 'master_entitas.id')
+        ->select('master_mobil.*', 'master_entitas.nama as nama_entitas', DB::raw('COUNT(reservasi_mobil.id) as reservation_count'))
+        ->whereBetween('reservasi_mobil.created_at', [$startDate, $endDate])
         ->groupBy('master_mobil.id', 'master_entitas.nama');
         if(Auth::user()->roles->first()->name == 'Requester') {
-            $topCars->where('reservasi_mobils.id_user', Auth::user()->id);
+            $topCars->where('reservasi_mobil.id_user', Auth::user()->id);
         }
         $topCars->orderByDesc('reservation_count')
         ->limit($limit);
