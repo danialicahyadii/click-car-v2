@@ -10,11 +10,6 @@
                             <div class="p-lg-5 p-4 auth-one-bg h-100">
                                 <div class="bg-overlay"></div>
                                 <div class="position-relative h-100 d-flex flex-column">
-                                    {{-- <div class="mb-4 float-end">
-                                        <a href="index.html" class="d-block">
-                                            <img src="{{ asset('assets/img/logo.png') }}" alt="" height="45">
-                                        </a>
-                                    </div> --}}
                                     <div class="mt-auto">
                                         <div class="mb-3">
                                             <i class="ri-double-quotes-l display-4 text-success"></i>
@@ -71,11 +66,6 @@
                                                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                             </div>
                                         </div>
-{{-- 
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
-                                            <label class="form-check-label" for="auth-remember-check">Remember me</label>
-                                        </div> --}}
 
                                         <div class="mt-4 mb-5">
                                             <button class="btn btn-success w-100" type="submit">Masuk</button>
@@ -95,10 +85,6 @@
 
                                     </form>
                                 </div>
-
-                                {{-- <div class="mt-5 text-center">
-                                    <p class="mb-0">Don't have an account ? <a href="auth-signup-cover.html" class="fw-semibold text-primary text-decoration-underline"> Signup</a> </p>
-                                </div> --}}
                             </div>
                         </div>
                         <!-- end col -->
