@@ -1,6 +1,6 @@
 @extends('layouts.guest')
 @section('content')
-{{-- <div class="auth-page-content overflow-hidden pt-lg-5">
+<div class="auth-page-content overflow-hidden pt-lg-5">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -75,10 +75,20 @@
                                             <div class="signin-other-title">
                                                 <h5 class="fs-13 mb-4 title"></h5>
                                             </div>
+
+                                            {{-- <div>
+                                                <img src="{{ asset('assets/img/logo-bumn.png') }}" alt="" height="25" style="margin-top:12px">
+                                                <span class="m-4"></span>
+                                                <img src="{{ asset('assets/img/logo-kimiafarma.png') }}" alt="" height="35">
+                                            </div> --}}
                                         </div>
 
                                     </form>
                                 </div>
+
+                                {{-- <div class="mt-5 text-center">
+                                    <p class="mb-0">Don't have an account ? <a href="auth-signup-cover.html" class="fw-semibold text-primary text-decoration-underline"> Signup</a> </p>
+                                </div> --}}
                             </div>
                         </div>
                         <!-- end col -->
@@ -93,5 +103,5 @@
         <!-- end row -->
     </div>
     <!-- end container -->
-</div> --}}
+</div>
 @endsection
