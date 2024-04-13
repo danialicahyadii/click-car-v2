@@ -7,6 +7,8 @@
 <script src="{{ URL::asset('assets/js/plugins.js') }}"></script>
 
 <!-- particles js -->
-<script src="{{ asset('assets/libs/particles.js/particles.js') }}"></script>
+<script src="{{ URL::asset('assets/libs/particles.js/particles.js') }}"></script>
 <!-- particles app js -->
-<script src="{{ asset('assets/js/pages/particles.app.js') }}"></script>
+<script src="{{ URL::asset('assets/js/pages/particles.app.js') }}"></script>
+<!-- Countdown js -->
+<script src="{{ URL::asset('assets/js/pages/coming-soon.init.js') }}"></script>

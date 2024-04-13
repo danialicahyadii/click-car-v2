@@ -37,7 +37,7 @@ Mobil: '.$reservasi_mobil->mobil->nama.'
 Rute: '.$reservasi_mobil->asal.' - '.$reservasi_mobil->tujuan.'
 Waktu: '.$reservasi_mobil->waktu_keberangkatan.'
 Driver: '.$reservasi_mobil->supir->nama.'
-WA Driver: wa.me/'.$reservasi_mobil->supir->nomor_hp.'
+Phone : wa.me/'.$reservasi_mobil->supir->nomor_hp.'
 Link Detail: '.(url('reservasi-mobil/show', $reservasi_mobil->kode_pemesanan)).'
 
 Terima kasih! 🚗✅.
@@ -157,7 +157,7 @@ Pemesan: '.$reservasi_mobil->user->name.'
 Mobil: '.$reservasi_mobil->mobil->name.'
 Tujuan: '.$reservasi_mobil->tujuan.'
 Waktu: '.$reservasi_mobil->waktu_keberangkatan.' 
-Hub: wa.me/'.$reservasi_mobil->user->nomor_hp.'
+Phone: wa.me/'.$reservasi_mobil->user->nomor_hp.'
 
 Klik link di bawah ini untuk memulai perjalanan:
 '.(url('reservasi-mobil/show', $reservasi_mobil->kode_pemesanan)).'

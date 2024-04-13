@@ -176,13 +176,13 @@ class DriverHelper
 
         // Lakukan pencarian driver dengan rating tertinggi di RatingLog.
         $topDrivers = DB::table('master_driver')
-            ->join('reservasi_mobils', 'master_driver.id', '=', 'reservasi_mobils.id_supir')
+            ->join('reservasi_mobil', 'master_driver.id', '=', 'reservasi_mobil.id_supir')
             ->join('master_entitas', 'master_driver.id_entitas', '=', 'master_entitas.id')
-            ->select('master_driver.*', 'master_entitas.nama as nama_entitas', DB::raw('MAX(reservasi_mobils.rating_driver) as highest_rating'), DB::raw('COUNT(reservasi_mobils.id) as reservation_count'))
-            ->whereBetween('reservasi_mobils.created_at', [$startDate, $endDate]);
+            ->select('master_driver.*', 'master_entitas.nama as nama_entitas', DB::raw('MAX(reservasi_mobil.rating_driver) as highest_rating'), DB::raw('COUNT(reservasi_mobil.id) as reservation_count'))
+            ->whereBetween('reservasi_mobil.created_at', [$startDate, $endDate]);
             
         if (Auth::user()->roles->first()->name == 'Requester') {
-            $topDrivers->where('reservasi_mobils.id_user', Auth::user()->id);
+            $topDrivers->where('reservasi_mobil.id_user', Auth::user()->id);
         }
         $topDrivers->groupBy('master_driver.id')
         ->orderByDesc('highest_rating')

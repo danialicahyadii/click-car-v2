@@ -1,5 +1,5 @@
 <!-- App favicon -->
-<link rel="shortcut icon" href="assets/images/favicon.ico">
+<link rel="shortcut icon" href="{{ URL::asset('assets/img/logo.jpg') }}">
 
 <!-- Layout config Js -->
 <script src="{{ URL::asset('assets/js/layout.js') }}"></script>

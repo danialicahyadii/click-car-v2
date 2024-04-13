@@ -25,13 +25,19 @@
             </div>
         </div>
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <!-- Warning Alert -->
+            <div class="alert alert-warning alert-dismissible bg-warning text-white alert-label-icon fade show" role="alert">
+                <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Harap diisi semua !
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            {{-- <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-            </div>
+            </div> --}}
         @endif
         <form action="{{ url('reservasi-mobil/store') }}" method="POST" id="form-reservasi">
             @csrf
@@ -260,6 +266,12 @@
                 time_24hr: true
             });
             $('.jenis-kendaraan').select2();
+            let nilai_pengantaran = $('#id_pengantaran').val();
+            if (nilai_pengantaran && nilai_pengantaran != 3) {
+                $("#request_kendaraan").removeClass("d-none");
+            } else {
+                $("#request_kendaraan").addClass("d-none");
+            }
             $("#id_pengantaran").on('change', function() {
                 let nilai_pengantaran = $('#id_pengantaran').val();
                 if (nilai_pengantaran != 3){
@@ -431,7 +443,7 @@
          Swal.fire({
              icon: 'warning',
             //  title: 'Validation Error',
-             html: 'Harap cek kembali field',
+             html: 'Masih ada yang kosong',
              confirmButtonText: 'Kembali'
          });
      </script>

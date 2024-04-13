@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('css')
+<meta http-equiv="refresh" content="30">
+@endsection
 @section('page-content')
 <div class="page-content">
     <div class="container-fluid">

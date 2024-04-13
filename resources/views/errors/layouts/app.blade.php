@@ -10,13 +10,7 @@
 
 <body>
 
-    <div class="auth-page-wrapper pt-5">
-        @yield('content')
-
-        @include('errors.components.footer')
-
-    </div>
-    <!-- end auth-page-wrapper -->
+    @yield('content')
 
     @include('errors.components.scripts')
 
