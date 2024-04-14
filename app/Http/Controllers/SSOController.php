@@ -65,7 +65,7 @@ class SSOController extends Controller
         } else {
             return redirect('/login');
         }
-
+        activity()->log('Melakukan Login Aplikasi');
         return redirect('/');
     }
 
