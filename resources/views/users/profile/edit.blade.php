@@ -50,6 +50,13 @@
             </div>
             <!--end col-->
             <div class="col-xxl-9">
+                @if ($errors->any())
+                <!-- Warning Alert -->
+                <div class="alert alert-warning alert-dismissible bg-warning text-white alert-label-icon fade show" role="alert">
+                    <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Harap diisi semua!
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
                 <div class="card mt-xxl-n5">
                     <div class="card-header">
                         <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
@@ -68,21 +75,20 @@
                     <div class="card-body p-4">
                         <div class="tab-content">
                             <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                                <form method="post" action="{{ route('profile.update') }}">
+                                <form method="post" action="{{ url('profile/update', $supir->id) }}">
                                     @csrf
-                                    @method('patch')
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="firstnameInput" class="form-label">Nama</label>
-                                                <input type="text" class="form-control" value="{{ $user->name }}" name="nama" placeholder="Enter your firstname" disabled>
+                                                <input type="text" class="form-control" value="{{ $user->name }}" placeholder="Enter your firstname" disabled>
                                             </div>
                                         </div>
                                         <!--end col-->
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="phonenumberInput" class="form-label">Nomor Handphone</label>
-                                                <input type="text" class="form-control" name="nomor_hp" placeholder="Enter your phone number" value="+{{ $user->nomor_hp }}">
+                                                <input type="text" class="form-control" name="nomor_hp" placeholder="Enter your phone number" value="{{ $user->nomor_hp }}">
                                             </div>
                                         </div>
                                         <!--end col-->
@@ -91,14 +97,14 @@
                                                 <label for="emailInput" class="form-label">Jenis Kelamin</label>
                                                 <div class="mt-2 align-self-center">
                                                     <div class="form-check mb-2 form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" name="jk" @if (!empty($user->supir->jk)) @if ($user->supir->jk == 'l') checked @endif @endif>
+                                                        <input class="form-check-input" type="radio" name="jk" value="l" @if (!empty($user->supir->jk)) @if ($user->supir->jk == 'l') checked @endif @endif>
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Laki - laki
                                                         </label>
                                                     </div>
     
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" name="jk" @if (!empty($user->supir->jk)) @if ($user->supir->jk == 'p') checked @endif @endif>
+                                                        <input class="form-check-input" type="radio" name="jk" value="p" @if (!empty($user->supir->jk)) @if ($user->supir->jk == 'p') checked @endif @endif>
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             Perempuan
                                                         </label>
@@ -117,7 +123,8 @@
                                         <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="emailInput" class="form-label">Tanggal Lahir</label>
-                                                <input type="text" class="form-control" data-provider="flatpickr" name="ttl" data-date-format="d M, Y" data-deafult-date="{{ Carbon::createFromFormat('Y-m-d', $user->supir->ttl)->format('d M, Y') }}" placeholder="Select date" />
+                                                {{-- <input type="text" class="form-control" data-provider="flatpickr" name="ttl" data-date-format="d M, Y" data-default-date="{{ Carbon::createFromFormat('Y-m-d', $user->supir->ttl)->format('d M, Y') }}" placeholder="Select date" /> --}}
+                                                <input type="date" class="form-control flatpickr-input" name="ttl" id="ttl" value="{{ $user->supir->ttl }}">
                                             </div>
                                         </div>
                                         <!--end col-->
@@ -147,7 +154,8 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label for="JoiningdatInput" class="form-label">Masa Berlaku SIM A</label>
-                                                <input type="text" class="form-control" name="habis_sim" data-provider="flatpickr" data-date-format="d M, Y" data-deafult-date="{{ Carbon::createFromFormat('Y-m-d', $user->supir->habis_sim)->format('d M, Y') }}" placeholder="Select date" />
+                                                {{-- <input type="text" class="form-control" name="habis_sim" data-provider="flatpickr" data-date-format="d M, Y" data-deafult-date="{{ Carbon::createFromFormat('Y-m-d', $user->supir->habis_sim)->format('d M, Y') }}" placeholder="Select date" /> --}}
+                                                <input type="date" class="form-control flatpickr-input" name="habis_sim" id="habis_sim" value="{{ $user->supir->habis_sim }}">
                                             </div>
                                         </div>
                                         <!--end col-->
@@ -167,8 +175,8 @@
                                         <!--end col-->
                                         <div class="col-lg-12">
                                             <div class="hstack gap-2 justify-content-end">
-                                                <button type="submit" class="btn btn-primary">Update</button>
-                                                <button type="button" class="btn btn-soft-success">Cancel</button>
+                                                <button type="submit" class="btn btn-primary" id="btnUpdate">Update</button>
+                                                <button type="button" class="btn btn-soft-success" id="btnCancel">Cancel</button>
                                             </div>
                                         </div>
                                         <!--end col-->
@@ -302,4 +310,33 @@
 @endsection
 @push('js')
 <script src="{{ asset('assets/js/pages/profile-setting.init.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#btnCancel').click(function(){
+            window.location.href = '/profile'; // ganti dengan URL halaman profil Anda
+        });
+        let ttl = $('#ttl').val();
+        flatpickr("#ttl", {
+                altInput: true,
+                altFormat: "F j, Y",
+                defaultDate: ttl
+            });
+        let habis_sim = $('#habis_sim').val();
+        flatpickr("#habis_sim", {
+                altInput: true,
+                altFormat: "F j, Y",
+                defaultDate: habis_sim
+            });
+    });
+</script>
+@if ($errors->any())
+     <script>
+         Swal.fire({
+             icon: 'warning',
+            //  title: 'Validation Error',
+             html: 'Masih ada yang kosong',
+             confirmButtonText: 'Kembali'
+         });
+     </script>
+     @endif
 @endpush

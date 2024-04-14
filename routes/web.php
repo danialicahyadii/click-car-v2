@@ -99,6 +99,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('activity-log', [ActivityLogController::class, 'index'])->middleware(SetTitle::class . ':Activity Log');
     Route::post('/upload-profile-image/{id}', [UserController::class, 'uploadProfileImage']);
+    Route::post('/profile/update/{id}', [ProfileController::class, 'updateProfile']);
 
     Route::resource('users', UserController::class)->middleware(SetTitle::class . ':Users');
     Route::resource('roles', RoleController::class)->middleware(SetTitle::class . ':Roles');

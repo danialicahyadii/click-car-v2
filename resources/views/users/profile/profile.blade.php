@@ -46,15 +46,10 @@
                         <ul class="nav nav-pills animation-nav profile-nav gap-2 gap-lg-3 flex-grow-1" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link fs-14 active" data-bs-toggle="tab" href="#overview-tab" role="tab" aria-selected="true">
-                                    <i class="ri-airplay-fill d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Overview</span>
+                                    <i class="ri-airplay-fill d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Ringkasan</span>
                                 </a>
                             </li>
                             {{-- <li class="nav-item" role="presentation">
-                                <a class="nav-link fs-14" data-bs-toggle="tab" href="#activities" role="tab" aria-selected="false" tabindex="-1">
-                                    <i class="ri-list-unordered d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Activities</span>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
                                 <a class="nav-link fs-14" data-bs-toggle="tab" href="#projects" role="tab" aria-selected="false" tabindex="-1">
                                     <i class="ri-price-tag-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Projects</span>
                                 </a>
@@ -75,7 +70,7 @@
                     <div class="tab-content pt-4 text-muted">
                         <div class="tab-pane active" id="overview-tab" role="tabpanel">
                             <div class="row">
-                                <div class="col-xxl-3">
+                                <div class="col-3">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title mb-3">Info</h5>
@@ -83,24 +78,40 @@
                                                 <table class="table table-borderless mb-0">
                                                     <tbody>
                                                         <tr>
-                                                            <th class="ps-0" scope="row">Full Name :</th>
-                                                            <td class="text-muted">{{ $user->name }}</td>
+                                                            <th class="ps-0" scope="row">
+                                                                <i class="ri-eye-2-line"></i>
+                                                            </th>
+                                                            <td class="ps-0">
+                                                                <strong>NPP</strong><br>
+                                                                <span class="text-muted">{{ Auth::user()->npp }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
-                                                            <th class="ps-0" scope="row">NPP :</th>
-                                                            <td class="text-muted">{{ $user->npp }}</td>
+                                                            <th class="ps-0" scope="row">
+                                                                <i class="ri-phone-line"></i>
+                                                            </th>
+                                                            <td class="ps-0">
+                                                                <strong>Nomor HP</strong><br>
+                                                                <span class="text-muted">+{{ Auth::user()->nomor_hp }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
-                                                            <th class="ps-0" scope="row">Mobile :</th>
-                                                            <td class="text-muted">{{ $user->nomor_hp }}</td>
+                                                            <th class="ps-0" scope="row">
+                                                                <i class="ri-building-line"></i>
+                                                            </th>
+                                                            <td class="ps-0">
+                                                                <strong>Kode Entitas</strong><br>
+                                                                <span class="text-muted">{{ Auth::user()->kode_entitas }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
-                                                            <th class="ps-0" scope="row">E-mail :</th>
-                                                            <td class="text-muted">{{ $user->email }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="ps-0" scope="row">Entitas :</th>
-                                                            <td class="text-muted">{{ $user->nama_entitas }}</td>
+                                                            <th class="ps-0" scope="row">
+                                                                <i class="ri-mail-open-line"></i>
+                                                            </th>
+                                                            <td class="ps-0">
+                                                                <strong>E-mail</strong><br>
+                                                                <span class="text-muted">{{ Auth::user()->email }}</span>
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -110,9 +121,96 @@
 
                                 </div>
                                 <!--end col-->
-                                <div class="col-xxl-9">
+                                <div class="col-9">
                                     <div class="row">
                                         <div class="col-lg-12">
+                                            @role('Admin Driver|Driver')
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-3">Data Pribadi</h5>
+                                                    <div class="row mb-4">
+                                                        <div class="col-md-6">
+                                                            <dl class="row mb-4">
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Nama Lengkap</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->name }}</dd>
+                                                                
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Jenis Kelamin</dt>
+                                                                @if (!empty($supir->jk))    
+                                                                    @if ($supir->jk == 'l')
+                                                                        <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Laki-laki</dd>
+                                                                    @else 
+                                                                        <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Perempuan</dd>
+                                                                    @endif
+                                                                @else
+                                                                    <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">-</dd>
+                                                                @endif
+                
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Tempat, Tanggal Lahir</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->supir->tempat ?? '-' }}, {{ Carbon::parse(Auth::user()->supir->ttl)->locale('id')->isoFormat('D MMMM YYYY') }}</dd>
+                                
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">SIM</dt>
+                                                                @if (!empty($supir->sim))
+                                                                    <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">
+                                                                        @foreach (json_decode($supir->sim) as $item)
+                                                                        <div class="badge fw-medium bg-secondary-subtle text-secondary">{{ $item }}</div>
+                                                                        @endforeach
+                                                                    </dd>
+                                                                @else
+                                                                    <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">-</dd>
+                                                                @endif
+                                            
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Jenis SIM A</dt>
+                                                                @if (!empty($supir->jenis_sim))
+                                                                    @if ($supir->jenis_sim == 1)
+                                                                        <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Perorangan</dd>
+                                                                    @else
+                                                                        <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Umum</dd>
+                                                                    @endif
+                                                                @else
+                                                                    <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">-</dd>
+                                                                @endif
+                
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Masa Berlaku SIM A</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Carbon::parse(Auth::user()->supir->habis_sim)->locale('id')->isoFormat('D MMMM YYYY') }}</dd>
+                                                                
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Alamat</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ $supir->alamat ?? '-' }}</dd>
+                
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Alamat</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ $supir->alamat ?? '-' }}</dd>
+                                                            </dl>
+                                                        </div>
+                                
+                                                        <div class="col-md-6">
+                                                            <dl class="row mb-4">
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Nama Jabatan</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->nama_jabatan }}</dd>
+                                
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Tingkat Jabatan</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->nama_level_jabatan }}</dd>
+                
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Bagian</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->nama_bagian }}</dd>
+                                            
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Unit</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->nama_unit }}</dd>
+                                            
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Divisi</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->nama_divisi }}</dd>
+                                            
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Direktorat</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->nama_direktorat }}</dd>
+                                            
+                                                                <dt class="col-sm-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">Entitas</dt>
+                                                                <dd class="col-sm-8" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">{{ Auth::user()->nama_entitas }}</dd>
+                                                            </dl>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end card-body-->
+                                            </div>
+                                            <!--end card-->
+                                            @endrole
                                             <div class="card">
                                                 <div class="card-header align-items-center d-flex">
                                                     <h4 class="card-title mb-0  me-2">Recent Activity</h4>
@@ -543,155 +641,7 @@
                             </div>
                             <!--end row-->
                         </div>
-                        <div class="tab-pane fade" id="activities" role="tabpanel">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title mb-3">Activities</h5>
-                                    <div class="acitivity-timeline">
-                                        <div class="acitivity-item d-flex">
-                                            <div class="flex-shrink-0">
-                                                <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Oliver Phillips <span class="badge bg-soft-primary text-primary align-middle">New</span></h6>
-                                                <p class="text-muted mb-2">We talked about a project on linkedin.</p>
-                                                <small class="mb-0 text-muted">Today</small>
-                                            </div>
-                                        </div>
-                                        <div class="acitivity-item py-3 d-flex">
-                                            <div class="flex-shrink-0 avatar-xs acitivity-avatar">
-                                                <div class="avatar-title bg-soft-success text-success rounded-circle">
-                                                    N
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Nancy Martino <span class="badge bg-soft-secondary text-secondary align-middle">In Progress</span></h6>
-                                                <p class="text-muted mb-2"><i class="ri-file-text-line align-middle ms-2"></i> Create new project Buildng product</p>
-                                                <div class="avatar-group mb-2">
-                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Christi">
-                                                        <img src="assets/images/users/avatar-4.jpg" alt="" class="rounded-circle avatar-xs" />
-                                                    </a>
-                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Frank Hook">
-                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="rounded-circle avatar-xs" />
-                                                    </a>
-                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title=" Ruby">
-                                                        <div class="avatar-xs">
-                                                            <div class="avatar-title rounded-circle bg-light text-primary">
-                                                                R
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="more">
-                                                        <div class="avatar-xs">
-                                                            <div class="avatar-title rounded-circle">
-                                                                2+
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <small class="mb-0 text-muted">Yesterday</small>
-                                            </div>
-                                        </div>
-                                        <div class="acitivity-item py-3 d-flex">
-                                            <div class="flex-shrink-0">
-                                                <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Natasha Carey <span class="badge bg-soft-success text-success align-middle">Completed</span>
-                                                </h6>
-                                                <p class="text-muted mb-2">Adding a new event with attachments</p>
-                                                <div class="row">
-                                                    <div class="col-xxl-4">
-                                                        <div class="row border border-dashed gx-2 p-2 mb-2">
-                                                            <div class="col-4">
-                                                                <img src="assets/images/small/img-2.jpg" alt="" class="img-fluid rounded" />
-                                                            </div>
-                                                            <!--end col-->
-                                                            <div class="col-4">
-                                                                <img src="assets/images/small/img-3.jpg" alt="" class="img-fluid rounded" />
-                                                            </div>
-                                                            <!--end col-->
-                                                            <div class="col-4">
-                                                                <img src="assets/images/small/img-4.jpg" alt="" class="img-fluid rounded" />
-                                                            </div>
-                                                            <!--end col-->
-                                                        </div>
-                                                        <!--end row-->
-                                                    </div>
-                                                </div>
-                                                <small class="mb-0 text-muted">25 Nov</small>
-                                            </div>
-                                        </div>
-                                        <div class="acitivity-item py-3 d-flex">
-                                            <div class="flex-shrink-0">
-                                                <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Bethany Johnson</h6>
-                                                <p class="text-muted mb-2">added a new member to velzon dashboard</p>
-                                                <small class="mb-0 text-muted">19 Nov</small>
-                                            </div>
-                                        </div>
-                                        <div class="acitivity-item py-3 d-flex">
-                                            <div class="flex-shrink-0">
-                                                <div class="avatar-xs acitivity-avatar">
-                                                    <div class="avatar-title rounded-circle bg-soft-danger text-danger">
-                                                        <i class="ri-shopping-bag-line"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Your order is placed <span class="badge bg-soft-danger text-danger align-middle ms-1">Out of Delivery</span></h6>
-                                                <p class="text-muted mb-2">These customers can rest assured their order has been placed.</p>
-                                                <small class="mb-0 text-muted">16 Nov</small>
-                                            </div>
-                                        </div>
-                                        <div class="acitivity-item py-3 d-flex">
-                                            <div class="flex-shrink-0">
-                                                <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Lewis Pratt</h6>
-                                                <p class="text-muted mb-2">They all have something to say
-                                                    beyond the words on the page. They can come across as
-                                                    casual or neutral, exotic or graphic. </p>
-                                                <small class="mb-0 text-muted">22 Oct</small>
-                                            </div>
-                                        </div>
-                                        <div class="acitivity-item py-3 d-flex">
-                                            <div class="flex-shrink-0">
-                                                <div class="avatar-xs acitivity-avatar">
-                                                    <div class="avatar-title rounded-circle bg-soft-info text-info">
-                                                        <i class="ri-line-chart-line"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Monthly sales report</h6>
-                                                <p class="text-muted mb-2">
-                                                      <span class="text-danger">2 days left</span> notification to submit the monthly sales report. <a href="javascript:void(0);" class="link-warning text-decoration-underline">Reports Builder</a>
-                                                </p>
-                                                <small class="mb-0 text-muted">15 Oct</small>
-                                            </div>
-                                        </div>
-                                        <div class="acitivity-item d-flex">
-                                            <div class="flex-shrink-0">
-                                                <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">New ticket received <span class="badge bg-soft-success text-success align-middle">Completed</span></h6>
-                                                <p class="text-muted mb-2">User <span class="text-secondary">Erica245</span> submitted a ticket.</p>
-                                                <small class="mb-0 text-muted">26 Aug</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--end card-body-->
-                            </div>
-                            <!--end card-->
-                        </div>
-                        <!--end tab-pane-->
-                        <div class="tab-pane fade" id="projects" role="tabpanel">
+                        {{-- <div class="tab-pane fade" id="projects" role="tabpanel">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -1259,9 +1209,9 @@
                                 <!--end card-body-->
                             </div>
                             <!--end card-->
-                        </div>
+                        </div> --}}
                         <!--end tab-pane-->
-                        <div class="tab-pane fade" id="documents" role="tabpanel">
+                        {{-- <div class="tab-pane fade" id="documents" role="tabpanel">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4">
@@ -1480,7 +1430,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!--end tab-pane-->
                     </div>
                     <!--end tab-content-->
