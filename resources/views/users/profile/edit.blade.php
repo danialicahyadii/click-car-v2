@@ -7,9 +7,9 @@
 @section('page-content')
 <div class="page-content">
     <div class="container-fluid">
-        <div class="position-relative mx-n4 mt-n4">
+        <input type="text" id="id" value="{{ $user->id }}" hidden>
+        {{-- <div class="position-relative mx-n4 mt-n4">
             <div class="profile-wid-bg profile-setting-img">
-                <input type="text" id="id" value="{{ $user->id }}" hidden>
                 <img src="{{ URL::asset('assets/images/profile-bg.jpg') }}" class="profile-wid-img" alt="">
                 <div class="overlay-content">
                     <div class="text-end p-3">
@@ -22,8 +22,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
+        </div> --}}
+        <div class="row mt-5">
             <div class="col-xxl-3">
                 <div class="card mt-n5">
                     <div class="card-body p-4">
@@ -41,6 +41,8 @@
                                     </label>
                                 </div>
                             </div>
+                            <h5 class="fs-16 mb-1">{{ $user->name }}</h5>
+                            <p class="text-muted mb-0">{{ $user->roles->first()->name }}</p>
                         </div>
                     </div>
                 </div>
@@ -66,12 +68,14 @@
                     <div class="card-body p-4">
                         <div class="tab-content">
                             <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                                <form action="javascript:void(0);">
+                                <form method="post" action="{{ route('profile.update') }}">
+                                    @csrf
+                                    @method('patch')
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="firstnameInput" class="form-label">Nama</label>
-                                                <input type="text" class="form-control" value="{{ $user->name }}" name="nama" placeholder="Enter your firstname">
+                                                <input type="text" class="form-control" value="{{ $user->name }}" name="nama" placeholder="Enter your firstname" disabled>
                                             </div>
                                         </div>
                                         <!--end col-->

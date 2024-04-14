@@ -28,7 +28,7 @@
                         <div>
                             <div class="row justify-content-center mt-2">
                                 <div class="col-lg-8">
-                                    <div id="countdown" class="countdownlist"></div>
+                                    {{-- <div id="countdown" class="countdownlist"></div> --}}
                                 </div>
                             </div>
 

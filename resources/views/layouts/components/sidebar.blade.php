@@ -89,6 +89,7 @@
                                 <a href="{{ url('users') }}" class="nav-link {{ ($title === 'Users') ? 'active' : '' }}"> Users
                                 </a>
                             </li>
+                            @role('Admin')
                             <li class="nav-item">
                                 <a href="{{ url('roles') }}" class="nav-link {{ ($title === 'Roles') ? 'active' : '' }}"> Roles
                                 </a>
@@ -97,6 +98,7 @@
                                 <a href="{{ url('permissions') }}" class="nav-link {{ ($title === 'Permissions') ? 'active' : '' }}"> Permissions
                                 </a>
                             </li>
+                            @endrole
                             <li class="nav-item">
                                 <a href="{{ url('activity-log') }}" class="nav-link {{ ($title === 'Activity Log') ? 'active' : '' }}"> Activity Log
                                 </a>

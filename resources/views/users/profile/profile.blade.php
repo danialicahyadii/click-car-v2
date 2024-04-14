@@ -65,9 +65,11 @@
                                 </a>
                             </li> --}}
                         </ul>
+                        @role('Admin Driver|Driver')
                         <div class="flex-shrink-0">
                             <a href="{{ route('profile.edit', Auth::user()->id) }}" class="btn btn-success"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
                         </div>
+                        @endrole
                     </div>
                     <!-- Tab panes -->
                     <div class="tab-content pt-4 text-muted">
