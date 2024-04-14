@@ -52,14 +52,14 @@
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="basiInput" class="form-label">Asal</label>
-                                        <input type="text" class="form-control" name="asal" value="{{ old('asal') }}" placeholder="Masukkan Lokasi Penjemputan...">
+                                        <input type="text" class="form-control" name="asal" value="{{ old('asal') }}" placeholder="Masukkan Lokasi Penjemputan..." id="origin-input">
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-xxl-6 col-md-6">
                                     <div>
                                         <label for="basiInput" class="form-label">Tujuan</label>
-                                        <input type="text" class="form-control" name="tujuan" value="{{ old('tujuan') }}" placeholder="Masukkan Lokasi Tujuan...">
+                                        <input type="text" class="form-control" name="tujuan" value="{{ old('tujuan') }}" placeholder="Masukkan Lokasi Tujuan..." id="destination-input">
                                     </div>
                                     <div id="map"></div>
                                 </div>
@@ -225,10 +225,10 @@
 </div>
 @endsection
 @push('js')
+    @include('apps.reservasi-mobil.components.script-search-google-maps')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ URL::asset('assets/js/pages/select2.init.js') }}"></script>
-    @include('apps.reservasi-mobil.components.script-search-google-maps')
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function() {
