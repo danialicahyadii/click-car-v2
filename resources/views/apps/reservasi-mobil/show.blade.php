@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('css')
-<script type='text/javascript' src='{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css" />
+    <script type='text/javascript' src='{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css" />
+    @role('Driver')
+        <meta http-equiv="refresh" content="30">
+    @endrole
 @endsection
 @section('page-content')
 <div class="page-content">
@@ -25,34 +28,34 @@
         </div>
         <!-- end page title -->
         @hasanyrole('Admin Driver|Driver')
-        @if(Carbon::now() >= Carbon::parse($reservasi_mobil->waktu_keberangkatan) &&
-        $reservasi_mobil->id_supir == Auth::user()->supir->id &&
-        ($reservasi_mobil->id_status == 13 || $reservasi_mobil->id_status == 14))
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <div class="hstack gap-2 justify-content-end d-print-none">
-                            <!-- Varying Modal Content -->
-                            <div class="hstack gap-2 flex-wrap" class="page-title-right">
-                                <button type="button" class="btn @if ($reservasi_mobil->id_status == 13)
-                                    btn-danger @else btn-success
-                                @endif" data-bs-toggle="modal" data-bs-target="#actionDriver"><i class="ri-car-fill align-bottom me-1"></i>@if ($reservasi_mobil->id_status == 13)
-                                    Akhiri Perjalanan @else Mulai
-                                @endif</button>
-                                @if ($reservasi_mobil->id_status == 14 && Carbon::now() >= Carbon::parse($reservasi_mobil->date_expired))
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#batal"><i class="ri-close-fill align-bottom me-1"></i> Batal</button>
-                                @endif
-                                @include('apps.reservasi-mobil.components.modal-actionDriver')
-                                @include('apps.reservasi-mobil.components.modal-batal')
+            @if(Carbon::now() >= Carbon::parse($reservasi_mobil->waktu_keberangkatan) &&
+            $reservasi_mobil->id_supir == Auth::user()->supir->id &&
+            ($reservasi_mobil->id_status == 13 || $reservasi_mobil->id_status == 14))
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <div class="hstack gap-2 justify-content-end d-print-none">
+                                <!-- Varying Modal Content -->
+                                <div class="hstack gap-2 flex-wrap" class="page-title-right">
+                                    <button type="button" class="btn @if ($reservasi_mobil->id_status == 13)
+                                        btn-danger @else btn-success
+                                    @endif" data-bs-toggle="modal" data-bs-target="#actionDriver"><i class="ri-car-fill align-bottom me-1"></i>@if ($reservasi_mobil->id_status == 13)
+                                        Akhiri Perjalanan @else Mulai
+                                    @endif</button>
+                                    @if ($reservasi_mobil->id_status == 14 && Carbon::now() >= Carbon::parse($reservasi_mobil->date_expired))
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#batal"><i class="ri-close-fill align-bottom me-1"></i> Batal</button>
+                                    @endif
+                                    @include('apps.reservasi-mobil.components.modal-actionDriver')
+                                    @include('apps.reservasi-mobil.components.modal-batal')
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- end page title -->
-        @endif
+                <!-- end page title -->
+            @endif
         @endrole
 
         <div class="row align-items-center justify-content-center">
@@ -62,31 +65,6 @@
                     <div class="ribbon-two ribbon-two-success"><span>Selesai</span></div>
                     @endif
                     <div class="row">
-                        {{-- <div class="col-lg-12">
-                            <div class="card-header border-bottom-dashed p-4">
-                                <div class="d-flex">
-                                    <div class="flex-grow-1">
-                                        <img src="{{ asset('assets/images/logo-dark.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="17">
-                                        <img src="{{ asset('assets/images/logo-light.png') }}" class="card-logo card-logo-light" alt="logo light" height="17">
-                                        <div class="mt-sm-5 mt-4">
-                                            <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
-                                            <p class="text-muted mb-1" id="address-details">California, United States</p>
-                                            <p class="text-muted mb-0" id="zip-code"><span>Zip-code:</span> 90201</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <img src="{{ asset('assets/images/logo-dark.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="17">
-                                        <img src="{{ asset('assets/images/logo-light.png') }}" class="card-logo card-logo-light" alt="logo light" height="17">
-                                        <div class="mt-sm-5 mt-4">
-                                            <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
-                                            <p class="text-muted mb-1" id="address-details">California, United States</p>
-                                            <p class="text-muted mb-0" id="zip-code"><span>Zip-code:</span> 90201</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end card-header-->
-                        </div> --}}
                         <div class="col-lg-12">
                             <div class="card-body p-4">
                                 <div class="row g-3">
@@ -244,10 +222,10 @@
                         <div class="col-lg-12">
                             <div class="card-body p-4">
                                 <div class="border-top border-top-dashed mt-2">
-                                    <div class="row ms-4 mt-4">
+                                    <div class="row mt-4">
                                         <h6 class="text-muted text-uppercase fw-semibold mb-3">Detail Reservasi :</h6>
                                     </div>
-                                    <div class="row ms-4 justify-content-center">
+                                    <div class="row justify-content-center">
                                         <div class="col-6">
                                             <div class="d-flex mb-4">
                                                 <div class="flex-grow-1 ms-3">
@@ -308,10 +286,10 @@
                                     </table><!--end table-->
                                 </div>
                                 <div class="border-top border-top-dashed mt-2">
-                                    <div class="row ms-4 mt-4">
+                                    <div class="row mt-4">
                                         <h6 class="text-muted text-uppercase fw-semibold mb-3">Catatan :</h6>
                                     </div>
-                                    <div class="row ms-4 justify-content-center">
+                                    <div class="row justify-content-center">
                                         <div class="col-6">
                                             <div class="d-flex mb-4">
                                                 <div class="flex-grow-1 ms-3">

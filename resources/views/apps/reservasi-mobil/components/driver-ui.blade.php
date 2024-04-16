@@ -1,7 +1,7 @@
 <div class="card-body">
     <ul class="nav nav-tabs nav-border-top nav-border-top-info mb-3" role="tablist" id="myTab">
         <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="tab" href="#reservasi_hari_ini" role="tab" aria-selected="true">
+            <a class="nav-link active" data-bs-toggle="tab" href="#reservasi_hari_ini" role="tab" aria-selected="true">
                 Reservasi Hari Ini @if (count($reservasi_mobil->where('tgl_pergi', Carbon::today()->isoFormat('Y-MM-DD'))) > 0)
                 <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->where('tgl_pergi', Carbon::today()->isoFormat('Y-MM-DD'))) }}</span>
                 @endif
@@ -24,7 +24,7 @@
     </ul>
     <!-- Tab panes -->
     <div class="tab-content text-muted">
-        <div class="tab-pane" id="reservasi_hari_ini" role="tabpanel">
+        <div class="tab-pane active" id="reservasi_hari_ini" role="tabpanel">
             <div>
                 <div class="table-responsive">
                     <table class="table align-middle table-nowrap mb-0" id="reservasi_hari_iniTable">

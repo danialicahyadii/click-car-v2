@@ -73,7 +73,7 @@
                                 </td>
                                 <td>@if (!empty($row->id_mobil)){{ $row->mobil->nama }}@else Transportasi Online @endif</td>
                                 <td>{{ $row->supir->nama }}</td>
-                                <td><a href="{{ url('reservasi-mobil/show', $row->id) }}" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
+                                <td><a href="{{ url('reservasi-mobil/show', $row->kode_pemesanan) }}" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -115,7 +115,7 @@
                                     </td>
                                     <td>{{ $row->mobil->nama }}</td>
                                     <td>{{ $row->supir->nama }}</td>
-                                    <td><a href="javascript:void(0);" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
+                                    <td><a href="{{ url('reservasi-mobil/show', $row->kode_pemesanan) }}" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td>
                                 </tr>
                             @endforeach
                         </tbody>

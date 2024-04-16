@@ -8,7 +8,7 @@
             </a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="tab" href="#konfirmasi_reservasi" role="tab" aria-selected="true">
+            <a class="nav-link active" data-bs-toggle="tab" href="#konfirmasi_reservasi" role="tab" aria-selected="true">
                 Konfirmasi Reservasi @if (count($reservasi_mobil->whereIn('id_status', [4, 3, 14, 13])) > 0)
                 <span class="badge bg-danger rounded-circle">{{ count($reservasi_mobil->whereIn('id_status', [4, 3, 13, 14])) }}</span>
                 @endif
@@ -74,7 +74,7 @@
             </div>  
             
         </div>
-        <div class="tab-pane" id="konfirmasi_reservasi" role="tabpanel">
+        <div class="tab-pane active" id="konfirmasi_reservasi" role="tabpanel">
             <div>
                 <div class="table-responsive">
                     <table class="table align-middle table-nowrap mb-0" id="konfirmasi_reservasiTable">
