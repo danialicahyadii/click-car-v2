@@ -11,7 +11,7 @@
             <div class="row g-4">
                 <div class="col-auto">
                     <div class="avatar-lg">
-                        <img src="@if (!empty($user->photo_profile)) {{ URL::asset('profile-images/' . $user->photo_profile) }} @else {{ URL::asset('assets/img/icon-user.png') }}
+                        <img src="@if (!empty($user->photo_profile)) {{ URL::asset('profile-images/'.$user->photo_profile) }} @else {{ URL::asset('assets/img/icon-user.png') }}
                                 @endif" alt="user-img" class="img-thumbnail rounded-circle" style="width: 100px; height: 100px; object-fit: cover;"/>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                     <div class="tab-content pt-4 text-muted">
                         <div class="tab-pane active" id="overview-tab" role="tabpanel">
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-md-3">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title mb-3">Info</h5>
@@ -121,7 +121,7 @@
 
                                 </div>
                                 <!--end col-->
-                                <div class="col-9">
+                                <div class="col-md-9">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             @role('Admin Driver|Driver')

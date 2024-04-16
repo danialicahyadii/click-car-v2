@@ -67,17 +67,21 @@ class UserController extends Controller
     }
 
     public function uploadProfileImage(Request $request, $id) {
-        // Validasi request
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'id' => 'required|integer', // Pastikan user_id valid
+            'id' => 'required|integer',
         ]);
         $user = User::find($id);
-        // Simpan gambar di server
+        if ($user->photo_profile) {
+            $oldImagePath = public_path('profile-images') . '/' . $user->photo_profile;
+            
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+        }
         $imageName = str_replace(' ', '_', strtolower($user->name)).'.'.$request->image->extension();
         $request->image->move(public_path('profile-images'), $imageName);
     
-        // Simpan path gambar dan ID pengguna ke dalam database
         $user->photo_profile = $imageName;
         $user->save();
         
