@@ -92,7 +92,18 @@
                             @foreach ($reservasi_mobil->whereIn('id_status', [4, 3, 13, 14]) as $row)
                                 <tr>
                                     <th scope="row"><a href="#" class="fw-medium">{{ $loop->iteration }}</a></th>
-                                    <td><a href="{{ url('reservasi-mobil/show', $row->kode_pemesanan) }}" class="fw-medium">{{ $row->user->name }}</a></td>
+                                    <td>
+                                        @if ($row->kode_pemesanan)
+                                            <a href="{{ url('reservasi-mobil/show', $row->kode_pemesanan) }}" class="fw-medium">{{ $row->user->name }}</a>
+                                        @else
+                                            @if ($row->id)
+                                                <a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a>
+                                            @else
+                                                <!-- Handle jika tidak ada kode_pemesanan atau id -->
+                                                <span class="text-muted">Tidak ada kode pemesanan atau id</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ($row->id_status == 1 || $row->id_status == 14)
                                         <span class="badge bg-info">{{ $row->status->status }}</span>
@@ -135,7 +146,18 @@
                             @foreach ($reservasi_mobil->where('id_status', 5)->where('id_pengantaran', '!=', 3) as $row)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <td><a href="{{ url('reservasi-mobil/show', $row->kode_pemesanan) }}" class="fw-medium">{{ $row->user->name }}</a></td>
+                                    <td>
+                                        @if ($row->kode_pemesanan)
+                                            <a href="{{ url('reservasi-mobil/show', $row->kode_pemesanan) }}" class="fw-medium">{{ $row->user->name }}</a>
+                                        @else
+                                            @if ($row->id)
+                                                <a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a>
+                                            @else
+                                                <!-- Handle jika tidak ada kode_pemesanan atau id -->
+                                                <span class="text-muted">Tidak ada kode pemesanan atau id</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ($row->id_status == 1 || $row->id_status == 14)
                                         <span class="badge bg-info">{{ $row->status->status }}</span>
@@ -182,7 +204,18 @@
                             @foreach ($reservasi_mobil->where('id_pengantaran', 3)->where('id_status', 5) as $row)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <td><a href="{{ url('reservasi-mobil/show', $row->kode_pemesanan) }}">{{ $row->user->name }}</a></td>
+                                    <td>
+                                        @if ($row->kode_pemesanan)
+                                            <a href="{{ url('reservasi-mobil/show', $row->kode_pemesanan) }}" class="fw-medium">{{ $row->user->name }}</a>
+                                        @else
+                                            @if ($row->id)
+                                                <a href="{{ url('reservasi-mobil/show', $row->id) }}" class="fw-medium">{{ $row->user->name }}</a>
+                                            @else
+                                                <!-- Handle jika tidak ada kode_pemesanan atau id -->
+                                                <span class="text-muted">Tidak ada kode pemesanan atau id</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td>
                                         <span class="badge bg-success">{{ $row->status->status }}</span>
                                     </td>
