@@ -7,6 +7,13 @@
 @section('page-content')
 <div class="page-content">
     <div class="container-fluid">
+        @if ($errors->any())
+                <!-- Warning Alert -->
+                <div class="alert alert-warning alert-dismissible bg-warning text-white alert-label-icon fade show mb-4" role="alert">
+                    <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Harap diisi semua!
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
         <input type="text" id="id" value="{{ $user->id }}" hidden>
         {{-- <div class="position-relative mx-n4 mt-n4">
             <div class="profile-wid-bg profile-setting-img">
@@ -28,7 +35,7 @@
                 <div class="card mt-n5">
                     <div class="card-body p-4">
                         <div class="text-center">
-                            <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
                                 <img src="@if (!empty($user->photo_profile)) {{ URL::asset('profile-images/' . $user->photo_profile) }} @else {{ URL::asset('assets/img/icon-user.png') }}
                                 @endif" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
                                 
@@ -50,13 +57,6 @@
             </div>
             <!--end col-->
             <div class="col-xxl-9">
-                @if ($errors->any())
-                <!-- Warning Alert -->
-                <div class="alert alert-warning alert-dismissible bg-warning text-white alert-label-icon fade show" role="alert">
-                    <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Harap diisi semua!
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
                 <div class="card mt-xxl-n5">
                     <div class="card-header">
                         <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">

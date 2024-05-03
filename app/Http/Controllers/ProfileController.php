@@ -35,9 +35,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $activity_log = ActivityLog::whereDate('created_at', Carbon::now()->toDateString())->get();
-        if(Auth::user()->roles->first()->name == 'Driver'){
-            $supir = MasterDriver::find(Auth::user()->supir->id);
-        }
+        $supir = MasterDriver::find(Auth::user()->supir->id);
         return view('users.profile.edit', [
             'user' => $request->user(),
             'activity_log' => $activity_log,
