@@ -6,14 +6,46 @@
 @endsection
 @section('page-content')
 <div class="page-content">
+    <div class="container-fluid mb-2">
+        <div class="row">
+            <div class="col-12">
+                @if ($errors->any())
+    <!-- Warning Alert -->
+    <div id="warningAlert" class="alert alert-warning alert-dismissible bg-warning text-white alert-label-icon fade show mb-4" role="alert">
+        <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Harap diisi semua!
+        <button id="closeButton" type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <style>
+        /* Animasi fade out */
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Terapkan animasi pada elemen alert saat class 'fade-out' ditambahkan */
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+    </style>
+    <script>
+        // Mendapatkan elemen alert
+        var warningAlert = document.getElementById('warningAlert');
+        
+        // Menetapkan waktu untuk menghapus alert
+        setTimeout(function(){
+            // Tambahkan class 'fade-out' untuk memicu animasi fade out
+            warningAlert.classList.add('fade-out');
+            // Hapus elemen alert dari DOM setelah animasi selesai
+            setTimeout(function(){
+                warningAlert.remove();
+            }, 1000); // Waktu dalam milidetik untuk efek fade out (1000 = 1 detik)
+        }, 5000); // Waktu dalam milidetik untuk alert ditampilkan (5000 = 5 detik)
+    </script>
+@endif
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
-        @if ($errors->any())
-                <!-- Warning Alert -->
-                <div class="alert alert-warning alert-dismissible bg-warning text-white alert-label-icon fade show mb-4" role="alert">
-                    <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Harap diisi semua!
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
         <input type="text" id="id" value="{{ $user->id }}" hidden>
         {{-- <div class="position-relative mx-n4 mt-n4">
             <div class="profile-wid-bg profile-setting-img">
