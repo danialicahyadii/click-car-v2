@@ -92,7 +92,6 @@
         $(document).ready(function() {
             $('#reservasi_hari_iniTable, #konfirmasi_reservasiTable, #riwayatTable, #lihat_semuaTable, #sedang_diprosesTable, #perlu_diprosesTable, #reservasi_selesaiTable, #reservasi_ditolakTable, #ratingTable').DataTable({
                 pageLength: 10,
-                responsive: true,
             });
         });
     </script>
