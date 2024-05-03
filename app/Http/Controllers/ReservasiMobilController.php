@@ -29,7 +29,7 @@ class ReservasiMobilController extends Controller
         $data['mobil'] = Mobil::where('id_entitas', Auth::user()->id_entitas)->orderBy('nama', 'ASC')->get();
         $data['supir'] = Supir::where('id_entitas', Auth::user()->id_entitas)->where('id_status', 1)->orderBy('nama', 'ASC')->get();
         $data['reservasi_mobil'] = ReservasiMobil::get();
-        $data['penumpang_reservasi'] = Penumpang::get();
+        $data['penumpang_reservasi'] = Penumpang::with('user')->get();
         $data['voucher'] = TransaksiVoucher::get();
 
         return $data;
@@ -179,15 +179,21 @@ class ReservasiMobilController extends Controller
         return redirect(url('reservasi-mobil'))->withInput();
     }
 
-    public function show($kode_pemesanan)
+    public function show($param)
     {
         $data = $this->data();
-        $reservasi_mobil = $data['reservasi_mobil']->where('kode_pemesanan', $kode_pemesanan)->first();
-        $penumpang = $data['penumpang_reservasi']->where('id_reservasi', $reservasi_mobil->id);
+        if (is_numeric($param)) {
+            $reservasi_mobil = $data['reservasi_mobil']->find($param);
+            $penumpang = $data['penumpang_reservasi']->where('id_reservasi', $reservasi_mobil->id);
+            $voucher = TransaksiVoucher::where('id_reservasi', $reservasi_mobil->id)->get();
+        } else {
+            $reservasi_mobil = $data['reservasi_mobil']->where('kode_pemesanan', $param)->first();
+            $penumpang = $data['penumpang_reservasi']->where('id_reservasi', $reservasi_mobil->id);
+            $voucher = TransaksiVoucher::where('id_reservasi', $reservasi_mobil->id)->get();
+        }
         $jenis_kendaraan = $data['jenis_kendaraan'];
         $mobil = $data['mobil'];
         $supir = $data['supir'];
-        $voucher = TransaksiVoucher::where('id_reservasi', $reservasi_mobil->id)->get();
 
         return view('apps.reservasi-mobil.show', compact('reservasi_mobil', 'penumpang', 'jenis_kendaraan', 'mobil', 'supir', 'voucher'));
     }

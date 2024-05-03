@@ -9,7 +9,7 @@ class ReservasiMobil extends Model
 {
     use HasFactory;
 
-    protected $table = 'reservasi_mobil';
+    protected $table = 'reservasi_mobils';
 
     protected $guarded = [];
     protected $primaryKey = 'id'; // Pastikan sesuai dengan nama kolom primary key
